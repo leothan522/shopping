@@ -253,19 +253,19 @@ return [
                 [
                     'text' => 'Pedidos',
                     'icon' => 'fas fa-fw fa-shopping-bag',
-                    'route'  => 'prueba',
+                    'route'  => 'pedidos.index',
                     'can'  => 'prueba',
                 ],
                 [
                     'text' => 'Clientes',
                     'icon' => 'far fa-fw fa-address-book',
-                    'route'  => 'prueba',
+                    'route'  => 'clientes.index',
                     'can'  => 'prueba',
                 ],
                 [
                     'text' => 'Metodos de Pago',
                     'icon' => 'fas fa-fw fa-money-check-alt',
-                    'route'  => 'prueba',
+                    'route'  => 'metodos.index',
                     'can'  => 'prueba',
                 ]
             ],
@@ -278,13 +278,13 @@ return [
                 [
                     'text' => 'Stock',
                     'icon' => 'fas fa-fw fa-boxes',
-                    'route'  => 'prueba',
+                    'route'  => 'stock.index',
                     'can'  => 'prueba',
                 ],
                 [
                     'text' => 'Almacen',
                     'icon' => 'fas fa-fw fa-warehouse',
-                    'route'  => 'prueba',
+                    'route'  => 'almacen.index',
                     'can'  => 'prueba',
                 ]
             ],
@@ -297,19 +297,19 @@ return [
                 [
                     'text' => 'Productos',
                     'icon' => 'fas fa-fw fa-box',
-                    'route'  => 'prueba',
+                    'route'  => 'productos.index',
                     'can'  => 'prueba',
                 ],
                 [
                     'text' => 'Categorias',
                     'icon' => 'fas fa-fw fa-tags',
-                    'route'  => 'prueba',
+                    'route'  => 'categorias.index',
                     'can'  => 'prueba',
                 ],
                 [
                     'text' => 'Delivery',
                     'icon' => 'fas fa-fw fa-shipping-fast',
-                    'route' => 'prueba',
+                    'route' => 'delivery.index',
                     'can' => 'prueba',
                 ],
                 [

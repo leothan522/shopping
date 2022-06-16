@@ -1,9 +1,16 @@
 <?php
 
+use App\Http\Controllers\Dashboard\AlmacenController;
+use App\Http\Controllers\Dashboard\CategoriasController;
 use App\Http\Controllers\Dashboard\ClientesController;
+use App\Http\Controllers\Dashboard\DeliveryController;
 use App\Http\Controllers\Dashboard\EmpresasController;
+use App\Http\Controllers\Dashboard\MetodosController;
 use App\Http\Controllers\Dashboard\ParametrosController;
+use App\Http\Controllers\Dashboard\PedidosController;
+use App\Http\Controllers\Dashboard\ProductosController;
 use App\Http\Controllers\Dashboard\SearchController;
+use App\Http\Controllers\Dashboard\StockController;
 use App\Http\Controllers\Dashboard\UsersController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +39,16 @@ Route::middleware(['auth', 'isadmin', 'estatus', 'permisos'])->prefix('/dashboar
     Route::get('pdf/usuarios', [UsersController::class, 'createPDF'])->name('usuarios.pdf');
 
     Route::get('empresas', [EmpresasController::class, 'index'])->name('empresas.index');
+
+    Route::get('pedidos', [PedidosController::class, 'index'])->name('pedidos.index');
+    Route::get('clientes', [ClientesController::class, 'index'])->name('clientes.index');
+    Route::get('metodos', [MetodosController::class, 'index'])->name('metodos.index');
+    Route::get('stock', [StockController::class, 'index'])->name('stock.index');
+    Route::get('almacen', [AlmacenController::class, 'index'])->name('almacen.index');
+    Route::get('productos', [ProductosController::class, 'index'])->name('productos.index');
+    Route::get('categorias', [CategoriasController::class, 'index'])->name('categorias.index');
+    Route::get('delivery', [DeliveryController::class, 'index'])->name('delivery.index');
+
 
 });
 
