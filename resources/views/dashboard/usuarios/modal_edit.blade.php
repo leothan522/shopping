@@ -118,6 +118,23 @@
                                                 @enderror
                                             </div>
                                         </div>
+                                    @if($listaEmpresas)
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Exclusivo para la Tienda:</label>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fas fa-store-alt"></i></span>
+                                                    </div>
+                                                   <select class="custom-select" wire:model.defer="user_empresa">
+                                                        <option value="0">NO APLICA</option>
+                                                        @foreach($listaEmpresas as $empresa)
+                                                            <option value="{{ $empresa->id }}">{{ strtoupper($empresa->nombre) }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                    @endif
+
                                     @endif
                                     @if ($user_role != 100 && $user_id != Auth::user()->id)
                                         <div class="form-group">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Empresa;
 use App\Models\Parametro;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithPagination;
+use function PHPUnit\Framework\isEmpty;
 
 class UsuariosComponent extends Component
 {
@@ -24,7 +26,8 @@ class UsuariosComponent extends Component
     ];
 
     public $name, $email, $password, $role, $busqueda;
-    public $user_id, $user_name, $user_email, $user_password, $user_role, $user_estatus, $user_fecha, $user_permisos, $user_path;
+    public $user_id, $user_name, $user_email, $user_password, $user_role, $user_estatus, $user_fecha, $user_permisos,
+        $user_path, $user_empresa, $listaEmpresas, $selectEmpresa;
 
     public function mount(Request $request)
     {
@@ -107,6 +110,15 @@ class UsuariosComponent extends Component
         $this->user_estatus = $user->estatus;
         $this->user_fecha = $user->created_at;
         $this->user_path = $user->profile_photo_path;
+        $this->user_empresa = $user->empresas_id;
+
+        $empresas = Empresa::orderBy('nombre', 'ASC')->get();
+        if ($empresas->isNotEmpty()){
+            $this->listaEmpresas = $empresas;
+        }else{
+            $this->listaEmpresas = null;
+        }
+
     }
 
     public function update($id)
@@ -121,6 +133,11 @@ class UsuariosComponent extends Component
         $user->name = $this->user_name;
         $user->email = $this->user_email;
         $user->role = $this->user_role;
+        if ($this->user_empresa == 0){
+            $user->empresas_id = null;
+        }else{
+            $user->empresas_id = $this->user_empresa;
+        }
 
         $role = Parametro::where('tabla_id', '-1')->where('id', $this->user_role)->first();
         if ($role){

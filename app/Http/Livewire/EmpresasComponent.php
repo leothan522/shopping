@@ -121,7 +121,7 @@ class EmpresasComponent extends Component
         $this->empresaDefault = $empresa->default;
 
         if ($empresa->logo == null){
-            $this->logo = 'img/logo_sportec.jpg';
+            $this->logo = 'img/img_placeholder.png';
             $this->borrarLogo = false;
         }else{
             $this->borrarLogo = true;

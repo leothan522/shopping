@@ -31,6 +31,8 @@ class User extends Authenticatable
         'role',
         'estatus',
         'permisos',
+        'plataforma',
+        'empresas_id',
         'profile_photo_path'
     ];
 
@@ -86,6 +88,11 @@ class User extends Authenticatable
     {
         return $query->where('name', 'LIKE', "%$keyword%")
             ->orWhere('email', 'LIKE', "%$keyword%");
+    }
+
+    public function empresa()
+    {
+        return $this->hasOne(Empresa::class, 'empresas_id', 'id');
     }
 
 
