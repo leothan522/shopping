@@ -7,18 +7,8 @@
             <span class="text-small text-muted float-right">Android</span>
         </li>
         <li class="dropdown-divider"></li>--}}
-        <li class="nav-item">
-            <a href="#" class="nav-link" {{--target="_blank"--}}>
-                <i class="fas fa-dollar-sign"></i> Precio Dolar
-            </a>
-        </li>
-        <li class="nav-item">
-            <span class="text-small text-muted float-right">5,72</span>
-        </li>
+        @livewire('dolar-component')
         <li class="dropdown-divider"></li>
-
-        <!-- divider -->
-
         {{--<li class="nav-item">
             <span class="text-small text-muted float-right">Web</span>
         </li>
@@ -33,3 +23,4 @@
     </ul>
 
 </div>
+
