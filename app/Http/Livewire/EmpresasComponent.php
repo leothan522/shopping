@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Empresa;
 use App\Models\Parametro;
 use Illuminate\Validation\Rule;
+use Intervention\Image\Facades\Image;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -94,9 +95,11 @@ class EmpresasComponent extends Component
         if ($this->photo){
             $ruta = $this->photo->store('public/logo');
             $empresa->logo = str_replace('public/', 'storage/', $ruta);
+            //miniatura
+            $nombre = explode('logo/', $empresa->logo);
+            crearMiniaturas($empresa->logo, 'storage/logo/t_'.$nombre[1]);
             $this->logo = $empresa->logo;
         }
-
 
         $empresa->save();
 
@@ -126,8 +129,9 @@ class EmpresasComponent extends Component
             $this->logo = 'img/img_placeholder.png';
             $this->borrarLogo = false;
         }else{
+            $img = explode('logo/', $empresa->logo);
             $this->borrarLogo = true;
-            $this->logo = $empresa->logo;
+            $this->logo = 'storage/logo/t_'.$img[1];
         }
 
         $this->view = 'show';
@@ -151,15 +155,22 @@ class EmpresasComponent extends Component
         $empresa->moneda = $this->moneda;
 
         if ($this->photo){
-
+            $img = explode('logo/', $this->logo);
+            $miniatura = 'storage/logo/t_'.$img[1];
             if ($this->borrarLogo){
                 if (file_exists($this->logo)){
                     unlink($this->logo);
+                }
+                if (file_exists($miniatura)){
+                    unlink($miniatura);
                 }
             }
 
             $ruta = $this->photo->store('public/logo');
             $empresa->logo = str_replace('public/', 'storage/', $ruta);
+            //miniatura
+            $nombre = explode('logo/', $empresa->logo);
+            crearMiniaturas($empresa->logo, 'storage/logo/t_'.$nombre[1]);
             $this->logo = $empresa->logo;
         }
 

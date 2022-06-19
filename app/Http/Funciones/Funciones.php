@@ -3,6 +3,7 @@
 
 use App\Models\Parametro;
 use Carbon\Carbon;
+use Intervention\Image\Facades\Image;
 
 function hola(){
     return "Funciones Personalidas bien creada";
@@ -284,5 +285,25 @@ function empresaDefault($default)
     }else{
         return false;
     }
+}
+
+function verImg($path)
+{
+    $img = 'img/img_placeholder.png';
+    if (!is_null($path)){
+        if (file_exists(public_path($path))){
+            $img = $path;
+        }
+    }
+    return $img;
+}
+
+function crearMiniaturas($data, $path, $width = 320, $height = 320)
+{
+    //$nombre = explode('logo/', $empresa->logo);
+    //$path = 'storage/logo/t_'.$nombre[1]
+    $img = Image::make($data);
+    $img->resize($width, $height);
+    $img->save($path);
 }
 

@@ -44,7 +44,7 @@
                 <img src="{{ $photo->temporaryUrl() }}" class="img-fluid img-thumbnail rounded mx-auto d-block">
                 @else
                 @if($logo)
-                <img src="{{ asset($logo) }}" class="img-fluid img-thumbnail rounded mx-auto d-block">
+                <img src="{{ asset(verImg($logo)) }}" class="img-fluid img-thumbnail rounded mx-auto d-block">
                 @endif
             @endif
 

@@ -60,7 +60,7 @@
             <div class="card card-purple card-outline">
                 <div class="card-body box-profile">
                     <div class="text-center">
-                        <img id="blah" class="img-thumbnail" src="{{ asset($logo) }}" />
+                        <img id="blah" class="img-thumbnail" src="{{ asset(verImg($logo)) }}" />
                     </div>
                 </div>
             </div>
