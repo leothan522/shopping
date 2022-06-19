@@ -21,6 +21,8 @@ class EmpresasComponent extends Component
 
     public $view = 'show', $photo, $rif, $nombre, $moneda, $telefonos, $email, $direccion, $default = 0, $empresaDefault;
     public $empresa_id, $logo, $borrarLogo = false;
+    public $lunes, $martes, $miercoles, $jueves, $viernes, $sabado, $domingo, $apertura, $cierre, $horario, $horario_id;
+    public $estatusTienda;
 
 
     public function mount()
@@ -225,6 +227,221 @@ class EmpresasComponent extends Component
         );
 
     }
+
+    public function dias($dia, $id = false)
+    {
+        $parametro = Parametro::where('nombre', "horario_$dia")->where('tabla_id', $this->empresa_id)->first();
+        if ($parametro){
+            if ($id){
+                return $parametro->id;
+            }else{
+                return $parametro->valor;
+            }
+        }else{
+            return 0;
+        }
+    }
+
+    public function verHorario($id)
+    {
+        $horario = Parametro::where('nombre', 'horario')->where('tabla_id', $id)->first();
+        if ($horario){
+            $this->horario_id = $horario->id;
+            $this->horario = $horario->valor;
+        }else{
+            $this->horario_id = 0;
+            $this->horario = 0;
+        }
+
+        $this->lunes = $this->dias('Mon');
+        $this->martes = $this->dias('Tue');
+        $this->miercoles = $this->dias('Wed');
+        $this->jueves = $this->dias('Thu');
+        $this->viernes = $this->dias('Fri');
+        $this->sabado = $this->dias('Sat');
+        $this->domingo = $this->dias('Sun');
+
+        $apertura = Parametro::where('nombre', 'horario_apertura')->where('tabla_id', $this->empresa_id)->first();
+        if ($apertura){
+            $this->apertura = $apertura->valor;
+        }else{
+            $this->apertura = null;
+        }
+
+        $cierre = Parametro::where('nombre', 'horario_cierre')->where('tabla_id', $this->empresa_id)->first();
+        if ($cierre){
+            $this->cierre = $cierre->valor;
+        }else{
+            $this->cierre = null;
+        }
+
+        $this->view = "horario";
+    }
+
+    public function botonHorario($id)
+    {
+
+        if ($id != 0){
+            $parametro = Parametro::find($id);
+            if ($parametro->valor == 1){
+                $parametro->valor = 0;
+                $parametro->update();
+                $this->alert(
+                    'info',
+                    'Horario Apagado'
+                );
+            }else{
+                $parametro->valor = 1;
+                $parametro->update();
+                $this->alert(
+                    'success',
+                    'Horario Activo'
+                );
+            }
+
+        }else{
+            $parametro = new Parametro();
+            $parametro->nombre = "horario";
+            $parametro->tabla_id = $this->empresa_id;
+            $parametro->valor = 1;
+            $parametro->save();
+            $this->horario_id = $parametro->id;
+            $this->alert(
+                'success',
+                'Horario Activo'
+            );
+        }
+
+        $this->horario = $parametro->valor;
+
+    }
+
+    public function diasActivos($dia, $valor)
+    {
+        $id = $this->dias($dia, true);
+        if ($id != 0){
+
+            $parametro = Parametro::find($id);
+            if ($valor == 0){
+                $parametro->valor = 1;
+                $parametro->update();
+                $this->alert(
+                    'success',
+                    'Dia Abierto'
+                );
+            }else{
+                $parametro->valor = 0;
+                $parametro->update();
+                $this->alert(
+                    'info',
+                    'Dia Cerrado'
+                );
+            }
+
+        }else{
+
+            $parametro = new Parametro();
+            $parametro->nombre = "horario_$dia";
+            $parametro->tabla_id = $this->empresa_id;
+            $parametro->valor = 1;
+            $parametro->save();
+            $this->alert(
+                'success',
+                'Dia Abierto'
+            );
+        }
+
+        $this->lunes = $this->dias('Mon');
+        $this->martes = $this->dias('Tue');
+        $this->miercoles = $this->dias('Wed');
+        $this->jueves = $this->dias('Thu');
+        $this->viernes = $this->dias('Fri');
+        $this->sabado = $this->dias('Sat');
+        $this->domingo = $this->dias('Sun');
+    }
+
+
+    public function storeHoras()
+    {
+        $rules = [
+            'apertura'  =>  'required',
+            'cierre'    => 'required_with:apertura|after:apertura'
+        ];
+        $message = [
+            'cierre.after'  =>  'cierre debe ser posterior a apertura. '
+        ];
+
+        $this->validate($rules, $message);
+
+        $apertura = Parametro::where('nombre', 'horario_apertura')->where('tabla_id', $this->empresa_id)->first();
+        if ($apertura){
+            $apertura->valor = $this->apertura;
+            $apertura->update();
+        }else{
+            $parametro = new Parametro();
+            $parametro->nombre = "horario_apertura";
+            $parametro->tabla_id = $this->empresa_id;
+            $parametro->valor = $this->apertura;
+            $parametro->save();
+        }
+
+        $cierre = Parametro::where('nombre', 'horario_cierre')->where('tabla_id', $this->empresa_id)->first();
+        if ($cierre){
+            $cierre->valor = $this->cierre;
+            $cierre->update();
+        }else{
+            $parametro = new Parametro();
+            $parametro->nombre = "horario_cierre";
+            $parametro->tabla_id = $this->empresa_id;
+            $parametro->valor = $this->cierre;
+            $parametro->save();
+        }
+
+        $this->alert(
+            'success',
+            'Horas Guardadas'
+        );
+
+    }
+
+    public function estatusTienda($id)
+    {
+        $estatus_tienda = Parametro::where('nombre', 'estatus_tienda')->where('tabla_id', $id)->first();
+        if ($estatus_tienda){
+            $parametro = Parametro::find($estatus_tienda->id);
+            if ($parametro->valor == 1){
+                $parametro->valor = 0;
+                $parametro->update();
+                $this->alert(
+                    'info',
+                    'Tienda Cerrada'
+                );
+            }else{
+                $parametro->valor = 1;
+                $parametro->update();
+                $this->alert(
+                    'success',
+                    'Tienda Abierta'
+                );
+            }
+
+        }else{
+            $parametro = new Parametro();
+            $parametro->nombre = "estatus_tienda";
+            $parametro->tabla_id = $id;
+            $parametro->valor = 1;
+            $parametro->save();
+            $this->alert(
+                'success',
+                'Tienda Abierta'
+            );
+        }
+
+    }
+
+
+
+
 
 
 

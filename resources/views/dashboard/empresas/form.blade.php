@@ -182,7 +182,7 @@
     @if($empresa_id)
     <div class="row mt-3 justify-content-end">
         <div class="col-md-12 float-right">
-            <button type="button" class="btn btn-danger btn-sm" wire:click="show({{ $empresa_id }})">Cancelar</button>
+            <button type="button" class="btn btn-default btn-sm" wire:click="show({{ $empresa_id }})">Cerrar</button>
         </div>
     </div>
     @endif
