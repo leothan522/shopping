@@ -1,6 +1,6 @@
 <div class="card card-gray-dark {{--collapsed-card--}}">
     <div class="card-header">
-        <h3 class="card-title">Empresas</h3>
+        <h3 class="card-title">Tiendas</h3>
 
         <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
@@ -13,7 +13,7 @@
 
         <ul class="list-group text-sm">
             <li class="list-group-item">
-                Ver Empresas
+                Ver Tiendas
                 <div class="custom-control custom-switch custom-switch-on-success float-right">
                     <input type="checkbox" wire:click="update_roles({{ $rol_id }}, 'empresas.index')"
                            @if(leerJson($roles_permisos, 'empresas.index')) checked @endif
@@ -22,7 +22,25 @@
                 </div>
             </li>
             <li class="list-group-item">
-                Crear Empresas
+                [Abrir|Cerrar] Tiendas
+                <div class="custom-control custom-switch custom-switch-on-success float-right">
+                    <input type="checkbox" wire:click="update_roles({{ $rol_id }}, 'empresas.estatus')"
+                           @if(leerJson($roles_permisos, 'empresas.estatus')) checked @endif
+                           class="custom-control-input" id="customSwitchEmpr0ERol">
+                    <label class="custom-control-label" for="customSwitchEmpr0ERol"></label>
+                </div>
+            </li>
+            <li class="list-group-item">
+                Definir Horarios
+                <div class="custom-control custom-switch custom-switch-on-success float-right">
+                    <input type="checkbox" wire:click="update_roles({{ $rol_id }}, 'empresas.horario')"
+                           @if(leerJson($roles_permisos, 'empresas.horario')) checked @endif
+                           class="custom-control-input" id="customSwitchEmpr0HRol">
+                    <label class="custom-control-label" for="customSwitchEmpr0HRol"></label>
+                </div>
+            </li>
+            <li class="list-group-item">
+                Crear Tiendas
                 <div class="custom-control custom-switch custom-switch-on-success float-right">
                     <input type="checkbox" wire:click="update_roles({{ $rol_id }}, 'empresas.create')"
                            @if(leerJson($roles_permisos, 'empresas.create')) checked @endif
@@ -31,7 +49,7 @@
                 </div>
             </li>
             <li class="list-group-item">
-                Editar Empresas
+                Editar Tiendas
                 <div class="custom-control custom-switch custom-switch-on-success float-right">
                     <input type="checkbox" wire:click="update_roles({{ $rol_id }}, 'empresas.edit')"
                            @if(leerJson($roles_permisos, 'empresas.edit')) checked @endif
@@ -40,7 +58,7 @@
                 </div>
             </li>
             <li class="list-group-item">
-                Borrar Empresas
+                Borrar Tiendas
                 <div class="custom-control custom-switch custom-switch-on-success float-right">
                     <input type="checkbox" wire:click="update_roles({{ $rol_id }}, 'empresas.destroy')"
                            @if(leerJson($roles_permisos, 'empresas.destroy')) checked @endif

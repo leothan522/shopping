@@ -27,14 +27,23 @@ class AuthServiceProvider extends ServiceProvider
 
         //Muetra en el sidebar los botones segun el permiso
 
-        Gate::define('configuracion', function ($user){
-            return leerJson(auth()->user()->permisos, 'usuarios.index') == true ||
-                     leerJson(auth()->user()->permisos, 'empresas.index') == true ||
-                    auth()->user()->role == 1 || auth()->user()->role == 100;
+        Gate::define('ecommerce', function ($user){
+            return leerJson(auth()->user()->permisos, 'categorias.index') == true ||
+                leerJson(auth()->user()->permisos, 'empresas.index') == true ||
+                auth()->user()->role == 1 || auth()->user()->role == 100;
+        });
+
+        Gate::define('categorias', function ($user){
+            return leerJson(auth()->user()->permisos, 'categorias.index') == true || auth()->user()->role == 1 || auth()->user()->role == 100;
         });
 
         Gate::define('empresas', function ($user){
             return leerJson(auth()->user()->permisos, 'empresas.index') == true || auth()->user()->role == 1 || auth()->user()->role == 100;
+        });
+
+        Gate::define('configuracion', function ($user){
+            return leerJson(auth()->user()->permisos, 'usuarios.index') == true ||
+                auth()->user()->role == 1 || auth()->user()->role == 100;
         });
 
         Gate::define('usuarios', function ($user){

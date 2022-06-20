@@ -292,7 +292,7 @@ return [
         [
             'text'      => 'E-commerce',
             'icon'      => 'fas fa-fw fa-store',
-            'can'       => 'prueba',
+            'can'       => 'ecommerce',
             'submenu' => [
                 [
                     'text' => 'Productos',
@@ -304,7 +304,7 @@ return [
                     'text' => 'Categorias',
                     'icon' => 'fas fa-fw fa-tags',
                     'route'  => 'categorias.index',
-                    'can'  => 'prueba',
+                    'can'  => 'categorias',
                 ],
                 [
                     'text' => 'Delivery',

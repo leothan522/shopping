@@ -5,12 +5,11 @@
             <div class="card-header">
                 <h3 class="card-title">Tiendas</h3>
                 <div class="card-tools">
-
-                    <button type="button" class="btn btn-tool"
-                            @if(leerJson(Auth::user()->permisos, 'empresas.create')|| Auth::user()->role == 1 || Auth::user()->role == 100) @else disabled @endif
-                            wire:click="create">
-                        <i class="fas fa-plus-square"></i>
-                    </button>
+                    @if(leerJson(Auth::user()->permisos, 'empresas.create') || Auth::user()->role == 1 || Auth::user()->role == 100)
+                        <button type="button" class="btn btn-tool" wire:click="create">
+                            <i class="fas fa-plus-square"></i>
+                        </button>
+                    @endif
 
                     {{--<button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i>
                     </button>--}}
@@ -24,6 +23,11 @@
 
             </div>
             <!-- /.card-body -->
+            <div class="overlay-wrapper" wire:loading>
+                <div class="overlay">
+                    <i class="fas fa-2x fa-sync-alt"></i>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -35,14 +39,6 @@
                 <div class="card-tools">
                     {{--<button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i>
                     </button>--}}
-                    {{--@if(leerJson(Auth::user()->permisos, 'stores.horario') || Auth::user()->role == 100)
-                        <div class="custom-control custom-switch custom-switch-on-success float-right">
-                            <input type="checkbox" wire:click="horarios({{ $horarios }})"
-                                   @if($horarios) checked @endif
-                                   class="custom-control-input" id="customSwitchHours">
-                            <label class="custom-control-label" for="customSwitchHours"></label>
-                        </div>
-                    @endif--}}
                 </div>
                 <!-- /.card-tools -->
             </div>
@@ -59,6 +55,13 @@
 
             <!-- /.card-body -->
             </div>
+            @if($view != 'horario')
+                <div class="overlay-wrapper" wire:loading>
+                    <div class="overlay">
+                        <i class="fas fa-2x fa-sync-alt"></i>
+                    </div>
+                </div>
+            @endif
 
         </div>
     </div>

@@ -38,6 +38,11 @@ class SearchController extends Controller
             return redirect()->route('clientes.index', $keyword);
         }
 
+        if (strpos($route, '/dashboard/categorias') !== false){
+            //verSweetAlert2("Resultados encontrados", 'toast');
+            return redirect()->route('categorias.index', $keyword);
+        }
+
         //en caso de no encontrar ninguna ruta
         verSweetAlert2("Opcion no encontrada", 'toast');
         return back();

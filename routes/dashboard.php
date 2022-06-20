@@ -37,8 +37,10 @@ Route::middleware(['auth', 'isadmin', 'estatus', 'permisos'])->prefix('/dashboar
     Route::get('usuarios/{usuario?}', [UsersController::class, 'index'])->name('usuarios.index');
     Route::get('export/usuarios/{buscar?}', [UsersController::class, 'export'])->name('usuarios.excel');
     Route::get('pdf/usuarios', [UsersController::class, 'createPDF'])->name('usuarios.pdf');
-
     Route::get('empresas', [EmpresasController::class, 'index'])->name('empresas.index');
+    Route::get('categorias/{categoria?}', [CategoriasController::class, 'index'])->name('categorias.index');
+
+    //pendientes
 
     Route::get('pedidos', [PedidosController::class, 'index'])->name('pedidos.index');
     Route::get('clientes', [ClientesController::class, 'index'])->name('clientes.index');
@@ -46,7 +48,7 @@ Route::middleware(['auth', 'isadmin', 'estatus', 'permisos'])->prefix('/dashboar
     Route::get('stock', [StockController::class, 'index'])->name('stock.index');
     Route::get('almacen', [AlmacenController::class, 'index'])->name('almacen.index');
     Route::get('productos', [ProductosController::class, 'index'])->name('productos.index');
-    Route::get('categorias', [CategoriasController::class, 'index'])->name('categorias.index');
+
     Route::get('delivery', [DeliveryController::class, 'index'])->name('delivery.index');
 
 

@@ -4,6 +4,12 @@
 </button>
 --}}
 
+{{--<div class="overlay-wrapper" wire:loading>
+    <div class="overlay">
+        <i class="fas fa-2x fa-sync-alt"></i>
+    </div>
+</div>--}}
+
 <div wire:ignore.self class="modal fade" id="modal-lg">
     <div class="modal-dialog modal-lg">
         <div class="modal-content fondo">
