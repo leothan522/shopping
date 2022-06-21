@@ -110,6 +110,9 @@
                     <div class="col-md-4">
                         @include('dashboard.usuarios.roles.productos')
                     </div>
+                    <div class="col-md-4">
+                        @include('dashboard.usuarios.roles.almacen')
+                    </div>
                 </div>
                     @else
                     Seleccione un Rol ó cree uno nuevo.

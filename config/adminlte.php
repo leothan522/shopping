@@ -285,7 +285,7 @@ return [
                     'text' => 'Almacen',
                     'icon' => 'fas fa-fw fa-warehouse',
                     'route'  => 'almacen.index',
-                    'can'  => 'prueba',
+                    'can'  => 'almacen',
                 ]
             ],
         ],

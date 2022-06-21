@@ -26,6 +26,9 @@
                     <div class="col-md-4">
                         @include('dashboard.usuarios.permisos.productos')
                     </div>
+                    <div class="col-md-4">
+                        @include('dashboard.usuarios.permisos.almacen')
+                    </div>
                 </div>
 
 
