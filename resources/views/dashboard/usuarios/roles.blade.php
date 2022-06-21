@@ -102,6 +102,9 @@
                         @include('dashboard.usuarios.roles.empresas')
                     </div>
                     <div class="col-md-4">
+                        @include('dashboard.usuarios.roles.delivery')
+                    </div>
+                    <div class="col-md-4">
                         @include('dashboard.usuarios.roles.categorias')
                     </div>
                     <div class="col-md-4">

@@ -310,7 +310,7 @@ return [
                     'text' => 'Delivery',
                     'icon' => 'fas fa-fw fa-shipping-fast',
                     'route' => 'delivery.index',
-                    'can' => 'prueba',
+                    'can' => 'delivery',
                 ],
                 [
                     'text' => 'Tiendas',

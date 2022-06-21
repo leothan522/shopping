@@ -2,48 +2,40 @@
     <table class="table table-hover bg-light">
         <thead class="thead-dark">
         <tr>
-            <th scope="col" class="text-center">ID</th>
-            <th scope="col">C.I./Pasaporte </th>
-            <th scope="col">Nombre Completo</th>
-            <th scope="col" class="text-center">Sexo</th>
-            <th scope="col" class="text-center">País</th>
-            <th scope="col" class="text-center">Edad</th>
+            <th scope="col">Zonas</th>
+            <th scope="col" class="text-right">Precio</th>
             <th scope="col" style="width: 5%;">&nbsp;</th>
         </tr>
         </thead>
         <tbody>
-        {{--@if(!$listaAtletas->isEmpty())
-            @foreach($listaAtletas as $atleta)
-                <th scope="row" class="text-center">{{ $atleta->id }}</th>
-                <td>{{ $atleta->cedula }}</td>
-                <td>{{ strtoupper($atleta->primer_nombre." ".$atleta->segundo_nombre." ".$atleta->primer_apellido." ".$atleta->segundo_apellido) }}</td>
-                <td class="text-center">{{ $atleta->sexo }}</td>
-                <td class="text-center">{{ paises($atleta->pais) }}</td>
-                <td class="text-center">{{ calcularEdad($atleta->fecha_nac) }}</td>
-                <td class="justify-content-end">
+        {{--@if(!$productos->isEmpty())
+        @foreach($listarZonas as $zona)
+            <tr>
+                <td>{{ $zona->nombre }}</td>
+                <td class="text-right">{{ $zona->precio }}</td>
+                <td>
                     <div class="btn-group">
-                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-lg-datos-atletas" wire:click="verPlanilla({{ $atleta->id }})">
-                            <i class="fas fa-id-card"></i>
+                        <button type="button" class="btn btn-info btn-sm">
+                            <i class="fas fa-edit"></i>
                         </button>
-
-                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-lg-foto" wire:click="verFoto({{ $atleta->id }})">
-                            <i class="fas fa-image"></i>
+                        <button type="button" class="btn btn-info btn-sm">
+                            <i class="fas fa-trash-alt"></i>
                         </button>
-                </div>
-                </td>
-                </tr>
-            @endforeach
-        @else--}}
-            <tr class="text-center">
-                <td colspan="7">
-                    <a href="{{ route('administracion.atletas') }}">
-                            <span>
-                                Sin resultados para la busqueda <strong class="text-bold"> { <span class="text-danger">{{--{{ $busqueda }}--}}</span> }</strong>
-                            </span>
-                    </a>
+                    </div>
                 </td>
             </tr>
-       {{-- @endif--}}
+        @endforeach--}}
+        {{--@else
+        <tr class="text-center">
+            <td colspan="4">
+                <a href="{{ route('delivery.index') }}">
+                            <span>
+                                Sin resultados para la busqueda <strong class="text-bold"> { <span class="text-danger">--}}{{--{{ $busqueda }}--}}{{--</span> }</strong>
+                            </span>
+                </a>
+            </td>
+        </tr>--}}
+        {{-- @endif--}}
         </tbody>
     </table>
 </div>

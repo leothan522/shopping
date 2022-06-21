@@ -40,6 +40,7 @@ Route::middleware(['auth', 'isadmin', 'estatus', 'permisos'])->prefix('/dashboar
     Route::get('empresas', [EmpresasController::class, 'index'])->name('empresas.index');
     Route::get('categorias/{categoria?}', [CategoriasController::class, 'index'])->name('categorias.index');
     Route::get('productos/{producto?}', [ProductosController::class, 'index'])->name('productos.index');
+    Route::get('delivery/{buscar?}', [DeliveryController::class, 'index'])->name('delivery.index');
 
     //pendientes
 
@@ -50,7 +51,7 @@ Route::middleware(['auth', 'isadmin', 'estatus', 'permisos'])->prefix('/dashboar
     Route::get('almacen', [AlmacenController::class, 'index'])->name('almacen.index');
 
 
-    Route::get('delivery', [DeliveryController::class, 'index'])->name('delivery.index');
+
 
 
 });

@@ -48,6 +48,11 @@ class SearchController extends Controller
             return redirect()->route('productos.index', $keyword);
         }
 
+        if (strpos($route, '/dashboard/delivery') !== false){
+            //verSweetAlert2("Resultados encontrados", 'toast');
+            return redirect()->route('delivery.index', $keyword);
+        }
+
         //en caso de no encontrar ninguna ruta
         verSweetAlert2("Opcion no encontrada", 'toast');
         return back();

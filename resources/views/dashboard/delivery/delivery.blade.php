@@ -15,6 +15,7 @@
                 <ol class="breadcrumb float-sm-right">
                     {{--<li class="breadcrumb-item"><a href="#">Home</a></li>--}}
                     <li class="breadcrumb-item active">Zonas Registradas</li>
+                    <li class="breadcrumb-item active">Mensajeros Registrados</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -22,7 +23,7 @@
 @endsection
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
+    @livewire('delivery-component')
 @endsection
 
 @section('footer')

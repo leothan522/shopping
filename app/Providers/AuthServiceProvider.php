@@ -31,6 +31,7 @@ class AuthServiceProvider extends ServiceProvider
             return leerJson(auth()->user()->permisos, 'categorias.index') == true ||
                 leerJson(auth()->user()->permisos, 'empresas.index') == true ||
                 leerJson(auth()->user()->permisos, 'productos.index') == true ||
+                leerJson(auth()->user()->permisos, 'delivery.index') == true ||
                 auth()->user()->role == 1 || auth()->user()->role == 100;
         });
 
@@ -40,6 +41,11 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('categorias', function ($user){
             return leerJson(auth()->user()->permisos, 'categorias.index') == true || auth()->user()->role == 1 || auth()->user()->role == 100;
+        });
+
+        Gate::define('delivery', function ($user){
+            return leerJson(auth()->user()->permisos, 'delivery.index') == true ||
+                auth()->user()->role == 1 || auth()->user()->role == 100;
         });
 
         Gate::define('empresas', function ($user){
