@@ -105,6 +105,11 @@ class ProductosComponent extends Component
         $producto->individual = intval($this->individual);
 
         $producto->save();
+        $categoria = Categoria::find($producto->categorias_id);
+        $sumar = $categoria->num_productos + 1;
+        $categoria->num_productos = $sumar;
+        $categoria->update();
+
         $this->edit($producto->id);
         $this->alert(
             'success',
@@ -159,6 +164,8 @@ class ProductosComponent extends Component
     {
         $this->validate();
         $producto = Producto::find($id);
+        $categoria_anterior = $producto->categorias_id;
+
         $producto->nombre = strtoupper($this->nombre);
         $producto->categorias_id = $this->categoria;
 
@@ -189,6 +196,18 @@ class ProductosComponent extends Component
         $producto->impuesto = intval($this->impuesto);
         $producto->individual = intval($this->individual);
         $producto->update();
+
+        if ($categoria_anterior != $producto->categorias_id){
+            $categoria = Categoria::find($categoria_anterior);
+            $restar = $categoria->num_productos - 1;
+            $categoria->num_productos = $restar;
+            $categoria->update();
+            $categoria = Categoria::find($producto->categorias_id);
+            $sumar = $categoria->num_productos + 1;
+            $categoria->num_productos = $sumar;
+            $categoria->update();
+        }
+
         $this->edit($producto->id);
         $this->alert(
             'success',
@@ -215,6 +234,10 @@ class ProductosComponent extends Component
     {
         // Example code inside confirmed callback
         $parametro = Producto::find($this->producto_id);
+        $categoria = Categoria::find($parametro->categorias_id);
+        $restar = $categoria->num_productos - 1;
+        $categoria->num_productos = $restar;
+        $categoria->update();
         $parametro->delete();
         $this->alert(
             'success',
