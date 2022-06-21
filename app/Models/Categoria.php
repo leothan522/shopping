@@ -22,4 +22,9 @@ class Categoria extends Model
         return $query->where('nombre', 'LIKE', "%$keyword%");
     }
 
+    public function productos()
+    {
+        return $this->hasMany(Producto::class, 'categorias_id', 'id');
+    }
+
 }

@@ -30,7 +30,12 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('ecommerce', function ($user){
             return leerJson(auth()->user()->permisos, 'categorias.index') == true ||
                 leerJson(auth()->user()->permisos, 'empresas.index') == true ||
+                leerJson(auth()->user()->permisos, 'productos.index') == true ||
                 auth()->user()->role == 1 || auth()->user()->role == 100;
+        });
+
+        Gate::define('productos', function ($user){
+            return leerJson(auth()->user()->permisos, 'productos.index') == true || auth()->user()->role == 1 || auth()->user()->role == 100;
         });
 
         Gate::define('categorias', function ($user){
