@@ -41,7 +41,7 @@
         @if($count_tran)
             @include('dashboard.metodos.table_transferencias')
         @else
-            Debes crear un nuevo Almacen.
+            Debes crear una nueva Cuenta.
         @endif
         @include('dashboard.metodos.modal_transferencias')
     </div>
