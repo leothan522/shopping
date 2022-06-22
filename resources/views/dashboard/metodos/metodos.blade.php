@@ -22,7 +22,7 @@
 @endsection
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
+    @livewire('metodos-component')
 @endsection
 
 @section('footer')

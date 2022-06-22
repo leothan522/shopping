@@ -113,6 +113,9 @@
                     <div class="col-md-4">
                         @include('dashboard.usuarios.roles.almacen')
                     </div>
+                    <div class="col-md-4">
+                        @include('dashboard.usuarios.roles.metodos')
+                    </div>
                 </div>
                     @else
                     Seleccione un Rol ó cree uno nuevo.

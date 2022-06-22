@@ -28,6 +28,15 @@ class AuthServiceProvider extends ServiceProvider
         //Muetra en el sidebar los botones segun el permiso
 
 
+        Gate::define('metodos', function ($user){
+            return leerJson(auth()->user()->permisos, 'metodos.index') == true || auth()->user()->role == 1 || auth()->user()->role == 100;
+        });
+
+        Gate::define('inventario', function ($user){
+            return leerJson(auth()->user()->permisos, 'almacen.index') == true ||
+                auth()->user()->role == 1 || auth()->user()->role == 100;
+        });
+
         Gate::define('almacen', function ($user){
             return leerJson(auth()->user()->permisos, 'almacen.index') == true || auth()->user()->role == 1 || auth()->user()->role == 100;
         });

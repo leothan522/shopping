@@ -266,14 +266,14 @@ return [
                     'text' => 'Metodos de Pago',
                     'icon' => 'fas fa-fw fa-money-check-alt',
                     'route'  => 'metodos.index',
-                    'can'  => 'prueba',
+                    'can'  => 'metodos',
                 ]
             ],
         ],
         [
             'text'      => 'Inventario',
             'icon'      => 'fas fa-fw fa-cubes',
-            'can'       => 'prueba',
+            'can'       => 'inventario',
             'submenu' => [
                 [
                     'text' => 'Stock',

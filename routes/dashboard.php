@@ -42,12 +42,12 @@ Route::middleware(['auth', 'isadmin', 'estatus', 'permisos'])->prefix('/dashboar
     Route::get('productos/{producto?}', [ProductosController::class, 'index'])->name('productos.index');
     Route::get('delivery/{buscar?}', [DeliveryController::class, 'index'])->name('delivery.index');
     Route::get('almacen/{buscar?}', [AlmacenController::class, 'index'])->name('almacen.index');
+    Route::get('metodos', [MetodosController::class, 'index'])->name('metodos.index');
 
     //pendientes
 
     Route::get('pedidos', [PedidosController::class, 'index'])->name('pedidos.index');
     Route::get('clientes', [ClientesController::class, 'index'])->name('clientes.index');
-    Route::get('metodos', [MetodosController::class, 'index'])->name('metodos.index');
     Route::get('stock', [StockController::class, 'index'])->name('stock.index');
 
 
