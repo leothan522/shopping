@@ -116,6 +116,9 @@
                     <div class="col-md-4">
                         @include('dashboard.usuarios.roles.metodos')
                     </div>
+                    <div class="col-md-4">
+                        @include('dashboard.usuarios.roles.stock')
+                    </div>
                 </div>
                     @else
                     Seleccione un Rol ó cree uno nuevo.

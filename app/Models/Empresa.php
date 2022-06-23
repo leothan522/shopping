@@ -25,4 +25,9 @@ class Empresa extends Model
         return $this->belongsTo(User::class, 'empresas_id', 'id');
     }
 
+    public function stock()
+    {
+        return $this->hasMany(Stock::class, 'empresas_id', 'id');
+    }
+
 }

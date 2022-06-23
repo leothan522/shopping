@@ -1,6 +1,7 @@
 @extends('adminlte::page')
 
 @section('plugins.Sweetalert2', true)
+@section('plugins.Select2', true)
 @section('plugins.Pace', true)
 
 @section('title', 'Dashboard')
@@ -22,7 +23,7 @@
 @endsection
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
+    @livewire('stock-component')
 @endsection
 
 @section('footer')

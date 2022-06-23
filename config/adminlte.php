@@ -279,7 +279,7 @@ return [
                     'text' => 'Stock',
                     'icon' => 'fas fa-fw fa-boxes',
                     'route'  => 'stock.index',
-                    'can'  => 'prueba',
+                    'can'  => 'stock',
                 ],
                 [
                     'text' => 'Almacen',

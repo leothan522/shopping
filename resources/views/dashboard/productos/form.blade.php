@@ -217,7 +217,7 @@
                         <span class="input-group-text"><i class="fas fa-coins"></i></span>
                     </div>
                     <select class="custom-select" wire:model.defer="impuesto">
-                        <option value="1">I.V.A. (16%)</option>
+                        <option value="1">I.V.A. ({{ calcularIVA(null, null, null, true) }}%)</option>
                         <option value="0">Excento</option>
                     </select>
                     @error('impuesto')

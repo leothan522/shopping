@@ -43,4 +43,9 @@ class Producto extends Model
             ->orWhere('referencia', 'LIKE', "%$keyword%");
     }
 
+    public function stock()
+    {
+        return $this->hasMany(Stock::class, 'productos_id', 'id');
+    }
+
 }

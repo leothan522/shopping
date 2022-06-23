@@ -19,5 +19,10 @@ class Almacen extends Model
         return $query->where('nombre', 'LIKE', "%$keyword%");
     }
 
+    public function stock()
+    {
+        return $this->hasMany(Stock::class, 'almacenes_id', 'id');
+    }
+
 
 }

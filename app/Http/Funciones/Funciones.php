@@ -2,6 +2,7 @@
 //Funciones Personalizadas para el Proyecto
 
 use App\Models\Parametro;
+use App\Models\Producto;
 use Carbon\Carbon;
 use Intervention\Image\Facades\Image;
 
@@ -305,5 +306,39 @@ function crearMiniaturas($data, $path, $width = 320, $height = 320)
     $img = Image::make($data);
     $img->resize($width, $height);
     $img->save($path);
+}
+
+function calcularIVA($id, $pvp, $iva = false, $label = false)
+{
+    $resultado = 0;
+    //puedes después cambiarlo a 16% si así lo requieres
+    $valor_iva = 16;
+    $monto_total = $pvp;
+
+    $parametro = Parametro::where('nombre', 'iva')->first();
+    if ($parametro){
+        $valor_iva = $parametro->valor;
+    }
+    if ($label){
+        return $valor_iva;
+    }
+    $producto = Producto::find($id);
+    if ($producto->impuesto == 1){
+        if ($iva){
+            $resultado = ( $monto_total * ( $valor_iva / 100 ) );
+        }else{
+            $resultado = ( $monto_total ) + ( $monto_total * ( $valor_iva / 100 ) );
+        }
+    }else{
+        if ($iva){
+            $resultado = 0;
+        }else{
+            $resultado = $monto_total;
+        }
+    }
+
+    //En caso de que quieras redondear a dos decimales, te recomiendo usar la función number_format
+    $resultado = number_format($resultado, 2, '.', false);
+    return $resultado;
 }
 

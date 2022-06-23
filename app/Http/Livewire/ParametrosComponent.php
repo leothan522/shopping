@@ -44,7 +44,7 @@ class ParametrosComponent extends Component
     public function store()
     {
         $rules = [
-            'nombre' => ['required', 'min:4', 'alpha_dash', Rule::unique('parametros')],
+            'nombre' => ['required', 'min:3', 'alpha_dash', Rule::unique('parametros')],
             'tabla_id' => 'nullable|integer'
         ];
         $this->validate($rules);
@@ -77,7 +77,7 @@ class ParametrosComponent extends Component
     public function update($id)
     {
         $rules = [
-            'nombre' => ['required', 'min:4', 'alpha_dash', Rule::unique('parametros', 'nombre')->ignore($id)],
+            'nombre' => ['required', 'min:3', 'alpha_dash', Rule::unique('parametros', 'nombre')->ignore($id)],
             'tabla_id' => 'nullable|integer'
         ];
         $this->validate($rules);

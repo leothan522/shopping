@@ -1,8 +1,8 @@
-<div wire:ignore.self class="modal fade" id="modal-lg-producto">
+<div wire:ignore.self class="modal fade" id="modal-lg-show">
     <div class="modal-dialog modal-lg">
         <div class="modal-content fondo">
             <div class="modal-header">
-                <h4 class="modal-title">Producto ID: <span class="text-bold">{{ $producto_id_show }}</span></h4>
+                <h4 class="modal-title">Tienda: <span class="text-bold">{{ $empresa_nombre }}</span></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -23,6 +23,9 @@
                                 <div class="col-12">
                                     <img src="{{ asset(verImg($imagen_show)) }}" class="product-image img-thumbnail" alt="Product Image">
                                 </div>
+                                <div class="col-12 mt-3">
+                                    <label><span class="text-muted">ID:</span> <span class="text-bold">{{ $stock_id }}</span></label>
+                                </div>
                                 {{--<div class="col-12 product-image-thumbs">
                                     <div class="product-image-thumb active"><img src="../../dist/img/prod-1.jpg" alt="Product Image"></div>
                                     <div class="product-image-thumb"><img src="../../dist/img/prod-2.jpg" alt="Product Image"></div>
@@ -33,9 +36,10 @@
                             <div class="col-12 col-sm-6">
                                 <h3 class="my-3">{{ $nombre_show }}</h3>
                                 <label class="col-md-12"><span class="text-muted">Categoria:</span> {{ $categoria_show }}</label>
+                                <label class="col-md-12"><span class="text-muted">Almacen:</span> {{ $almacen_show }}</label>
 
                                 <hr>
-                                <label class="col-md-12"><span class="text-muted">SKU:</span> {{ $sku_show }}</label>
+                                {{--<label class="col-md-12"><span class="text-muted">SKU:</span> {{ $sku_show }}</label>
                                 <p class="col-md-12 text-justify">
                                     <span class="text-muted text-bold">Descripcion:</span>
                                     {{ $descripcion_show }}
@@ -43,13 +47,15 @@
                                 <label class="col-md-12"><span class="text-muted">Marca:</span> {{ $marca_show }}</label>
                                 <label class="col-md-12"><span class="text-muted">Modelo:</span> {{ $modelo_show }}</label>
                                 <label class="col-md-12"><span class="text-muted">Referencia:</span> {{ $referencia_show }}</label>
-                                <label class="col-md-12"><span class="text-muted">Unidad:</span> {{ $unidad_show }}</label>
+                                <label class="col-md-12"><span class="text-muted">Unidad:</span> {{ $unidad_show }}</label>--}}
                                 <label class="col-md-12">
                                     <span class="text-muted">Existencias:</span>
                                     @if($decimales_show)
                                         Decimales
+                                        @php($dec_show = 2)
                                     @else
                                         Entero
+                                        @php($dec_show = 0)
                                     @endif
                                 </label>
                                 <label class="col-md-12">
@@ -61,28 +67,28 @@
                                     @endif
                                 </label>
                                 <label class="col-md-12">
+                                    <span class="text-muted">Estatus:</span>&nbsp;
+                                    @if($estatus_show)
+                                        <i class="fas fa-globe text-success"></i> Publicado
+                                    @else
+                                        <i class="fas fa-eraser text-muted"></i> Borrador
+                                    @endif
+                                </label>
+                                {{--<label class="col-md-12">
                                     <span class="text-muted">Venta Individual:</span>
                                     @if($individual_show)
                                         Vendido Individualmente
                                     @else
                                         NO APLICA
                                     @endif
-                                </label>
+                                </label>--}}
 
-                                {{--<div class="mt-4 product-share">
-                                    <a href="#" class="text-gray">
-                                        <i class="fab fa-facebook-square fa-2x"></i>
-                                    </a>
-                                    <a href="#" class="text-gray">
-                                        <i class="fab fa-twitter-square fa-2x"></i>
-                                    </a>
-                                    <a href="#" class="text-gray">
-                                        <i class="fas fa-envelope-square fa-2x"></i>
-                                    </a>
-                                    <a href="#" class="text-gray">
-                                        <i class="fas fa-rss-square fa-2x"></i>
-                                    </a>
-                                </div>--}}
+                                <hr>
+
+                                <label class="col-md-12"><span class="text-muted">Stock Actual:</span> {{ formatoMillares($stock_acual_show, $dec_show) }}</label>
+                                <label class="col-md-12"><span class="text-muted">Stock Disponible:</span> {{ formatoMillares($stock_disponible_show, $dec_show) }}</label>
+                                <label class="col-md-12"><span class="text-muted">Stock Comprometido:</span> {{ formatoMillares($stock_comprometido_show, $dec_show) }}</label>
+
 
                             </div>
                         </div>

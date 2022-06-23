@@ -34,7 +34,12 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('inventario', function ($user){
             return leerJson(auth()->user()->permisos, 'almacen.index') == true ||
-                auth()->user()->role == 1 || auth()->user()->role == 100;
+                    leerJson(auth()->user()->permisos, 'stock.index') == true ||
+                    auth()->user()->role == 1 || auth()->user()->role == 100;
+        });
+
+        Gate::define('stock', function ($user){
+            return leerJson(auth()->user()->permisos, 'stock.index') == true || auth()->user()->role == 1 || auth()->user()->role == 100;
         });
 
         Gate::define('almacen', function ($user){

@@ -31,7 +31,7 @@
             <td class="text-center">{{ $producto->categoria->nombre }}</td>
             <td class="text-center">
                 @if($producto->impuesto)
-                    <span class="text-sm text-info">I.V.A. 16%</span>
+                    <span class="text-sm text-info">I.V.A. {{ calcularIVA(null, null, null, true) }}%</span>
                     @else
                     <span class="text-sm text-muted">Exento</span>
                 @endif
