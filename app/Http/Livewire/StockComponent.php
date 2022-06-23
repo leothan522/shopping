@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Ajuste;
 use App\Models\Almacen;
 use App\Models\Empresa;
 use App\Models\Producto;
@@ -31,6 +32,8 @@ class StockComponent extends Component
     public $stock_id, $producto, $almacen_id, $moneda, $existe, $pvp, $estatus;
     public $nombre_show, $categoria_show, $sku_show, $decimales_show, $impuesto_show, $individual_show, $imagen_show,
             $almacen_show, $stock_acual_show, $stock_disponible_show, $stock_comprometido_show, $estatus_show;
+    public $ajuste, $lista, $cantidad, $listarProd = [], $listarAjustes = [], $decimales_ajuste, $icono = 'create',
+            $ajuste_id, $max, $step, $min;
 
     public function mount(Request $request)
     {
@@ -62,12 +65,15 @@ class StockComponent extends Component
         $this->pvp = null;
         $this->estatus = null;
         $this->view = 'create';
+        $this->lista = null;
+        $this->cantidad = null;
+        $this->icono = 'create';
     }
 
     public function verDefault()
     {
         $user = User::find(Auth::id());
-        if (!is_null($user->empresas_id)){
+        if (!is_null($user->empresas_id) && $user->role != 1 && $user->role != 100){
             $this->empresa_id = $user->empresas_id;
             $this->empresa_nombre = $user->empresa->nombre;
             $this->moneda = $user->empresa->moneda;
@@ -216,6 +222,167 @@ class StockComponent extends Component
             'Stock Eliminado.'
         );
     }
+
+    public function verAjuste($tipo)
+    {
+        $this->limpiar();
+        $this->ajuste = $tipo;
+        $stock = Stock::where('empresas_id', $this->empresa_id)->orderBy('id', 'DESC')->get();
+        $stock->each(function ($stock){
+            $stock->nombre = $stock->producto->nombre;
+        });
+        //dd($stock);
+        $this->listarProd = $stock->pluck('nombre', 'id');
+
+        $this->listarAjustes = Ajuste::where('empresas_id', $this->empresa_id)
+                    ->where('tipo', $this->ajuste)
+                    ->where('band', 0)->get();
+    }
+
+    public function updatedLista()
+    {
+        if ($this->lista){
+
+            $stock = Stock::find($this->lista);
+
+            if ($stock->producto->decimales){
+                $this->decimales_ajuste = true;
+                $this->step = .01;
+            }else{
+                $this->decimales_ajuste = false;
+                $this->step = 1;
+            }
+            if ($this->ajuste == 'Salida'){
+                $this->max = $stock->stock_disponible;
+            }else{
+                $this->max = null;
+            }
+
+            $this->cantidad = null;
+
+        }
+
+    }
+
+    public function rulesAjustes()
+    {
+        return [
+            'lista'      =>  'required',
+            'cantidad'    =>  'required',
+        ];
+    }
+
+    protected $messagesAjustes = [
+        'lista.required' => 'El campo Stock es obligatorio.',
+        'cantidad.required' => 'obligatorio.',
+    ];
+
+    public function storeAjustes()
+    {
+        $this->validate($this->rulesAjustes(), $this->messagesAjustes);
+        $ajuste = new Ajuste();
+        $ajuste->tipo = $this->ajuste;
+        $ajuste->empresas_id = $this->empresa_id;
+        $ajuste->stock_id = $this->lista;
+        if ($this->decimales_ajuste){
+            $ajuste->cantidad = $this->cantidad;
+        }else{
+            $ajuste->cantidad = intval($this->cantidad);
+        }
+        $ajuste->save();
+        $this->verAjuste($this->ajuste);
+    }
+
+    public function editAjuste($id)
+    {
+        $ajuste = Ajuste::find($id);
+        $stock = Stock::find($ajuste->stock_id);
+        if ($stock->producto->decimales){
+            $this->cantidad = $ajuste->cantidad;
+            $this->decimales_ajuste = true;
+            $this->step = .01;
+        }else{
+            $this->cantidad = intval($ajuste->cantidad);
+            $this->decimales_ajuste = false;
+            $this->step = 1;
+        }
+        if ($this->ajuste == 'Salida'){
+            $this->max = $stock->stock_disponible;
+        }else{
+            $this->max = null;
+        }
+        $this->lista = $ajuste->stock_id;
+        $this->ajuste_id = $ajuste->id;
+        $this->icono = 'edit';
+    }
+
+    public function updateAjuste($id)
+    {
+        $ajuste = Ajuste::find($id);
+        $ajuste->tipo = $this->ajuste;
+        $ajuste->empresas_id = $this->empresa_id;
+        $ajuste->stock_id = $this->lista;
+        if ($this->decimales_ajuste){
+            $ajuste->cantidad = $this->cantidad;
+        }else{
+            $ajuste->cantidad = intval($this->cantidad);
+        }
+        $ajuste->update();
+        $this->verAjuste($this->ajuste);
+    }
+
+    public function destroyAjuste($id)
+    {
+        $ajuste = Ajuste::find($id);
+        $ajuste->delete();
+        $this->verAjuste($this->ajuste);
+    }
+
+    public function totalizar()
+    {
+        $ajustes = Ajuste::where('empresas_id', $this->empresa_id)
+            ->where('tipo', $this->ajuste)
+            ->where('band', 0)->get();
+
+        $ajustes->each(function ($ajuste){
+            $stock = Stock::find($ajuste->stock_id);
+            $valor = $stock->stock_disponible;
+            if ($this->ajuste == 'Entrada'){
+                $cant = $stock->stock_disponible + $ajuste->cantidad;
+            }else{
+                $cant = $stock->stock_disponible - $ajuste->cantidad;
+                if ($cant < 0){
+                    $cant = 0;
+                }
+            }
+
+            $stock->stock_disponible = $cant;
+            $stock->update();
+            $item = Ajuste::find($ajuste->id);
+            if ($cant == 0){
+                $item->cantidad = $valor;
+            }
+            $item->band = 1;
+            $item->update();
+        });
+
+        $this->verAjuste($this->ajuste);
+
+        $this->alert(
+            'success',
+            'Cargado al Inventario.'
+        );
+    }
+
+
+    public function actualizar($id)
+    {
+        $empresa = Empresa::find($id);
+        $this->empresa_id = $empresa->id;
+        $this->empresa_nombre = $empresa->nombre;
+    }
+
+
 
 
 }

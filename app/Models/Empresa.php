@@ -30,4 +30,9 @@ class Empresa extends Model
         return $this->hasMany(Stock::class, 'empresas_id', 'id');
     }
 
+    public function ajustes()
+    {
+        return $this->hasMany(Ajuste::class, 'empresas_id', 'id');
+    }
+
 }

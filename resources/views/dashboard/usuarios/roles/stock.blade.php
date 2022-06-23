@@ -39,6 +39,15 @@
                     <label class="custom-control-label" for="customSwitchRolesstock3"></label>
                 </div>
             </li>
+            <li class="list-group-item">
+                [Entrada|Salida] Stock
+                <div class="custom-control custom-switch custom-switch-on-success float-right">
+                    <input type="checkbox" wire:click="update_roles({{ $rol_id }}, 'stock.ajustes')"
+                           @if(leerJson($roles_permisos, 'stock.ajustes')) checked @endif
+                           class="custom-control-input" id="customSwitchRolesstockAs3">
+                    <label class="custom-control-label" for="customSwitchRolesstockAs3"></label>
+                </div>
+            </li>
             {{--<li class="list-group-item">
                 [Exportar|Excel] stock
                 <div class="custom-control custom-switch custom-switch-on-success float-right">

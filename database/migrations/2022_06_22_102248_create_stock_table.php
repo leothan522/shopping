@@ -18,8 +18,8 @@ class CreateStockTable extends Migration
             $table->bigInteger('empresas_id')->unsigned();
             $table->bigInteger('productos_id')->unsigned();
             $table->bigInteger('almacenes_id')->unsigned();
-            $table->string('moneda');
             $table->decimal('pvp', 12, 2);
+            $table->string('moneda');
             $table->decimal('stock_disponible', 12, 2)->nullable();
             $table->decimal('stock_comprometido', 12, 2)->nullable();
             $table->decimal('stock_vendido', 12, 2)->nullable();

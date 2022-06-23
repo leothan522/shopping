@@ -40,6 +40,11 @@ class Stock extends Model
         return $this->belongsTo(Almacen::class, 'almacenes_id', 'id');
     }
 
+    public function ajustes()
+    {
+        return $this->hasMany(Ajuste::class, 'stock_id', 'id');
+    }
+
     public function scopeBuscar($query, $keyword)
     {
         return $query->where('id', 'LIKE', "%$keyword%");

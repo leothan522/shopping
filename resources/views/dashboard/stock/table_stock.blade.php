@@ -10,7 +10,7 @@
                 <th class="text-right" style="width: 10%;">PVP</th>
                 <th class="text-right" style="width: 10%;">I.V.A. {{ calcularIVA(null, null, null, true) }}%</th>
                 <th class="text-right" style="width: 10%">Precio</th>
-                <th class="text-right" style="width: 10%;">Stock</th>
+                <th class="text-center" style="width: 10%;">Stock</th>
                 <th class="text-center" style="width: 10%;">Estatus</th>
                 <th style="width: 5%;"></th>
             </tr>
@@ -35,7 +35,8 @@
                     <td class="text-right">{{ $stock->moneda }} {{ calcularIVA($stock->productos_id, $stock->pvp) }}</td>
                     <td class="text-right">
                         @if($stock->producto->decimales) @php($dec = 2) @else @php($dec = 0) @endif
-                        {{ formatoMillares($stock->stock_disponible, $dec) }}
+                            <i class="fas fa-boxes float-left"></i>
+                            {{ formatoMillares($stock->stock_disponible, $dec) }}
                     </td>
                     <td class="text-center">
                         @if($stock->estatus)

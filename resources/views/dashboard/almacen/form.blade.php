@@ -5,7 +5,7 @@
         <label for="name">{{ __('Name') }}</label>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-map-marked-alt"></i></span>
+                <span class="input-group-text"><i class="fas fa-warehouse"></i></span>
             </div>
             <input type="text" class="form-control" wire:model.defer="nombre" placeholder="Nombre del almacen">
             @error('nombre')

@@ -47,6 +47,7 @@
                                 <i class="fas fa-plus-circle"></i> Stock
                             </button>
                         @endif
+
                         @if($busqueda)
                                 <a href="{{ route('stock.index') }}" class="btn btn-default btn-sm">
                                     <i class="fas fa-list"></i> Ver Todos
@@ -55,11 +56,28 @@
                         @endif
 
                         {{-- right--}}
-                        <button type="button" class="btn btn-default btn-sm float-right" style="margin-right: 5px;">
-                            <i class="fas fa-upload"></i> Salida
-                        </button>
-                        <button type="button" class="btn btn-default btn-sm float-right" style="margin-right: 5px;">
-                            <i class="fas fa-download"></i> Entrada
+                        @if(leerJson(Auth::user()->permisos, 'stock.ajustes') || Auth::user()->role == 1 || Auth::user()->role == 100)
+                            <button type="button" wire:click="verAjuste('Salida')"
+                                    data-toggle="modal" data-target="#modal-lg-ajustes"
+                                    class="btn btn-default btn-sm float-right" style="margin-right: 5px;">
+                                <i class="fas fa-upload"></i> Salida
+                            </button>
+                            <button type="button" wire:click="verAjuste('Entrada')"
+                                    data-toggle="modal" data-target="#modal-lg-ajustes"
+                                    class="btn btn-default btn-sm float-right" style="margin-right: 5px;">
+                                <i class="fas fa-download"></i> Entrada
+                            </button>
+                            @else
+                                <button type="button" class="btn btn-default btn-sm float-right disabled" style="margin-right: 5px;">
+                                    <i class="fas fa-upload"></i> Salida
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm float-right disabled" style="margin-right: 5px;">
+                                    <i class="fas fa-download"></i> Entrada
+                                </button>
+                        @endif
+                        <button type="button" wire:click="actualizar({{ $empresa_id }})"
+                                class="btn btn-default btn-sm float-right" style="margin-right: 5px;">
+                            <i class="fas fa-sync"></i> Actualizar
                         </button>
                     </div>
                 </div>
@@ -67,6 +85,7 @@
                 @include('dashboard.stock.table_stock')
                 @include('dashboard.stock.modal_stock')
                 @include('dashboard.stock.show')
+                @include('dashboard.stock.modal_ajustes')
 
             </div>
             <!-- /.invoice -->
