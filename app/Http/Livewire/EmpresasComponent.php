@@ -98,7 +98,10 @@ class EmpresasComponent extends Component
             //miniatura
             $nombre = explode('logo/', $empresa->logo);
             crearMiniaturas($empresa->logo, 'storage/logo/t_'.$nombre[1]);
+            crearMiniaturas($empresa->logo, 'storage/logo/b_'.$nombre[1], 570, 270);
             $this->logo = $empresa->logo;
+            $empresa->miniatura = 'storage/logo/t_'.$nombre[1];
+            $empresa->banner = 'storage/logo/b_'.$nombre[1];
         }
 
         $empresa->save();
@@ -155,14 +158,19 @@ class EmpresasComponent extends Component
         $empresa->moneda = $this->moneda;
 
         if ($this->photo){
-            $img = explode('logo/', $this->logo);
-            $miniatura = 'storage/logo/t_'.$img[1];
+            $img = explode('logo/t_', $this->logo);
             if ($this->borrarLogo){
-                if (file_exists($this->logo)){
-                    unlink($this->logo);
+                $logo = 'storage/logo/'.$img[1];
+                $miniatura = 'storage/logo/t_'.$img[1];
+                $banner = 'storage/logo/b_'.$img[1];
+                if (file_exists($logo)){
+                    unlink($logo);
                 }
                 if (file_exists($miniatura)){
                     unlink($miniatura);
+                }
+                if (file_exists($banner)){
+                    unlink($banner);
                 }
             }
 
@@ -171,11 +179,14 @@ class EmpresasComponent extends Component
             //miniatura
             $nombre = explode('logo/', $empresa->logo);
             crearMiniaturas($empresa->logo, 'storage/logo/t_'.$nombre[1]);
+            crearMiniaturas($empresa->logo, 'storage/logo/b_'.$nombre[1], 570, 270);
             $this->logo = $empresa->logo;
+            $empresa->miniatura = 'storage/logo/t_'.$nombre[1];
+            $empresa->banner = 'storage/logo/b_'.$nombre[1];
         }
 
         $empresa->update();
-
+        $this->show($empresa->id);
         $this->view = 'show';
 
         $this->alert(
@@ -226,6 +237,18 @@ class EmpresasComponent extends Component
         if (!is_null($parametro->logo)){
             if (file_exists($parametro->logo)){
                 unlink($parametro->logo);
+            }
+        }
+
+        if (!is_null($parametro->miniatura)){
+            if (file_exists($parametro->miniatura)){
+                unlink($parametro->miniatura);
+            }
+        }
+
+        if (!is_null($parametro->banner)){
+            if (file_exists($parametro->banner)){
+                unlink($parametro->banner);
             }
         }
 

@@ -18,6 +18,8 @@ class Producto extends Model
         'sku',
         'imagen',
         'miniatura',
+        'detail',
+        'cart',
         'descripcion',
         'marca',
         'modelo',

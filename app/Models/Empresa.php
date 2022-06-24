@@ -14,6 +14,8 @@ class Empresa extends Model
         'rif',
         'nombre',
         'logo',
+        'miniatura',
+        'banner',
         'direccion',
         'telefono',
         'email',

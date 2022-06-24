@@ -90,8 +90,14 @@ class ProductosComponent extends Component
             $producto->imagen = str_replace('public/', 'storage/', $ruta);
             $nombre = explode('productos/', $producto->imagen);
             $miniatura = 'storage/productos/t_'.$nombre[1];
+            $detail = 'storage/productos/d_'.$nombre[1];
+            $cart = 'storage/productos/c_'.$nombre[1];
             crearMiniaturas($producto->imagen, $miniatura);
+            crearMiniaturas($producto->imagen, $detail, 540, 560);
+            crearMiniaturas($producto->imagen, $cart, 101, 100);
             $producto->miniatura = $miniatura;
+            $producto->detail = $detail;
+            $producto->cart = $cart;
         }
 
         $producto->sku = $this->sku;
@@ -177,13 +183,25 @@ class ProductosComponent extends Component
             if (file_exists($producto->miniatura)){
                 unlink($producto->miniatura);
             }
+            if (file_exists($producto->detail)){
+                unlink($producto->detail);
+            }
+            if (file_exists($producto->cart)){
+                unlink($producto->cart);
+            }
 
             $ruta = $this->photo->store('public/productos');
             $producto->imagen = str_replace('public/', 'storage/', $ruta);
             $nombre = explode('productos/', $producto->imagen);
             $miniatura = 'storage/productos/t_'.$nombre[1];
+            $detail = 'storage/productos/d_'.$nombre[1];
+            $cart = 'storage/productos/c_'.$nombre[1];
             crearMiniaturas($producto->imagen, $miniatura);
+            crearMiniaturas($producto->imagen, $detail, 540, 560);
+            crearMiniaturas($producto->imagen, $cart, 101, 100);
             $producto->miniatura = $miniatura;
+            $producto->detail = $detail;
+            $producto->cart = $cart;
         }
 
         $producto->sku = $this->sku;

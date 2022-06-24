@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6 mb-3">
                 <div class="banner__pic">
-                    <img src="{{ asset('storage/categorias/t_X1fPjMNJkH3rMgZkNB1fKRlxPXezc00Lcg9ZlKuo.jpg') }}" alt="">
+                    <img src="{{ asset('storage/logo/b_NQbzhlhJid0CqmainjpCcY1fR4uMaAr0EAtsj4Jf.png') }}" alt="">
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 mb-3">
