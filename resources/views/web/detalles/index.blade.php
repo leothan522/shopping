@@ -3,7 +3,15 @@
 @section('title', 'Home')
 
 @section('content')
-    @include('web.detalles.destils')
+
+    @include('web.section_header')
+    @include('web.detalles.section_breadcrumb')
+    @include('web.detalles.details')
+    @include('web.detalles.related')
+    <a href="#">
+        @include('web.home.section_banner')
+    </a>
+
 
 @endsection
 
@@ -12,5 +20,6 @@
 @endsection
 
 @section('js')
-    <script type="text/javascript">console.log('Hi!');</script>
+    @include('web.funciones_ajax')
+    <script type="text/javascript">console.log('Hi!')</script>
 @endsection

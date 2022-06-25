@@ -22,6 +22,30 @@
     <link rel="stylesheet" href="{{ asset('vendor/ogani/css/owl.carousel.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('vendor/ogani/css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('vendor/ogani/css/style.css') }}" type="text/css">
+    <style type="text/css">
+        .fondo-favoritos{
+            background-color: rgb(127, 173, 57) !important;
+            color: #ffffff !important;
+            border-color: rgb(127, 173, 57) !important;
+        }
+
+        .num_carrito {
+            height: 13px;
+            width: 13px;
+            background: #7fad39;
+            font-size: 10px;
+            color: #ffffff;
+            line-height: 13px;
+            text-align: center;
+            font-weight: 700;
+            display: inline-block;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            right: -12px;
+            padding: 10px 0 24px;
+        }
+    </style>
     @yield('css')
 </head>
 

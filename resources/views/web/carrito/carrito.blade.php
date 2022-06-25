@@ -16,20 +16,49 @@
                             <th class="shoping__product">Productos</th>
                             {{--<th>Price</th>--}}
                             <th>Cantidad</th>
-                            <th>Total</th>
+                            <th>Sub Total</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+
+                        @foreach($listarCarrito as $carrito)
+                            <tr id="item_{{ $carrito->id }}">
+                            <td class="shoping__cart__item">
+                                <img src="{{ asset(verImg($carrito->stock->producto->cart)) }}" alt="">
+                                <small class="label text-xs">{{ $carrito->stock->producto->nombre }}</small>
+                                <p class="label text-xs">
+                                    {{ $carrito->stock->empresa->moneda }} {{ $carrito->precio }}
+                                </p>
+                            </td>
+                            <td class="shoping__cart__quantity">
+                                <div class="quantity">
+                                    <div class="pro-qty">
+                                        <input type="text" class="btn_editar_input" data-id-carrito="{{ $carrito->id }}" value="{{ formatoMillares($carrito->cantidad, 0) }}">
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="shoping__cart__total" id="carrito_item_{{ $carrito->id }}">
+                                {{ $carrito->stock->empresa->moneda }} {{ formatoMillares($carrito->item_total, 2) }}
+                            </td>
+                            <td class="shoping__cart__item__close">
+                                <span class="icon_close btn_remover"
+                                      data-id-carrito="{{ $carrito->id }}"
+                                      data-item="item_{{ $carrito->id }}"
+                                ></span>
+                            </td>
+                        </tr>
+                        @endforeach
+
+                        {{--<tr>
                             <td class="shoping__cart__item">
                                 <img src="{{ asset('storage/categorias/t_EuxpS4dNCDJcnax0qKT0oKYnylbRqd367yk6FcAf.png') }}" alt="">
                                 <small class="label text-xs">Vegetable’s Package</small>
                                 <p class="label text-xs">$69.00</p>
                             </td>
-                            {{--<td class="shoping__cart__price">
+                            --}}{{--<td class="shoping__cart__price">
                                 $55.00
-                            </td>--}}
+                            </td>--}}{{--
                             <td class="shoping__cart__quantity">
                                 <div class="quantity">
                                     <div class="pro-qty">
@@ -50,9 +79,9 @@
                                 <small class="label text-xs">Vegetable’s Package</small>
                                 <p class="label text-xs">$69.00</p>
                             </td>
-                            {{--<td class="shoping__cart__price">
+                            --}}{{--<td class="shoping__cart__price">
                                 $39.00
-                            </td>--}}
+                            </td>--}}{{--
                             <td class="shoping__cart__quantity">
                                 <div class="quantity">
                                     <div class="pro-qty">
@@ -73,9 +102,9 @@
                                 <small class="label text-xs">Vegetable’s Package</small>
                                 <p class="label text-xs">$69.00</p>
                             </td>
-                            {{--<td class="shoping__cart__price">
+                            --}}{{--<td class="shoping__cart__price">
                                 $69.00
-                            </td>--}}
+                            </td>--}}{{--
                             <td class="shoping__cart__quantity">
                                 <div class="quantity">
                                     <div class="pro-qty">
@@ -89,7 +118,7 @@
                             <td class="shoping__cart__item__close">
                                 <span class="icon_close"></span>
                             </td>
-                        </tr>
+                        </tr>--}}
                         </tbody>
                     </table>
                 </div>
@@ -100,8 +129,24 @@
                 <div class="shoping__checkout">
                     <h5>Cart Total</h5>
                     <ul>
-                        <li>Subtotal <span>$454.98</span></li>
-                        <li>Total <span>$454.98</span></li>
+                        <li>
+                            Subtotal
+                            <span id="carrito_subtotal" data-cantidad="{{ $subtotal }}">
+                                $ {{ formatoMillares($subtotal, 2) }}
+                            </span>
+                        </li>
+                        <li>
+                            I.V.A {{ calcularIVA(null, null, null, true) }}%
+                            <span id="carrito_iva" data-cantidad="{{ $iva }}">
+                                $ {{ formatoMillares($iva, 2) }}
+                            </span>
+                        </li>
+                        <li>
+                            Total
+                            <span id="carrito_total" data-cantidad="{{ $total }}">
+                                $ {{ formatoMillares($total, 2) }}
+                            </span>
+                        </li>
                     </ul>
                     <a href="#" class="primary-btn">FINALIZAR COMPRA</a>
                 </div>

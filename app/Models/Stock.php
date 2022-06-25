@@ -45,6 +45,11 @@ class Stock extends Model
         return $this->hasMany(Ajuste::class, 'stock_id', 'id');
     }
 
+    public function carrito()
+    {
+        return $this->hasMany(Carrito::class, 'stock_id', 'id');
+    }
+
     public function scopeBuscar($query, $keyword)
     {
         return $query->where('id', 'LIKE', "%$keyword%");

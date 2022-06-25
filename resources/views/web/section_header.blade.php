@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="header__logo">
-                    <a href="/"><img src="{{ asset('img/logo_letras.png') }}" alt=""></a>
+                    <a href="{{ route('shop.home', auth()->id()) }}"><img src="{{ asset('img/logo_letras.png') }}" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -15,18 +15,18 @@
                 <div class="header__cart">
                     <ul>
                         <li>
-                            <a href="#" class="btn_favoritos" content="1">
-                                <i class="fa fa-heart"></i> <span id="header_favoritos">1</span>
+                            <a href="#">
+                                <i class="fa fa-heart"></i> <span id="header_favoritos">{{ $headerFavoritos }}</span>
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="btn_carrito" content="2">
-                                <i class="fa fa-shopping-bag"></i> <span id="header_carrito">3</span>
+                            <a href="{{ route('shop.carrito', auth()->id()) }}">
+                                <i class="fa fa-shopping-bag"></i> <span id="header_carrito">{{ formatoMillares($headerItems, 0) }}</span>
                             </a>
                         </li>
                     </ul>
                     <div class="header__cart__price">
-                        item: <span id="header_item">$150.00</span>
+                        item: <span id="header_item">${{ formatoMillares($headerTotal) }}</span>
                     </div>
                 </div>
             </div>

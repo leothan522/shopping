@@ -9,10 +9,15 @@
         <li class="dropdown-divider"></li>--}}
         @livewire('dolar-component')
         <li class="dropdown-divider"></li>
-        {{--<li class="nav-item">
+        <li class="nav-item">
             <span class="text-small text-muted float-right">Web</span>
         </li>
-        <li class="dropdown-divider"></li>
+        <li class="nav-item">
+            <a href="{{ route('shop.home', auth()->id()) }}" class="nav-link" target="_blank">
+                <i class="fas fa-store-alt"></i> Home
+            </a>
+        </li>
+        {{--<li class="dropdown-divider"></li>
         <li class="nav-item">
             <a href="#" class="nav-link" target="_blank">
                 <i class="fas fa-sign-out-alt"></i> Salir

@@ -1,14 +1,30 @@
 @extends('layouts.ogani.master')
 
-@section('title', 'Home')
+@section('title', 'Android | Home')
 
 @section('content')
+
     @include('web.section_header')
     @include('web.home.section_hero')
-    @include('web.home.section_categories')
-    @include('web.home.section_featured')
-    @include('web.home.section_banner')
-    @include('web.home.section_latest')
+
+    @if($listarCategorias->isNotEmpty())
+        @include('web.home.section_categories')
+    @endif
+
+    @if($listarDestacados->isNotEmpty())
+        @include('web.home.section_featured')
+        @else
+        <br class="mt-3">
+    @endif
+
+    @if($listarBanner->isNotEmpty())
+        @include('web.home.section_banner')
+    @endif
+
+    @if($listarUltimos->isNotEmpty())
+        @include('web.home.section_latest')
+    @endif
+
     @include('web.home.section_contacto')
 @endsection
 

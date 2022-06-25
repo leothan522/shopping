@@ -95,5 +95,10 @@ class User extends Authenticatable
         return $this->hasOne(Empresa::class, 'id', 'empresas_id');
     }
 
+    public function carrito()
+    {
+        return $this->hasMany(Carrito::class, 'users_id', 'id');
+    }
+
 
 }
