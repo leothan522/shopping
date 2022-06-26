@@ -11,7 +11,13 @@
                             @if($i == 1)
                                 <div class="latest-prdouct__slider__item">
                             @endif
-                                <a href="{{ route('shop.detalles', $stock->id) }}" onclick="preSubmit()" class="latest-product__item">
+                                <a href="
+                                @if($ruta == 'android')
+                                {{ route('android.detalles', $stock->id) }}
+                                @else
+                                {{ route('web.detalles', $stock->id) }}
+                                @endif"
+                                   onclick="preSubmit()" class="latest-product__item">
                                     <div class="latest-product__item__pic img-thumbnail">
                                         <img src="{{ asset(verImg($stock->producto->miniatura)) }}" alt="">
                                     </div>
@@ -97,7 +103,12 @@
                             @if($i == 1)
                                 <div class="latest-prdouct__slider__item">
                                     @endif
-                                    <a href="{{ route('shop.detalles', $stock->id) }}" onclick="preSubmit()" class="latest-product__item">
+                                    <a href="
+                                    @if($ruta == 'android')
+                                    {{ route('android.detalles', $stock->id) }}
+                                    @else
+                                    {{ route('web.detalles', $stock->id) }}
+                                    @endif" onclick="preSubmit()" class="latest-product__item">
                                         <div class="latest-product__item__pic img-thumbnail">
                                             <img src="{{ asset(verImg($stock->producto->miniatura)) }}" alt="">
                                         </div>
@@ -183,14 +194,19 @@
                             @if($i == 1)
                                 <div class="latest-prdouct__slider__item">
                                     @endif
-                                    <a href="{{ route('shop.detalles', $stock->id) }}" onclick="preSubmit()" class="latest-product__item">
+                                    <a href="
+                                    @if($ruta == 'android')
+                                    {{ route('android.detalles', $stock->id) }}
+                                    @else
+                                    {{ route('web.detalles', $stock->id) }}
+                                    @endif" onclick="preSubmit()" class="latest-product__item">
                                         <div class="latest-product__item__pic img-thumbnail">
                                             <img src="{{ asset(verImg($stock->producto->miniatura)) }}" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>{{ $stock->producto->nombre }}</h6>
                                             <span>{{ $stock->empresa->moneda }} {{ calcularIVA($stock->productos_id, $stock->pvp) }}</span>
-                                        </div>
+                                </div>
                                     </a>
                                     @if($i == 3)
                                 </div>

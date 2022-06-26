@@ -101,11 +101,8 @@
         e.preventDefault();
         Cargando.fire();
         let carrito = this.dataset.idCarrito;
-        let item = this.dataset.item;
+        let item = this.dataset.itemCarrito;
         let opcion = "remover";
-        let subtotal = document.getElementById('carrito_subtotal');
-        let iva = document.getElementById('carrito_iva');
-        let total = document.getElementById('carrito_total');
         $.ajax({
             type: 'POST',
             url: "{{ route('ajax.carrito') }}",
@@ -113,9 +110,6 @@
                 id_carrito: carrito,
                 tr: item,
                 opcion:opcion,
-                subtotal: subtotal.dataset.cantidad,
-                iva: iva.dataset.cantidad,
-                total: total.dataset.cantidad,
             },
             success: function (data) {
                 Toast.fire({
@@ -139,9 +133,9 @@
         });
     });
 
-    function botonesCarrito(boton, oldValue, id_carrito){
+    function botonesCarrito(boton, oldValue, carrito_id, carrito_item){
         Cargando.fire();
-        //alert("btn: " + boton + "| value: " +  oldValue + "| id: " +  id_carrito);
+        //alert("btn: " + boton + "| value: " +  oldValue + "| carrito_id: " +  carrito_id + " | carrito_item: " + carrito_item);
         let subtotal = document.getElementById('carrito_subtotal');
         let iva = document.getElementById('carrito_iva');
         let total = document.getElementById('carrito_total');
@@ -149,10 +143,11 @@
             type: 'POST',
             url: "{{ route('ajax.carrito') }}",
             data: {
-                id_carrito: id_carrito,
                 opcion:"editar",
                 boton:boton,
                 valor:oldValue,
+                carrito_id: carrito_id,
+                carrito_item: carrito_item,
                 subtotal: subtotal.dataset.cantidad,
                 iva: iva.dataset.cantidad,
                 total: total.dataset.cantidad,
@@ -164,26 +159,36 @@
                 });
                 if (data.type === "success"){
                     //document.getElementById(data.id).classList.add('fondo-favoritos')
-                    /*let subtotal = document.getElementById('carrito_subtotal');
+                    let subtotal = document.getElementById('carrito_subtotal');
                     let iva = document.getElementById('carrito_iva');
                     let total = document.getElementById('carrito_total');
+                    let carrito_item = document.getElementById(data.carrito_item);
                     subtotal.dataset.cantidad = data.subtotal;
                     subtotal.innerHTML = data.label_subtotal;
                     iva.dataset.cantidad = data.iva;
                     iva.innerHTML = data.label_iva;
                     total.dataset.cantidad = data.total;
                     total.innerHTML = data.label_total;
-                    $("#"+data.tr).remove();*/
+                    carrito_item.innerHTML = data.label_carrito_item;
+                    if (data.borrar === "si"){
+                        //let tr = document.getElementById(data.tr)
+                        $("#"+data.tr).remove();
+                    }
                 }
             }
         });
     }
 
     $(".btn_editar_input").bind("change", function(){
+        var boton = "input";
         var $button = $(this);
         var oldValue = $button.parent().find('input').val();
-        var id_carrito = $button.parent().find('input')[0].dataset.idCarrito;
-        botonesCarrito('input', oldValue, id_carrito);
+        var carrito_id = $button.parent().find('input')[0].dataset.carritoId;
+        var carrito_item = $button.parent().find('input')[0].dataset.carritoItem;
+        //alert()
+        if(carrito_id){
+            botonesCarrito(boton, oldValue, carrito_id, carrito_item);
+        }
     });
 
     $(".qtybtn").click(function(e) {
@@ -193,53 +198,19 @@
         }else{
             var boton = "btn-restar";
         }
+        //var id = $button.parent().find('input');
         var oldValue = $button.parent().find('input').val();
-        var id_carrito = $button.parent().find('input')[0].dataset.idCarrito;
-        if(id_carrito){
-            botonesCarrito(boton, oldValue, id_carrito);
+        var carrito_id = $button.parent().find('input')[0].dataset.carritoId;
+        var carrito_item = $button.parent().find('input')[0].dataset.carritoItem;
+        if(carrito_id){
+            botonesCarrito(boton, oldValue, carrito_id, carrito_item);
         }
 
-        /*e.preventDefault();*/
-        //Cargando.fire();
-        /*let carrito = this.dataset.idCarrito;
-        let item = this.dataset.item;
-        let opcion = "remover";
-        let subtotal = document.getElementById('carrito_subtotal');
-        let iva = document.getElementById('carrito_iva');
-        let total = document.getElementById('carrito_total');
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('ajax.carrito') }}",
-            data: {
-                id_carrito: carrito,
-                tr: item,
-                opcion:opcion,
-                subtotal: subtotal.dataset.cantidad,
-                iva: iva.dataset.cantidad,
-                total: total.dataset.cantidad,
-            },
-            success: function (data) {
-                Toast.fire({
-                    icon: data.type,
-                    title: data.message,
-                });
-                if (data.type === "success"){
-                    //document.getElementById(data.id).classList.add('fondo-favoritos')
-                    let subtotal = document.getElementById('carrito_subtotal');
-                    let iva = document.getElementById('carrito_iva');
-                    let total = document.getElementById('carrito_total');
-                    subtotal.dataset.cantidad = data.subtotal;
-                    subtotal.innerHTML = data.label_subtotal;
-                    iva.dataset.cantidad = data.iva;
-                    iva.innerHTML = data.label_iva;
-                    total.dataset.cantidad = data.total;
-                    total.innerHTML = data.label_total;
-                    $("#"+data.tr).remove();
-                }
-            }
-        });*/
     });
 
-
+    $(".btn_procesar").click(function(e) {
+        e.preventDefault();
+        Cargando.fire();
+    });
 
 </script>

@@ -38,7 +38,12 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('shop.detalles', $stock->id) }}" onclick="preSubmit()">
+                                <a href="
+                            @if($ruta == 'android')
+                                {{ route('android.detalles', $stock->id) }}
+                                @else
+                                {{ route('web.detalles', $stock->id) }}
+                                @endif" onclick="preSubmit()">
                                     <i class="fa fa-eye"></i>
                                 </a>
                             </li>

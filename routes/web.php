@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Web\AjaxController;
 use App\Http\Controllers\Web\AppController;
+use App\Http\Controllers\Web\WebController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -49,10 +50,20 @@ Route::middleware(['android'])->prefix('/android')->group(function (){
         return view('web.home.busqueda');
     })->name('busqueda.prueba');
 
-    Route::get('/{id}/home', [AppController::class, 'home'])->name('shop.home');
-    Route::get('/{id}/detalles', [AppController::class, 'verDetalles'])->name('shop.detalles');
-    Route::get('/{id}/carrito', [AppController::class, 'verCarrito'])->name('shop.carrito');
+    Route::get('/{id}/home', [AppController::class, 'home'])->name('android.home');
+    Route::get('/{id}/detalles', [AppController::class, 'verDetalles'])->name('android.detalles');
+    Route::get('/{id}/carrito', [AppController::class, 'verCarrito'])->name('android.carrito');
+
+});
+
+Route::middleware(['auth'])->prefix('/web')->group(function (){
 
     Route::post('/ajax/favoritos', [AjaxController::class, 'favoritos'])->name('ajax.favoritos');
     Route::post('/ajax/carrito', [AjaxController::class, 'carrito'])->name('ajax.carrito');
+
+    Route::get('/home', [WebController::class, 'home'])->name('web.home');
+    Route::get('/{id}/detalles', [WebController::class, 'verDetalles'])->name('web.detalles');
+    Route::get('/carrito', [WebController::class, 'verCarrito'])->name('web.carrito');
+
+
 });

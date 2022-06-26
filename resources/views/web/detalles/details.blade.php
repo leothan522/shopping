@@ -31,12 +31,17 @@
                         <i class="fa fa-star-half-o"></i>
                         <span>(18 reviews)</span>--}}
                     </div>
-                    <div class="product__details__price">{{ $stock->empresa->moneda }} {{ calcularIVA($stock->id, $stock->pvp) }}</div>
+                    <div class="product__details__price">{{ $stock->empresa->moneda }} {{ calcularIVA($stock->productos_id, $stock->pvp) }}</div>
                     @if(!empty($stock->descripcion))
                         <p class="text-justify">{{ $stock->producto->descripcion }}</p>
                     @endif
                     <p class="text-bold">
-                        <a href="{{ route('shop.carrito', auth()->id()) }}" class="text-muted text-bold">
+                        <a href="
+                        @if($ruta == 'android')
+                        {{ route('android.carrito', auth()->id()) }}
+                        @else
+                        {{ route('web.carrito') }}
+                        @endif" class="text-muted text-bold">
                             <i class="fa fa-shopping-cart"></i> <span id="cart_actual">{{ $cantCarrito }}</span>
                         </a>
                         </p>

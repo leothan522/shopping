@@ -8,18 +8,11 @@ use App\Models\Categoria;
 use App\Models\Empresa;
 use App\Models\Parametro;
 use App\Models\Stock;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 
-class AppController extends Controller
+class WebController extends Controller
 {
-    public function autenticar($id)
-    {
-        $user = User::findOrFail($id);
-         Auth::loginUsingId($user->id, true);
-    }
 
     public function headerFavoritos()
     {
@@ -37,27 +30,26 @@ class AppController extends Controller
         }
         $carrito['total'] = $suma;
         $carrito['items'] = $carritos->sum('cantidad');
-        $carrito['ruta'] = 'android';
+        $carrito['ruta'] = 'web';
         return $carrito;
     }
 
-    public function home($id)
+    public function home()
     {
-        $this->autenticar($id);
         $favoritos = $this->headerFavoritos();
         $carrito = $this->headerCarrito();
 
         $categorias = Categoria::orderBy('nombre')->get();
 
         $destacados = Stock::orderBy('stock_vendido', 'DESC')
-                    ->where('estatus', 1)
-                    ->where('stock_disponible', '>', 0)
-                    ->limit(12)
-                    ->get();
+            ->where('estatus', 1)
+            ->where('stock_disponible', '>', 0)
+            ->limit(12)
+            ->get();
         $destacados->each(function ($stock){
             $favoritos = Parametro::where('nombre', 'favoritos')
-                                    ->where('tabla_id', Auth::id())
-                                    ->where('valor', $stock->id)->first();
+                ->where('tabla_id', Auth::id())
+                ->where('valor', $stock->id)->first();
             if ($favoritos){
                 $stock->favoritos = true;
             }else{
@@ -75,8 +67,8 @@ class AppController extends Controller
 
 
         $banner = Empresa::orderByRaw("RAND()")
-                    ->limit(2)
-                    ->get();
+            ->limit(2)
+            ->get();
 
         $ultimos = Stock::orderBy('id', 'DESC')
             ->where('estatus', 1)
@@ -183,9 +175,8 @@ class AppController extends Controller
             ->with('listarBanner', $banner);
     }
 
-    public function verCarrito($id)
+    public function verCarrito()
     {
-        $this->autenticar($id);
         $favoritos = $this->headerFavoritos();
         $carrito = $this->headerCarrito();
 
@@ -220,9 +211,4 @@ class AppController extends Controller
             ->with('iva', $iva)
             ->with('total', $total);
     }
-
-
-
-
-
 }

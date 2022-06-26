@@ -1,11 +1,54 @@
 <!-- Header Section Begin -->
 <header class="header">
-    <div class="header__top"></div>
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="header__top__left">
+                        <ul>
+                            <li><i class="fa fa-envelope"></i> {{ auth()->user()->email }}</li>
+                            <li><i class="fa fa-user"></i> {{ auth()->user()->name }}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="header__top__right">
+                        <div class="header__top__right__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                        </div>
+                        {{--<div class="header__top__right__language">
+                            <img src="img/language.png" alt="">
+                            <div>English</div>
+                            <span class="arrow_carrot-down"></span>
+                            <ul>
+                                <li><a href="#">Spanis</a></li>
+                                <li><a href="#">English</a></li>
+                            </ul>
+                        </div>--}}
+                        <div class="header__top__right__auth">
+                            <a href="{{ route('cerrar') }}"><i class="fa fa-power-off"></i> Cerrar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-lg-3">
                 <div class="header__logo">
-                    <a href="{{ route('shop.home', auth()->id()) }}"><img src="{{ asset('img/logo_letras.png') }}" alt=""></a>
+                    <a href="
+                    @if($ruta == 'android')
+                    {{ route('android.home', auth()->id()) }}
+                    @else
+                    {{ route('web.home') }}
+                    @endif
+                            ">
+                        <img src="{{ asset('img/logo_letras.png') }}" alt="">
+                    </a>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -20,7 +63,13 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('shop.carrito', auth()->id()) }}">
+                            <a href="
+                            @if($ruta == 'android')
+                            {{ route('android.carrito', auth()->id()) }}
+                            @else
+                            {{ route('web.carrito') }}
+                            @endif
+                                ">
                                 <i class="fa fa-shopping-bag"></i> <span id="header_carrito">{{ formatoMillares($headerItems, 0) }}</span>
                             </a>
                         </li>

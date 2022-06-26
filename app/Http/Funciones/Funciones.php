@@ -322,8 +322,11 @@ function calcularIVA($id, $pvp, $iva = false, $label = false)
     if ($label){
         return $valor_iva;
     }
+
+
     $producto = Producto::find($id);
-    if ($producto->impuesto == 1){
+    //dd($id);
+    if ($producto && $producto->impuesto == 1){
         if ($iva){
             $resultado = ( $monto_total * ( $valor_iva / 100 ) );
         }else{

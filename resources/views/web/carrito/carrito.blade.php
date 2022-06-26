@@ -23,7 +23,7 @@
                         <tbody>
 
                         @foreach($listarCarrito as $carrito)
-                            <tr id="item_{{ $carrito->id }}">
+                            <tr id="tr_{{ $carrito->id }}">
                             <td class="shoping__cart__item">
                                 <img src="{{ asset(verImg($carrito->stock->producto->cart)) }}" alt="">
                                 <small class="label text-xs">{{ $carrito->stock->producto->nombre }}</small>
@@ -34,17 +34,25 @@
                             <td class="shoping__cart__quantity">
                                 <div class="quantity">
                                     <div class="pro-qty">
-                                        <input type="text" class="btn_editar_input" data-id-carrito="{{ $carrito->id }}" value="{{ formatoMillares($carrito->cantidad, 0) }}">
+                                        <input type="text" class="btn_editar_input"
+                                               data-carrito-id="{{ $carrito->id }}"
+                                               data-carrito-item="carrito_item_{{ $carrito->id }}"
+                                               value="{{ formatoMillares($carrito->cantidad, 0) }}"
+                                               id="valor_id_{{ $carrito->id }}"
+                                        >
                                     </div>
                                 </div>
                             </td>
-                            <td class="shoping__cart__total" id="carrito_item_{{ $carrito->id }}">
-                                {{ $carrito->stock->empresa->moneda }} {{ formatoMillares($carrito->item_total, 2) }}
+                            <td class="shoping__cart__total" >
+                                {{ $carrito->stock->empresa->moneda }}
+                                <span id="carrito_item_{{ $carrito->id }}">
+                                    {{ formatoMillares($carrito->item, 2) }}
+                                </span>
                             </td>
                             <td class="shoping__cart__item__close">
                                 <span class="icon_close btn_remover"
                                       data-id-carrito="{{ $carrito->id }}"
-                                      data-item="item_{{ $carrito->id }}"
+                                      data-item-carrito="tr_{{ $carrito->id }}"
                                 ></span>
                             </td>
                         </tr>
@@ -125,6 +133,11 @@
             </div>
         </div>
         <div class="row justify-content-end">
+            <div class="col-lg-12">
+                <div class="shoping__cart__btns">
+                    <a href="#" class="primary-btn cart-btn">INCLUIR DELIVERY</a>
+                </div>
+            </div>
             <div class="col-lg-6">
                 <div class="shoping__checkout">
                     <h5>Cart Total</h5>
@@ -148,7 +161,7 @@
                             </span>
                         </li>
                     </ul>
-                    <a href="#" class="primary-btn">FINALIZAR COMPRA</a>
+                    <a href="#" class="primary-btn btn_procesar">PROCESAR COMPRA</a>
                 </div>
             </div>
         </div>
