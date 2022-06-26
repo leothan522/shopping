@@ -132,12 +132,8 @@
                 </div>
             </div>
         </div>
-        <div class="row justify-content-end">
-            <div class="col-lg-12">
-                <div class="shoping__cart__btns">
-                    <a href="#" class="primary-btn cart-btn">INCLUIR DELIVERY</a>
-                </div>
-            </div>
+        <div class="row">
+            @include('web.carrito.delivery')
             <div class="col-lg-6">
                 <div class="shoping__checkout">
                     <h5>Cart Total</h5>
@@ -154,6 +150,12 @@
                                 $ {{ formatoMillares($iva, 2) }}
                             </span>
                         </li>
+                        <li id="li_delivery" @if(is_null($delivery_zona)) class="d-none" @endif>
+                            Delivery
+                            <span id="carrito_delivery" data-cantidad="{{ $delivery_precio }}">
+                            $ {{ formatoMillares($delivery_precio, 2) }}
+                        </span>
+                        </li>
                         <li>
                             Total
                             <span id="carrito_total" data-cantidad="{{ $total }}">
@@ -161,7 +163,7 @@
                             </span>
                         </li>
                     </ul>
-                    <a href="#" class="primary-btn btn_procesar">PROCESAR COMPRA</a>
+                    <a href="#" class="primary-btn btn_procesar">PROCESAR CARRITO</a>
                 </div>
             </div>
         </div>

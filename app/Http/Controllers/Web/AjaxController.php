@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Carrito;
+use App\Models\Delivery;
 use App\Models\Parametro;
+use App\Models\Zona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -72,8 +74,20 @@ class AjaxController extends Controller
         $cantidad = $listarCarrito->sum('cantidad');
         $totalizar['subtotal'] = $subtotal;
         $totalizar['iva'] = $iva;
-        $totalizar['total'] = $total;
         $totalizar['cantidad'] = $cantidad;
+
+        $delivery = Delivery::where('users_id', $id)
+            ->where('estatus', 0)
+            ->first();
+        if ($delivery){
+            $zona = $delivery->zona->precio;
+        }else{
+            $zona = 0;
+        }
+
+        $totalizar['delivery'] = $zona;
+        $totalizar['total'] = $total + $zona;
+
         return $totalizar;
     }
 
@@ -151,6 +165,8 @@ class AjaxController extends Controller
                 'subtotal' => $totalizar['subtotal'],
                 'iva' => $totalizar['iva'],
                 'total' => $totalizar['total'],
+                'delivery' => $totalizar['delivery'],
+                'label_delivery' => formatoMillares($totalizar['delivery'], 2),
                 'label_subtotal' => formatoMillares($totalizar['subtotal'], 2),
                 'label_iva' => formatoMillares($totalizar['iva'], 2),
                 'label_total' => formatoMillares($totalizar['total'], 2),
@@ -205,6 +221,8 @@ class AjaxController extends Controller
                 'subtotal' => $totalizar['subtotal'],
                 'iva' => $totalizar['iva'],
                 'total' => $totalizar['total'],
+                'delivery' => $totalizar['delivery'],
+                'label_delivery' => formatoMillares($totalizar['delivery'], 2),
                 'label_subtotal' => formatoMillares($totalizar['subtotal'], 2),
                 'label_iva' => formatoMillares($totalizar['iva'], 2),
                 'label_total' => formatoMillares($totalizar['total'], 2),
@@ -213,10 +231,98 @@ class AjaxController extends Controller
             ];
         }
 
+        if($opcion == "remover-delivery"){
+
+            $accion = $request->accion;
+            $zona_id = $request->zona;
+
+            if ($accion == "remover"){
+
+                $this->editarZonas("vacia");
+                $tipo= "info";
+                $mensage = "Desactivado";
+                $accion = "incluir";
+
+            }else{
+
+                $this->editarZonas($zona_id);
+                $tipo = "success";
+                $mensage = "Activado";
+                $accion = "remover";
+
+            }
+
+            $totalizar = $this->totalizar(Auth::id());
+
+            $json = [
+                'type' => $tipo,
+                'message' => "Delivery $mensage.",
+                'accion' => $accion,
+                'subtotal' => $totalizar['subtotal'],
+                'iva' => $totalizar['iva'],
+                'total' => $totalizar['total'],
+                'delivery' => $totalizar['delivery'],
+                'label_delivery' => formatoMillares($totalizar['delivery'], 2),
+                'label_subtotal' => formatoMillares($totalizar['subtotal'], 2),
+                'label_iva' => formatoMillares($totalizar['iva'], 2),
+                'label_total' => formatoMillares($totalizar['total'], 2),
+            ];
+
+        }
+
+        if($opcion == "select-delivery"){
+
+            $zona_id = $request->zona;
+
+            $this->editarZonas($zona_id);
+
+            $totalizar = $this->totalizar(Auth::id());
+
+            $json = [
+                'type' => 'success',
+                'message' => "Delivery Actualizado.",
+                'subtotal' => $totalizar['subtotal'],
+                'iva' => $totalizar['iva'],
+                'total' => $totalizar['total'],
+                'delivery' => $totalizar['delivery'],
+                'label_delivery' => formatoMillares($totalizar['delivery'], 2),
+                'label_subtotal' => formatoMillares($totalizar['subtotal'], 2),
+                'label_iva' => formatoMillares($totalizar['iva'], 2),
+                'label_total' => formatoMillares($totalizar['total'], 2),
+            ];
+        }
+
 
 
 
         return response()->json($json);
+    }
+
+    public function editarZonas($zona_id)
+    {
+        if ($zona_id != "vacia"){
+
+            $delivery = Delivery::where('users_id', Auth::id())
+                ->where('estatus', 0)
+                ->first();
+            if ($delivery){
+                $delivery->zonas_id = $zona_id;
+                $delivery->update();
+            }else{
+                $delivery = new Delivery();
+                $delivery->users_id = Auth::id();
+                $delivery->zonas_id = $zona_id;
+                $delivery->save();
+            }
+
+        }else{
+            $delivery = Delivery::where('users_id', Auth::id())
+                ->where('estatus', 0)
+                ->first();
+            if ($delivery){
+                $delivery->delete();
+            }
+        }
     }
 
 }

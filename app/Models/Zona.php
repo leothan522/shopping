@@ -19,5 +19,10 @@ class Zona extends Model
         return $query->where('nombre', 'LIKE', "%$keyword%");
     }
 
+    public function delivery()
+    {
+        return $this->hasMany(Delivery::class, 'zonas_id', 'id');
+    }
+
 
 }

@@ -10,6 +10,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>@yield('title', 'Ogani | Template')</title>
 
+    <link rel="icon" href="{{ asset('favicons/favicon.ico') }}">
+
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 

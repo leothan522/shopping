@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Carrito;
 use App\Models\Categoria;
+use App\Models\Delivery;
 use App\Models\Empresa;
 use App\Models\Parametro;
 use App\Models\Stock;
+use App\Models\Zona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -200,6 +202,26 @@ class WebController extends Controller
         $iva = $listarCarrito->sum('iva');
         $total = $listarCarrito->sum('total');
 
+        $zonas = Zona::orderBy('nombre', 'ASC')->get();
+        $zonas->each(function ($zona){
+            $zona->nombre = $zona->nombre." [Costo = $".formatoMillares($zona->precio)."]";
+        });
+
+        $delivery = Delivery::where('users_id', Auth::id())
+            ->where('estatus', 0)
+            ->first();
+        if ($delivery){
+            $delivery_zona = $delivery->zonas_id;
+            $delivery_nombre = $delivery->zona->nombre." [Costo = $".formatoMillares($delivery->zona->precio)."]";
+            $delivery_precio = $delivery->zona->precio;
+        }else{
+            $delivery_zona = null;
+            $delivery_nombre = null;
+            $delivery_precio = 0;
+        }
+
+        $total = $total + $delivery_precio;
+
 
         return view('web.carrito.index')
             ->with('ruta', $carrito['ruta'])
@@ -209,6 +231,11 @@ class WebController extends Controller
             ->with('listarCarrito', $listarCarrito)
             ->with('subtotal', $subtotal)
             ->with('iva', $iva)
-            ->with('total', $total);
+            ->with('total', $total)
+            ->with('listarZonas', $zonas)
+            ->with('delivery_zona', $delivery_zona)
+            ->with('delivery_nombre', $delivery_nombre)
+            ->with('delivery_precio', $delivery_precio)
+            ;
     }
 }
