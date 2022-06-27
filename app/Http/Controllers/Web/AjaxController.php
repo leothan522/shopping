@@ -62,16 +62,24 @@ class AjaxController extends Controller
             $id_producto = $carrito->stock->productos_id;
             $cantidad = $carrito->cantidad;
             $pvp = $carrito->stock->pvp;
-            $precio = calcularIVA($id_producto, $pvp);
-            $iva = calcularIVA($id_producto, $pvp, true);
+            $precio = calcularPrecio($carrito->stock_id, $pvp);
+            $iva = calcularPrecio($carrito->stock_id, $pvp, true);
             $carrito->iva = $iva * $cantidad;
-            $carrito->subtotal = $pvp * $cantidad;
+            $carrito->subtotal = ($precio - $iva) * $cantidad;
             $carrito->total = $precio * $cantidad;
         });
         $subtotal = $listarCarrito->sum('subtotal');
         $iva = $listarCarrito->sum('iva');
         $total = $listarCarrito->sum('total');
         $cantidad = $listarCarrito->sum('cantidad');
+
+        if ($total == 0){
+            $delivery = Delivery::where('users_id', Auth::id())->where('estatus', 0)->first();
+            if ($delivery){
+                $delivery->delete();
+            }
+        }
+
         $totalizar['subtotal'] = $subtotal;
         $totalizar['iva'] = $iva;
         $totalizar['cantidad'] = $cantidad;
@@ -166,10 +174,10 @@ class AjaxController extends Controller
                 'iva' => $totalizar['iva'],
                 'total' => $totalizar['total'],
                 'delivery' => $totalizar['delivery'],
-                'label_delivery' => formatoMillares($totalizar['delivery'], 2),
-                'label_subtotal' => formatoMillares($totalizar['subtotal'], 2),
-                'label_iva' => formatoMillares($totalizar['iva'], 2),
-                'label_total' => formatoMillares($totalizar['total'], 2),
+                'label_delivery' => "$ ".formatoMillares($totalizar['delivery'], 2),
+                'label_subtotal' => "$ ".formatoMillares($totalizar['subtotal'], 2),
+                'label_iva' => "$ ".formatoMillares($totalizar['iva'], 2),
+                'label_total' => "$ ".formatoMillares($totalizar['total'], 2),
             ];
         }
 
@@ -184,10 +192,10 @@ class AjaxController extends Controller
             $total = $request->total;
 
             $carrito = Carrito::find($carrito_id);
-            $carrito_producto = $carrito->stock->productos_id;
+            $carrito_producto = $carrito->stock->id;
             $carrito_cantidad = $carrito->cantidad;
             $carrito_pvp = $carrito->stock->pvp;
-            $carrito_precio = calcularIVA($carrito_producto, $carrito_pvp);
+            $carrito_precio = calcularPrecio($carrito_producto, $carrito_pvp);
             if ($boton == "btn-sumar"){
                 $cantidad = $carrito_cantidad + 1;
                 $nuevo_item = $carrito_precio * $cantidad;
@@ -222,10 +230,10 @@ class AjaxController extends Controller
                 'iva' => $totalizar['iva'],
                 'total' => $totalizar['total'],
                 'delivery' => $totalizar['delivery'],
-                'label_delivery' => formatoMillares($totalizar['delivery'], 2),
-                'label_subtotal' => formatoMillares($totalizar['subtotal'], 2),
-                'label_iva' => formatoMillares($totalizar['iva'], 2),
-                'label_total' => formatoMillares($totalizar['total'], 2),
+                'label_delivery' => "$ ".formatoMillares($totalizar['delivery'], 2),
+                'label_subtotal' => "$ ".formatoMillares($totalizar['subtotal'], 2),
+                'label_iva' => "$ ".formatoMillares($totalizar['iva'], 2),
+                'label_total' => "$ ".formatoMillares($totalizar['total'], 2),
                 'borrar' => $borrar,
                 'tr' => "tr_$carrito_id"
             ];
@@ -262,10 +270,10 @@ class AjaxController extends Controller
                 'iva' => $totalizar['iva'],
                 'total' => $totalizar['total'],
                 'delivery' => $totalizar['delivery'],
-                'label_delivery' => formatoMillares($totalizar['delivery'], 2),
-                'label_subtotal' => formatoMillares($totalizar['subtotal'], 2),
-                'label_iva' => formatoMillares($totalizar['iva'], 2),
-                'label_total' => formatoMillares($totalizar['total'], 2),
+                'label_delivery' => "$ ".formatoMillares($totalizar['delivery'], 2),
+                'label_subtotal' => "$ ".formatoMillares($totalizar['subtotal'], 2),
+                'label_iva' => "$ ".formatoMillares($totalizar['iva'], 2),
+                'label_total' => "$ ".formatoMillares($totalizar['total'], 2),
             ];
 
         }
@@ -285,10 +293,10 @@ class AjaxController extends Controller
                 'iva' => $totalizar['iva'],
                 'total' => $totalizar['total'],
                 'delivery' => $totalizar['delivery'],
-                'label_delivery' => formatoMillares($totalizar['delivery'], 2),
-                'label_subtotal' => formatoMillares($totalizar['subtotal'], 2),
-                'label_iva' => formatoMillares($totalizar['iva'], 2),
-                'label_total' => formatoMillares($totalizar['total'], 2),
+                'label_delivery' => "$ ".formatoMillares($totalizar['delivery'], 2),
+                'label_subtotal' => "$ ".formatoMillares($totalizar['subtotal'], 2),
+                'label_iva' => "$ ".formatoMillares($totalizar['iva'], 2),
+                'label_total' => "$ ".formatoMillares($totalizar['total'], 2),
             ];
         }
 

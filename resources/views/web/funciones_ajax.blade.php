@@ -122,6 +122,7 @@
                     let iva = document.getElementById('carrito_iva');
                     let total = document.getElementById('carrito_total');
                     let delivery = document.getElementById('carrito_delivery');
+                    let header_items = document.getElementById('header_item')                                                                                                                                                                                                                                                                                                                                                                                                           ;
                     subtotal.dataset.cantidad = data.subtotal;
                     subtotal.innerHTML = data.label_subtotal;
                     iva.dataset.cantidad = data.iva;
@@ -130,7 +131,13 @@
                     total.innerHTML = data.label_total;
                     delivery.dataset.cantidad = data.delivery;
                     delivery.innerHTML = data.label_delivery;
+                    header_items.innerText = data.label_total;
                     $("#"+data.tr).remove();
+                    if(!data.total){
+                        document.getElementById('li_delivery').classList.add('d-none');
+                        document.getElementById('lista_zonas').classList.add('d-none');
+                        document.getElementById('boton_incluir_del').classList.add('d-none');
+                    }
                 }
             }
         });
@@ -166,6 +173,7 @@
                     let iva = document.getElementById('carrito_iva');
                     let total = document.getElementById('carrito_total');
                     let delivery = document.getElementById('carrito_delivery');
+                    let header_items = document.getElementById('header_item');
                     let carrito_item = document.getElementById(data.carrito_item);
                     subtotal.dataset.cantidad = data.subtotal;
                     subtotal.innerHTML = data.label_subtotal;
@@ -176,9 +184,15 @@
                     delivery.dataset.cantidad = data.delivery;
                     delivery.innerHTML = data.label_delivery;
                     carrito_item.innerHTML = data.label_carrito_item;
+                    header_items.innerText = data.label_total;
                     if (data.borrar === "si"){
                         //let tr = document.getElementById(data.tr)
                         $("#"+data.tr).remove();
+                    }
+                    if(!data.total){
+                        document.getElementById('li_delivery').classList.add('d-none');
+                        document.getElementById('lista_zonas').classList.add('d-none');
+                        document.getElementById('boton_incluir_del').classList.add('d-none');
                     }
                 }
             }
@@ -251,6 +265,7 @@
                 let iva = document.getElementById('carrito_iva');
                 let total = document.getElementById('carrito_total');
                 let delivery = document.getElementById('carrito_delivery');
+                let header_items = document.getElementById('header_item');
                 subtotal.dataset.cantidad = data.subtotal;
                 subtotal.innerHTML = data.label_subtotal;
                 iva.dataset.cantidad = data.iva;
@@ -259,6 +274,7 @@
                 total.innerHTML = data.label_total;
                 delivery.dataset.cantidad = data.delivery;
                 delivery.innerHTML = data.label_delivery;
+                header_items.innerText = data.label_total;
                 if(delivery.dataset.cantidad > 0){
                     document.getElementById('li_delivery').classList.remove('d-none');
                 }else{
@@ -305,6 +321,7 @@
                 let iva = document.getElementById('carrito_iva');
                 let total = document.getElementById('carrito_total');
                 let delivery = document.getElementById('carrito_delivery');
+                let header_items = document.getElementById('header_item');
                 subtotal.dataset.cantidad = data.subtotal;
                 subtotal.innerHTML = data.label_subtotal;
                 iva.dataset.cantidad = data.iva;
@@ -313,6 +330,7 @@
                 total.innerHTML = data.label_total;
                 delivery.dataset.cantidad = data.delivery;
                 delivery.innerHTML = data.label_delivery;
+                header_items.innerText = data.label_total;
                 //alert(delivery.dataset.cantidad);
                 if(delivery.dataset.cantidad > 0){
                     document.getElementById('li_delivery').classList.remove('d-none');

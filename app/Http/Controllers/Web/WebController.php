@@ -28,10 +28,20 @@ class WebController extends Controller
         $carritos = Carrito::where('users_id', Auth::id())->where('estatus', 0)->get();
         $suma= null;
         foreach ($carritos as $cart){
-            $precio = calcularIVA($cart->stock_id, $cart->stock->pvp);
+            $precio = calcularPrecio($cart->stock_id, $cart->stock->pvp);
             $suma = $suma + ($precio * $cart->cantidad);
         }
-        $carrito['total'] = $suma;
+
+        $delivery = Delivery::where('users_id', Auth::id())
+            ->where('estatus', 0)
+            ->first();
+        if ($delivery){
+            $zona = $delivery->zona->precio;
+        }else{
+            $zona = 0;
+        }
+
+        $carrito['total'] = $suma + $zona;
         $carrito['items'] = $carritos->sum('cantidad');
         $carrito['ruta'] = 'web';
         return $carrito;
@@ -331,13 +341,14 @@ class WebController extends Controller
             ->where('estatus', 0)
             ->get();
         $listarCarrito->each(function ($carrito){
+
             $id_producto = $carrito->stock->productos_id;
             $cantidad = $carrito->cantidad;
             $pvp = $carrito->stock->pvp;
-            $precio = calcularIVA($id_producto, $pvp);
-            $iva = calcularIVA($id_producto, $pvp, true);
+            $precio = calcularPrecio($carrito->stock_id, $pvp);
+            $iva = calcularPrecio($carrito->stock_id, $pvp, true);
             $carrito->iva = $iva * $cantidad;
-            $carrito->subtotal = $pvp * $cantidad;
+            $carrito->subtotal = $cantidad * ($precio - $iva);
             $carrito->total = $precio * $cantidad;
             $carrito->item = $carrito->total;
             $carrito->precio = $precio;
@@ -532,9 +543,9 @@ class WebController extends Controller
                     'id'            => $stock->id,
                     'miniatura'     => $stock->producto->miniatura,
                     'nombre'        => $stock->producto->nombre,
-                    'producto_id'   => $stock->productos_id,
+                    'producto_id'   => $stock->id,
                     'pvp'           => $stock->pvp,
-                    'moneda'        => $stock->empresa->moneda,
+                    'moneda'        => '$'//$stock->empresa->moneda,
                 ));
             }
         }else{

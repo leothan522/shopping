@@ -14,7 +14,7 @@
                             </div>
                             <div class="latest-product__item__text">
                                 <h6>{{ $favorito['nombre'] }}</h6>
-                                <span>{{ $favorito['moneda'] }} {{ calcularIVA($favorito['producto_id'], $favorito['pvp']) }}</span>
+                                <span>{{ $favorito['moneda'] }} {{ calcularPrecio($favorito['producto_id'], $favorito['pvp']) }}</span>
                             </div>
                         </a>
                     </div>

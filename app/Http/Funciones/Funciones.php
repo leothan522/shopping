@@ -3,6 +3,7 @@
 
 use App\Models\Parametro;
 use App\Models\Producto;
+use App\Models\Stock;
 use Carbon\Carbon;
 use Intervention\Image\Facades\Image;
 
@@ -314,6 +315,12 @@ function calcularIVA($id, $pvp, $iva = false, $label = false)
     //puedes después cambiarlo a 16% si así lo requieres
     $valor_iva = 16;
     $monto_total = $pvp;
+    $precio_dolar = 0;
+
+    $dolar = Parametro::where('nombre', 'precio_dolar')->first();
+    if ($dolar){
+        $precio_dolar = $dolar->valor;
+    }
 
     $parametro = Parametro::where('nombre', 'iva')->first();
     if ($parametro){
@@ -329,6 +336,7 @@ function calcularIVA($id, $pvp, $iva = false, $label = false)
     if ($producto && $producto->impuesto == 1){
         if ($iva){
             $resultado = ( $monto_total * ( $valor_iva / 100 ) );
+
         }else{
             $resultado = ( $monto_total ) + ( $monto_total * ( $valor_iva / 100 ) );
         }
@@ -339,6 +347,64 @@ function calcularIVA($id, $pvp, $iva = false, $label = false)
             $resultado = $monto_total;
         }
     }
+
+
+
+    //En caso de que quieras redondear a dos decimales, te recomiendo usar la función number_format
+    $resultado = number_format($resultado, 2, '.', false);
+    return $resultado;
+}
+
+function calcularPrecio($id, $pvp, $iva = false, $label = false)
+{
+    $resultado = 0;
+    //puedes después cambiarlo a 16% si así lo requieres
+    $valor_iva = 16;
+    $monto_total = $pvp;
+    $precio_dolar = 1;
+
+    $dolar = Parametro::where('nombre', 'precio_dolar')->first();
+    if ($dolar){
+        if ($dolar->valor > 0){
+            $precio_dolar = $dolar->valor;
+        }
+    }
+
+    $parametro = Parametro::where('nombre', 'iva')->first();
+    if ($parametro){
+        $valor_iva = $parametro->valor;
+    }
+    if ($label){
+        return $valor_iva;
+    }
+
+    $stock = Stock::find($id);
+    $moneda_empresa = $stock->empresa->moneda;
+    $moneda_stock = $stock->moneda;
+
+    $producto = Producto::find($stock->productos_id);
+    //dd($id);
+    if ($producto && $producto->impuesto == 1){
+        if ($iva){
+            $resultado = ( $monto_total * ( $valor_iva / 100 ) );
+            if ($moneda_stock == 'Bs.'){
+                $resultado = $resultado / $precio_dolar;
+            }
+        }else{
+            $resultado = ( $monto_total ) + ( $monto_total * ( $valor_iva / 100 ) );
+            if ($moneda_stock == 'Bs.'){
+                $resultado = $resultado / $precio_dolar;
+            }
+        }
+    }else{
+        if ($iva){
+            $resultado = 0;
+        }else{
+            $resultado = $monto_total;
+        }
+    }
+
+
 
     //En caso de que quieras redondear a dos decimales, te recomiendo usar la función number_format
     $resultado = number_format($resultado, 2, '.', false);

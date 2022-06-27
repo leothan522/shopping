@@ -22,7 +22,7 @@
                     </div>
                     <div class="latest-product__item__text">
                         <h6>{{ $stock->producto->nombre }}</h6>
-                        <span>{{ $stock->empresa->moneda }} {{ calcularIVA($stock->productos_id, $stock->pvp) }}</span>
+                        <span>${{--{{ $stock->empresa->moneda }}--}} {{ calcularPrecio($stock->id, $stock->pvp) }}</span>
                     </div>
                 </a>
                 @if($i == 3)

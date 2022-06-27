@@ -31,7 +31,7 @@
                         <i class="fa fa-star-half-o"></i>
                         <span>(18 reviews)</span>--}}
                     </div>
-                    <div class="product__details__price">{{ $stock->empresa->moneda }} {{ calcularIVA($stock->productos_id, $stock->pvp) }}</div>
+                    <div class="product__details__price">${{--{{ $stock->empresa->moneda }}--}} {{ calcularPrecio($stock->id, $stock->pvp) }}</div>
                     @if(!empty($stock->descripcion))
                         <p class="text-justify">{{ $stock->producto->descripcion }}</p>
                     @endif

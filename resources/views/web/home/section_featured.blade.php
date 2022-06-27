@@ -65,7 +65,7 @@
                     </div>
                     <div class="featured__item__text">
                         <h6><a href="#">{{ $stock->producto->nombre }}</a></h6>
-                        <h5>{{ $stock->empresa->moneda }} {{ calcularIVA($stock->productos_id, $stock->pvp) }}</h5>
+                        <h5>${{--{{ $stock->empresa->moneda }}--}} {{ calcularPrecio($stock->id, $stock->pvp) }}</h5>
                     </div>
                 </div>
             </div>
