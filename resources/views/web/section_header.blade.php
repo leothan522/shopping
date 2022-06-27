@@ -6,8 +6,33 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="header__top__left">
                         <ul>
-                            <li><i class="fa fa-envelope"></i> {{ auth()->user()->email }}</li>
-                            <li><i class="fa fa-user"></i> {{ auth()->user()->name }}</li>
+                            <li>
+                                @if($ruta != "android")
+                                    <a href="{{ route('web.perfil') }}" class="btn-link text-dark">
+                                        <i class="fa fa-envelope"></i> {{ auth()->user()->email }}
+                                    </a>
+                                    @else
+                                    <i class="fa fa-envelope"></i> {{ auth()->user()->email }}
+                                @endif
+                            </li>
+                            <li>
+                                @if($ruta != "android")
+                                    <a href="{{ route('web.perfil') }}" class="btn-link text-dark">
+                                        <i class="fa fa-user"></i> {{ auth()->user()->name }}
+                                    </a>
+                                @else
+                                    <i class="fa fa-user"></i> {{ auth()->user()->name }}
+                                @endif
+                            </li>
+                            @if(auth()->user()->role > 1)
+                                @if($ruta != "android")
+                                    <li>
+                                        <a href="{{ route('dashboard') }}" class="btn-link text-dark">
+                                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                                        </a>
+                                    </li>
+                                @endif
+                            @endif
                         </ul>
                     </div>
                 </div>

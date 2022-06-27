@@ -2,7 +2,7 @@
     <b>Version</b> 1.0
 </div>
 <strong>&copy; 2022 | {{ config('app.name') }}
-    | Ing. Yonathan Castillo.
+    {{--| Ing. Yonathan Castillo.--}}
 </strong>
 {{--<em class="text-sm">
     Basado en <a href="http://adminlte.io" target="_blank">AdminLTE.io</a>.

@@ -69,5 +69,9 @@ Route::middleware(['auth'])->prefix('/web')->group(function (){
     Route::get('/{id}/categorias', [WebController::class, 'verCategorias'])->name('web.categorias');
     Route::get('/favoritos', [WebController::class, 'verFavoritos'])->name('web.favoritos');
 
+    Route::get('/perfil', function (){
+        return view('profile.show_default');
+    })->name('web.perfil');
+
 
 });
