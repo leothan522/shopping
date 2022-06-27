@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Categoria;
 use App\Models\Empresa;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -145,7 +146,21 @@ class CategoriasComponent extends Component
         // Example code inside confirmed callback
         $parametro = Categoria::find($this->categoria_id);
 
-        if ($parametro->num_productos == 0){
+        $productos = Producto::where('categorias_id', $parametro->id)->first();
+
+        if ($productos){
+
+            $this->alert('warning', '¡No se puede Borrar!', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'text' => 'El registro que intenta borrar ya se encuentra vinculado con otros procesos.',
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+                'confirmButtonText' => 'OK',
+            ]);
+
+        }else{
 
             if (!is_null($parametro->imagen)){
                 if (file_exists($parametro->imagen)){
@@ -165,14 +180,9 @@ class CategoriasComponent extends Component
                 'success',
                 'Categoria Eliminada'
             );
+            $this->limpiar();
 
-        }else{
-            $this->alert(
-                'error',
-                'No se Puede Eliminar'
-            );
         }
-        $this->limpiar();
     }
 
 

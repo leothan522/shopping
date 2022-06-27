@@ -4,7 +4,9 @@ namespace App\Http\Livewire;
 
 use App\Models\Ajuste;
 use App\Models\Almacen;
+use App\Models\Carrito;
 use App\Models\Empresa;
+use App\Models\Parametro;
 use App\Models\Producto;
 use App\Models\Stock;
 use App\Models\User;
@@ -216,11 +218,30 @@ class StockComponent extends Component
     {
         // Example code inside confirmed callback
         $parametro = Stock::find($this->stock_id);
-        $parametro->delete();
-        $this->alert(
-            'success',
-            'Stock Eliminado.'
-        );
+
+        $ajustes  = Ajuste::where('stock_id', $parametro->id)->first();
+        $carrito = Carrito::where('stock_id', $parametro->id)->first();
+        $favoritos = Parametro::where('nombre', 'favoritos')->where('valor', $parametro->id)->first();
+
+        if ($ajustes || $carrito || $favoritos){
+            $this->alert('warning', '¡No se puede Borrar!', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'text' => 'El registro que intenta borrar ya se encuentra vinculado con otros procesos.',
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+                'confirmButtonText' => 'OK',
+            ]);
+        }else{
+            $parametro->delete();
+            $this->alert(
+                'success',
+                'Stock Eliminado.'
+            );
+        }
+
+
     }
 
     public function verAjuste($tipo)

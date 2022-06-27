@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Delivery;
 use App\Models\Mensajero;
 use App\Models\Zona;
 use Illuminate\Http\Request;
@@ -125,11 +126,29 @@ class DeliveryComponent extends Component
     {
         // Example code inside confirmed callback
         $parametro = Zona::find($this->zona_id);
-        $parametro->delete();
-        $this->alert(
-            'success',
-            'Zona Eliminada'
-        );
+
+        $delivery = Delivery::where('zonas_id', $parametro->id)->first();
+
+        if ($delivery){
+
+            $this->alert('warning', '¡No se puede Borrar!', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'text' => 'El registro que intenta borrar ya se encuentra vinculado con otros procesos.',
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+                'confirmButtonText' => 'OK',
+            ]);
+
+        }else{
+            $parametro->delete();
+            $this->alert(
+                'success',
+                'Zona Eliminada'
+            );
+        }
+
     }
 
     public function rulesMensajeros()

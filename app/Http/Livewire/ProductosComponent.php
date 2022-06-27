@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Categoria;
 use App\Models\Producto;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -252,16 +253,35 @@ class ProductosComponent extends Component
     {
         // Example code inside confirmed callback
         $parametro = Producto::find($this->producto_id);
-        $categoria = Categoria::find($parametro->categorias_id);
-        $restar = $categoria->num_productos - 1;
-        $categoria->num_productos = $restar;
-        $categoria->update();
-        $parametro->delete();
-        $this->alert(
-            'success',
-            'Producto Eliminado'
-        );
-        $this->limpiar();
+
+        $stock = Stock::where('productos_id', $parametro->id)->first();
+
+        if ($stock){
+
+            $this->alert('warning', '¡No se puede Borrar!', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'text' => 'El registro que intenta borrar ya se encuentra vinculado con otros procesos.',
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+                'confirmButtonText' => 'OK',
+            ]);
+
+        }else{
+
+            $categoria = Categoria::find($parametro->categorias_id);
+            $restar = $categoria->num_productos - 1;
+            $categoria->num_productos = $restar;
+            $categoria->update();
+            $parametro->delete();
+            $this->alert(
+                'success',
+                'Producto Eliminado'
+            );
+            $this->limpiar();
+
+        }
     }
 
 

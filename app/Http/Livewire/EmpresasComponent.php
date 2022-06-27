@@ -2,8 +2,11 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Ajuste;
 use App\Models\Empresa;
 use App\Models\Parametro;
+use App\Models\Stock;
+use App\Models\User;
 use Illuminate\Validation\Rule;
 use Intervention\Image\Facades\Image;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -234,32 +237,71 @@ class EmpresasComponent extends Component
         // Example code inside confirmed callback
         $parametro = Empresa::find($this->empresa_id);
 
-        if (!is_null($parametro->logo)){
-            if (file_exists($parametro->logo)){
-                unlink($parametro->logo);
+        $ajustes  = Ajuste::where('empresas_id', $parametro->id)->first();
+        $stock = Stock::where('empresas_id', $parametro->id)->first();
+        $users = User::where('empresas_id', $parametro->id)->first();
+
+        if ($ajustes || $stock || $users){
+
+            $this->alert('warning', '¡No se puede Borrar!', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'text' => 'El registro que intenta borrar ya se encuentra vinculado con otros procesos.',
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+                'confirmButtonText' => 'OK',
+            ]);
+
+        }else{
+
+            if (!is_null($parametro->logo)){
+                if (file_exists($parametro->logo)){
+                    unlink($parametro->logo);
+                }
             }
+
+            if (!is_null($parametro->miniatura)){
+                if (file_exists($parametro->miniatura)){
+                    unlink($parametro->miniatura);
+                }
+            }
+
+            if (!is_null($parametro->banner)){
+                if (file_exists($parametro->banner)){
+                    unlink($parametro->banner);
+                }
+            }
+
+            $this->borrarParametro('estatus_tienda', $parametro->id);
+            $this->borrarParametro('horario', $parametro->id);
+            $this->borrarParametro('horario_Mon', $parametro->id);
+            $this->borrarParametro('horario_Tue', $parametro->id);
+            $this->borrarParametro('horario_Wed', $parametro->id);
+            $this->borrarParametro('horario_Thu', $parametro->id);
+            $this->borrarParametro('horario_Fri', $parametro->id);
+            $this->borrarParametro('horario_Sat', $parametro->id);
+            $this->borrarParametro('horario_Sun', $parametro->id);
+            $this->borrarParametro('horario_apertura', $parametro->id);
+            $this->borrarParametro('horario_cierre', $parametro->id);
+
+            $parametro->delete();
+            $default = Empresa::where('default', 1)->first();
+            $this->show($default->id);
+            $this->alert(
+                'success',
+                'Empresa Eliminada'
+            );
         }
 
-        if (!is_null($parametro->miniatura)){
-            if (file_exists($parametro->miniatura)){
-                unlink($parametro->miniatura);
-            }
+    }
+
+    public function borrarParametro($nombre, $tabla_id)
+    {
+        $parametro = Parametro::where('nombre', $nombre)->where('tabla_id', $tabla_id)->first();
+        if ($parametro){
+            $parametro->delete();
         }
-
-        if (!is_null($parametro->banner)){
-            if (file_exists($parametro->banner)){
-                unlink($parametro->banner);
-            }
-        }
-
-        $parametro->delete();
-        $default = Empresa::where('default', 1)->first();
-        $this->show($default->id);
-        $this->alert(
-            'success',
-            'Empresa Eliminada'
-        );
-
     }
 
     public function dias($dia, $id = false)

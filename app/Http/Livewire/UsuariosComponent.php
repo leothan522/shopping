@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Carrito;
+use App\Models\Delivery;
 use App\Models\Empresa;
 use App\Models\Parametro;
 use App\Models\User;
@@ -244,12 +246,32 @@ class UsuariosComponent extends Component
     {
         // Example code inside confirmed callback
         $user = User::find($this->user_id);
-        $user->delete();
-        $this->user_id = null;
-        $this->alert(
-            'success',
-            'Usuario Eliminado'
-        );
+
+        $carrito = Carrito::where('users_id', $user->id)->first();
+        $delivery = Delivery::where('users_id', $user->id)->first();
+
+        if ($carrito || $delivery){
+
+            $this->alert('warning', '¡No se puede Borrar!', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'text' => 'El registro que intenta borrar ya se encuentra vinculado con otros procesos.',
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+                'confirmButtonText' => 'OK',
+            ]);
+
+        }else{
+
+            $user->delete();
+            $this->user_id = null;
+            $this->alert(
+                'success',
+                'Usuario Eliminado'
+            );
+
+        }
 
     }
 

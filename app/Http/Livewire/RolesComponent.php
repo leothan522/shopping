@@ -77,10 +77,17 @@ class RolesComponent extends Component
         // Example code inside confirmed callback
         $user = User::where('role', $this->rol_id)->first();
         if ($user){
-            $this->alert(
-                'error',
-                'No se puede eliminar Rol'
-            );
+
+            $this->alert('warning', '¡No se puede Borrar!', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'text' => 'El registro que intenta borrar ya se encuentra vinculado con otros procesos.',
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+                'confirmButtonText' => 'OK',
+            ]);
+
         }else{
             $parametro = Parametro::find($this->rol_id);
             $parametro->delete();

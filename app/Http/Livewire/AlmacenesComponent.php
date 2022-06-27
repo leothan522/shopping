@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Almacen;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -107,11 +108,32 @@ class AlmacenesComponent extends Component
     {
         // Example code inside confirmed callback
         $parametro = Almacen::find($this->almacen_id);
-        $parametro->delete();
-        $this->alert(
-            'success',
-            'Almacen Eliminado.'
-        );
+
+        $stock = Stock::where('almacenes_id', $parametro->id)->first();
+
+        if ($stock){
+
+            $this->alert('warning', '¡No se puede Borrar!', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'text' => 'El registro que intenta borrar ya se encuentra vinculado con otros procesos.',
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+                'confirmButtonText' => 'OK',
+            ]);
+
+        }else{
+
+            $parametro->delete();
+            $this->alert(
+                'success',
+                'Almacen Eliminado.'
+            );
+
+        }
+
+
     }
 
 }
