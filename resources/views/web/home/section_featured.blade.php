@@ -30,7 +30,8 @@
                 <div class="col-lg-3 col-md-4 col-sm-6 mix oranges filter_{{ $stock->producto->categorias_id }}">
                 <div class="featured__item">
                     <div class="featured__item__pic set-bg img-thumbnail" data-setbg="{{ asset(verImg($stock->producto->miniatura)) }}">
-                        <ul class="featured__item__pic__hover">
+                        @if(auth()->check())
+                            <ul class="featured__item__pic__hover">
                             <li>
                                 <a href="#" class="btn_favoritos @if($stock->favoritos) fondo-favoritos @endif" id="favoritos_{{ $stock->id }}"
                                    data-id-stock="{{ $stock->id }}" >
@@ -54,6 +55,13 @@
                                 </a>
                             </li>
                         </ul>
+                            @else
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="{{ route('web.home') }}" onclick="preSubmit()"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="{{ route('guest.detalles', $stock->id) }}" onclick="preSubmit()"><i class="fa fa-eye"></i></a></li>
+                                <li><a href="{{ route('web.home') }}" onclick="preSubmit()"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        @endif
                     </div>
                     <div class="featured__item__text">
                         <h6><a href="#">{{ $stock->producto->nombre }}</a></h6>

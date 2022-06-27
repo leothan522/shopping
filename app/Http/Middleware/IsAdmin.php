@@ -22,7 +22,7 @@ class IsAdmin
         }else{
             //Alert::toast('No tienes permisos suficientes', 'error');
             verSweetAlert2('No tienes permisos suficientes', 'toast', 'error');
-            return redirect('/');
+            return redirect()->route('web.index');
         }
     }
 }

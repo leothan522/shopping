@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('dashboard');
+    //return view('welcome');
 });
 
 Route::middleware([
@@ -35,7 +36,7 @@ Route::middleware([
 
 Route::get('/cerrar', function () {
     Auth::logout();
-    return redirect('/');
+    return redirect()->route('web.index');
 })->name('cerrar');
 
 
@@ -58,14 +59,18 @@ Route::middleware(['android'])->prefix('/android')->group(function (){
 
 });
 
+Route::get('/web', [WebController::class, 'index'])->name('web.index');
+Route::get('/{id}/detalles', [WebController::class, 'guestDetalles'])->name('guest.detalles');
+Route::get('/{id}/categorias', [WebController::class, 'guestCategorias'])->name('guest.categorias');
+
 Route::middleware(['auth'])->prefix('/web')->group(function (){
 
     Route::post('/ajax/favoritos', [AjaxController::class, 'favoritos'])->name('ajax.favoritos');
     Route::post('/ajax/carrito', [AjaxController::class, 'carrito'])->name('ajax.carrito');
 
     Route::get('/home', [WebController::class, 'home'])->name('web.home');
-    Route::get('/{id}/detalles', [WebController::class, 'verDetalles'])->name('web.detalles');
     Route::get('/carrito', [WebController::class, 'verCarrito'])->name('web.carrito');
+    Route::get('/{id}/detalles', [WebController::class, 'verDetalles'])->name('web.detalles');
     Route::get('/{id}/categorias', [WebController::class, 'verCategorias'])->name('web.categorias');
     Route::get('/favoritos', [WebController::class, 'verFavoritos'])->name('web.favoritos');
 

@@ -45,21 +45,33 @@
                             <i class="fa fa-shopping-cart"></i> <span id="cart_actual">{{ $cantCarrito }}</span>
                         </a>
                         </p>
-                    <div class="product__details__quantity">
-                        <div class="quantity">
-                            <div class="pro-qty">
-                                <input type="text" value="1" id="cantAgregar">
+                    @if(auth()->check())
+                        <div class="product__details__quantity">
+                            <div class="quantity">
+                                <div class="pro-qty">
+                                    <input type="text" value="1" id="cantAgregar">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <a href="#" class="primary-btn btn_carrito @if($stock->carrito) fondo-favoritos @endif"
-                       data-id-stock="{{ $stock->id }}" data-cantidad="1" data-opcion="agregar" >
-                        Agregar
-                    </a>
-                    <a href="#" class="heart-icon btn_favoritos @if($stock->favoritos) fondo-favoritos @endif"
+                        <a href="#" class="primary-btn btn_carrito @if($stock->carrito) fondo-favoritos @endif"
+                           data-id-stock="{{ $stock->id }}" data-cantidad="1" data-opcion="agregar" >
+                            Agregar
+                        </a>
+                        <a href="#" class="heart-icon btn_favoritos @if($stock->favoritos) fondo-favoritos @endif"
                        id="favoritos_{{ $stock->id }}" data-id-stock="{{ $stock->id }}">
                         <span class="icon_heart_alt"></span>
                     </a>
+                        @else
+                        <div class="product__details__quantity">
+                            <div class="quantity">
+                                <div class="pro-qty">
+                                    <input type="text" value="1">
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{{ route('web.detalles', $stock->id)  }}" onclick="preSubmit()" class="primary-btn">Agregar</a>
+                        <a href="{{ route('web.detalles', $stock->id)  }}" onclick="preSubmit()" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                    @endif
                     <ul>
                         <li><b>Categoria:</b> <span> {{ $stock->producto->categoria->nombre }}</span></li>
                         @if(!empty($stock->marca))

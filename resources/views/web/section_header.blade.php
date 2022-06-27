@@ -5,7 +5,8 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6">
                     <div class="header__top__left">
-                        <ul>
+                        @if(auth()->check())
+                            <ul>
                             <li>
                                 @if($ruta != "android")
                                     <a href="{{ route('web.perfil') }}" class="btn-link text-dark">
@@ -34,6 +35,7 @@
                                 @endif
                             @endif
                         </ul>
+                        @endif
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
@@ -54,7 +56,11 @@
                             </ul>
                         </div>--}}
                         <div class="header__top__right__auth">
-                            <a href="{{ route('cerrar') }}"><i class="fa fa-power-off"></i> Cerrar</a>
+                            @if(auth()->check())
+                                <a href="{{ route('cerrar') }}"><i class="fa fa-power-off"></i> Cerrar</a>
+                                @else
+                                <a href="{{ route('web.home') }}"><i class="fa fa-user"></i> Login</a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -65,15 +71,21 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="header__logo">
-                    <a href="
+                    @if(auth()->check())
+                        <a href="
                     @if($ruta == 'android')
-                    {{ route('android.home', auth()->id()) }}
-                    @else
-                    {{ route('web.home') }}
-                    @endif
+                        {{ route('android.home', auth()->id()) }}
+                        @else
+                        {{ route('web.home') }}
+                        @endif
                             ">
-                        <img src="{{ asset('img/logo_letras.png') }}" alt="">
-                    </a>
+                            <img src="{{ asset('img/logo_letras.png') }}" alt="">
+                        </a>
+                        @else
+                        <a href="{{ route('web.index') }}">
+                            <img src="{{ asset('img/logo_letras.png') }}" alt="">
+                        </a>
+                    @endif
                 </div>
             </div>
             <div class="col-lg-6">
@@ -99,7 +111,7 @@
                             {{ route('web.carrito') }}
                             @endif
                                 ">
-                                <i class="fa fa-shopping-bag"></i> <span id="header_carrito">{{ formatoMillares($headerItems, 0) }}</span>
+                                <i class="fa fa-shopping-cart"></i> <span id="header_carrito">{{ formatoMillares($headerItems, 0) }}</span>
                             </a>
                         </li>
                     </ul>

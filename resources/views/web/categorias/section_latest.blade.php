@@ -10,7 +10,11 @@
                                 @if($ruta == 'android')
                 {{ route('android.detalles', $stock->id) }}
                 @else
-                {{ route('web.detalles', $stock->id) }}
+                    @if(auth()->check())
+                        {{ route('web.detalles', $stock->id) }}
+                        @else
+                        {{ route('guest.detalles', $stock->id) }}
+                    @endif
                 @endif"
                    onclick="preSubmit()" class="latest-product__item">
                     <div class="latest-product__item__pic img-thumbnail">

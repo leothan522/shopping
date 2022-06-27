@@ -6,11 +6,17 @@
                 @foreach($listarCategorias as $categoria)
                     <div class="col-lg-3">
                         <div class="categories__item set-bg img-thumbnail" data-setbg="{{ asset(verImg($categoria->imagen)) }}">
-                            <h5><a onclick="preSubmit()" href="@if($ruta == "android")
+                            <h5>
+                                <a onclick="preSubmit()" href="@if($ruta == "android")
                                     {{ route('android.categorias', $categoria->id) }}
                                     @else
-                                    {{ route('web.categorias', $categoria->id) }}
-                                @endif">{{ $categoria->nombre }}</a></h5>
+                                    @if(auth()->check())
+                                        {{ route('web.categorias', $categoria->id) }}
+                                        @else
+                                        {{ route('guest.categorias', $categoria->id) }}
+                                    @endif
+                                @endif">{{ $categoria->nombre }}</a>
+                            </h5>
                         </div>
                     </div>
                 @endforeach

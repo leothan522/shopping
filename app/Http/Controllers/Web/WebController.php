@@ -37,6 +37,75 @@ class WebController extends Controller
         return $carrito;
     }
 
+    public function index()
+    {
+
+        $categorias = Categoria::orderBy('nombre')->get();
+
+        $destacados = Stock::orderBy('stock_vendido', 'DESC')
+            ->where('estatus', 1)
+            ->where('stock_disponible', '>', 0)
+            ->limit(12)
+            ->get();
+        $destacados->each(function ($stock){
+            $favoritos = Parametro::where('nombre', 'favoritos')
+                ->where('tabla_id', Auth::id())
+                ->where('valor', $stock->id)->first();
+            if ($favoritos){
+                $stock->favoritos = true;
+            }else{
+                $stock->favoritos = false;
+            }
+            $carrito = Carrito::where('stock_id', $stock->id)
+                ->where('users_id', Auth::id())
+                ->where('estatus', 0)->first();
+            if ($carrito){
+                $stock->carrito = true;
+            }else{
+                $stock->carrito = false;
+            }
+        });
+
+
+        $banner = Empresa::orderByRaw("RAND()")
+            ->limit(2)
+            ->get();
+
+        $ultimos = Stock::orderBy('id', 'DESC')
+            ->where('estatus', 1)
+            ->where('stock_disponible', '>', 0)
+            ->limit(6)
+            ->get();
+
+        $primeros = Stock::orderBy('id', 'ASC')
+            ->where('estatus', 1)
+            ->where('stock_disponible', '>', 0)
+            ->limit(6)
+            ->get();
+
+        $revisar = Stock::orderByRaw("RAND()")
+            ->where('estatus', 1)
+            ->where('stock_disponible', '>', 0)
+            ->limit(6)
+            ->get();
+
+
+        return view('web.home.index')
+            ->with('ruta', 'web')
+            ->with('headerFavoritos', 0)
+            ->with('headerItems', 0)
+            ->with('headerTotal', 0)
+            ->with('listarCategorias', $categorias)
+            ->with('listarDestacados', $destacados)
+            ->with('listarBanner', $banner)
+            ->with('listarUltimos', $ultimos)
+            ->with('listarPrimeros', $primeros)
+            ->with('listarRevisar', $revisar)
+            ->with('modulo', 'HOME')
+            ->with('titulo', null);
+
+    }
+
     public function home()
     {
         $favoritos = $this->headerFavoritos();
@@ -106,6 +175,77 @@ class WebController extends Controller
             ->with('modulo', 'HOME')
             ->with('titulo', null);
 
+    }
+
+    public function guestDetalles($id)
+    {
+        $stock = Stock::find($id);
+
+        $cart = Carrito::where('stock_id', $stock->id)
+            ->where('users_id', Auth::id())
+            ->where('estatus', 0)
+            ->first();
+        if ($cart){
+            if ($stock->producto->decimales){
+                $cantidad = formatoMillares($cart->cantidad, 2);
+            }else{
+                $cantidad = $cantidad = formatoMillares($cart->cantidad, 0);
+            }
+        }else{
+            $cantidad = 0;
+        }
+
+        $favor = Parametro::where('nombre', 'favoritos')
+            ->where('tabla_id', Auth::id())
+            ->where('valor', $stock->id)->first();
+        if ($favor){
+            $stock->favoritos = true;
+        }else{
+            $stock->favoritos = false;
+        }
+
+        $listarRelacionados = Stock::where('empresas_id', $stock->empresas_id)
+            ->where('stock_disponible', '>', 0)
+            ->where('id', '!=', $stock->id)
+            ->limit(4)
+            ->orderBy('stock_disponible', 'DESC')
+            ->get();
+        $listarRelacionados->each(function ($stock){
+            $favoritos = Parametro::where('nombre', 'favoritos')
+                ->where('tabla_id', Auth::id())
+                ->where('valor', $stock->id)->first();
+            if ($favoritos){
+                $stock->favoritos = true;
+            }else{
+                $stock->favoritos = false;
+            }
+            $carrito = Carrito::where('stock_id', $stock->id)
+                ->where('users_id', Auth::id())
+                ->where('estatus', 0)->first();
+            if ($carrito){
+                $stock->carrito = true;
+            }else{
+                $stock->carrito = false;
+            }
+        });
+
+        $banner = Empresa::where('id', $stock->empresas_id)
+            ->limit(1)
+            ->get();
+
+
+
+        return view('web.detalles.index')
+            ->with('ruta', 'web')
+            ->with('headerFavoritos', 0)
+            ->with('headerItems', 0)
+            ->with('headerTotal', 0)
+            ->with('stock', $stock)
+            ->with('cantCarrito', $cantidad)
+            ->with('listarRelacionados', $listarRelacionados)
+            ->with('listarBanner', $banner)
+            ->with('modulo', 'Detalles')
+            ->with('titulo', $stock->producto->nombre);
     }
 
     public function verDetalles($id)
@@ -244,6 +384,63 @@ class WebController extends Controller
             ->with('modulo', 'Carrito')
             ->with('titulo', null)
             ;
+    }
+
+    public function guestCategorias($id)
+    {
+        $categoria = Categoria::find($id);
+
+        $productos = Producto::where('categorias_id', $categoria->id)->get();
+        $productos->each(function ($producto){
+            $destacados = Stock::orderBy('stock_vendido', 'DESC')
+                ->where('estatus', 1)
+                ->where('stock_disponible', '>', 0)
+                ->where('productos_id', $producto->id)
+                ->get();
+            $destacados->each(function ($stock){
+                $favoritos = Parametro::where('nombre', 'favoritos')
+                    ->where('tabla_id', Auth::id())
+                    ->where('valor', $stock->id)->first();
+                if ($favoritos){
+                    $stock->favoritos = true;
+                }else{
+                    $stock->favoritos = false;
+                }
+                $carrito = Carrito::where('stock_id', $stock->id)
+                    ->where('users_id', Auth::id())
+                    ->where('estatus', 0)->first();
+                if ($carrito){
+                    $stock->carrito = true;
+                }else{
+                    $stock->carrito = false;
+                }
+                $stock->cantidad = $stock->cantidad + 1;
+                $stock->empresa = Empresa::find($stock->empresas_id);
+            });
+            $producto->cantidad = $destacados->sum('cantidad');
+            $producto->stock = $destacados;
+        });
+
+        $cantidad  = $productos->sum('cantidad');
+
+        $ultimos = Stock::orderBy('id', 'DESC')
+            ->where('estatus', 1)
+            ->where('stock_disponible', '>', 0)
+            ->limit(6)
+            ->get();
+
+
+        return view('web.categorias.index')
+            ->with('ruta', 'web')
+            ->with('headerFavoritos', 0)
+            ->with('headerItems', 0)
+            ->with('headerTotal', 0)
+            ->with('modulo', 'Categoria')
+            ->with('titulo', $categoria->nombre)
+            ->with('categoria', $categoria)
+            ->with('listarProductos', $productos)
+            ->with('cantidad', $cantidad)
+            ->with('listarUltimos', $ultimos);
     }
 
     public function verCategorias($id)
