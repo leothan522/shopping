@@ -1,6 +1,6 @@
 
 @include('web.section_header')
-@include('web.checkout.section_breadcrumb')
+@include('web.section_breadcrumb')
 
 <!-- Checkout Section Begin -->
 <section class="checkout spad">

@@ -13,13 +13,13 @@
             </div>
             <div class="col-lg-9 col-md-7">
 
-                @include('web.categorias.section_discount')
+                {{--@include('web.categorias.section_discount')--}}
 
                 <div class="filter__item">
                     <div class="row justify-content-center">
                         <div class="col-lg-4 col-md-4">
                             <div class="filter__found">
-                                <h6><span>16</span> Productos encontrados</h6>
+                                <h6><span>{{ $cantidad }}</span> Productos</h6>
                             </div>
                         </div>
                     </div>

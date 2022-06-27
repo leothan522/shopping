@@ -58,7 +58,11 @@
                 <div class="header__cart">
                     <ul>
                         <li>
-                            <a href="#">
+                            <a href="@if($ruta == 'android')
+                            {{ route('android.favoritos', auth()->id()) }}
+                            @else
+                            {{ route('web.favoritos') }}
+                            @endif">
                                 <i class="fa fa-heart"></i> <span id="header_favoritos">{{ $headerFavoritos }}</span>
                             </a>
                         </li>

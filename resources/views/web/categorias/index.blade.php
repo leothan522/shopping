@@ -4,7 +4,7 @@
 
 @section('content')
     @include('web.section_header')
-    @include('web.categorias.section_breadcrumb')
+    @include('web.section_breadcrumb')
     @include('web.categorias.section_product')
 @endsection
 

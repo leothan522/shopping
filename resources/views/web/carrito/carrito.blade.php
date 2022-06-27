@@ -2,7 +2,7 @@
 
 @include('web.section_header')
 
-@include('web.carrito.section_breadcrumb')
+@include('web.section_breadcrumb')
 
 <!-- Shoping Cart Section Begin -->
 <section class="shoping-cart spad">
@@ -132,7 +132,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row justify-content-center">
             @include('web.carrito.delivery')
             <div class="col-lg-6">
                 <div class="shoping__checkout">

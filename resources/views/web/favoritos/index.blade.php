@@ -3,16 +3,9 @@
 @section('title', 'Home')
 
 @section('content')
-
     @include('web.section_header')
     @include('web.section_breadcrumb')
-    @include('web.detalles.details')
-    @include('web.detalles.related')
-    <a href="#">
-        @include('web.home.section_banner')
-    </a>
-
-
+    @include('web.favoritos.section_latest')
 @endsection
 
 @section('css')

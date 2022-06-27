@@ -53,6 +53,8 @@ Route::middleware(['android'])->prefix('/android')->group(function (){
     Route::get('/{id}/home', [AppController::class, 'home'])->name('android.home');
     Route::get('/{id}/detalles', [AppController::class, 'verDetalles'])->name('android.detalles');
     Route::get('/{id}/carrito', [AppController::class, 'verCarrito'])->name('android.carrito');
+    Route::get('/{id}/categorias', [AppController::class, 'verCategorias'])->name('android.categorias');
+    Route::get('/{id}/favoritos', [AppController::class, 'verFavoritos'])->name('android.favoritos');
 
 });
 
@@ -64,6 +66,8 @@ Route::middleware(['auth'])->prefix('/web')->group(function (){
     Route::get('/home', [WebController::class, 'home'])->name('web.home');
     Route::get('/{id}/detalles', [WebController::class, 'verDetalles'])->name('web.detalles');
     Route::get('/carrito', [WebController::class, 'verCarrito'])->name('web.carrito');
+    Route::get('/{id}/categorias', [WebController::class, 'verCategorias'])->name('web.categorias');
+    Route::get('/favoritos', [WebController::class, 'verFavoritos'])->name('web.favoritos');
 
 
 });

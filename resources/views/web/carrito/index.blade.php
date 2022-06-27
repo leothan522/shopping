@@ -4,7 +4,6 @@
 
 @section('content')
     @include('web.carrito.carrito')
-
 @endsection
 
 @section('css')

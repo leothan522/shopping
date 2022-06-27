@@ -1,6 +1,35 @@
 <h4>Últimos Productos</h4>
 <div class="latest-product__slider owl-carousel">
-    <div class="latest-prdouct__slider__item">
+
+    @php($i = 1)
+    @foreach($listarUltimos as $stock)
+        @if($i == 1)
+            <div class="latest-prdouct__slider__item">
+                @endif
+                <a href="
+                                @if($ruta == 'android')
+                {{ route('android.detalles', $stock->id) }}
+                @else
+                {{ route('web.detalles', $stock->id) }}
+                @endif"
+                   onclick="preSubmit()" class="latest-product__item">
+                    <div class="latest-product__item__pic img-thumbnail">
+                        <img src="{{ asset(verImg($stock->producto->miniatura)) }}" alt="">
+                    </div>
+                    <div class="latest-product__item__text">
+                        <h6>{{ $stock->producto->nombre }}</h6>
+                        <span>{{ $stock->empresa->moneda }} {{ calcularIVA($stock->productos_id, $stock->pvp) }}</span>
+                    </div>
+                </a>
+                @if($i == 3)
+            </div>
+            @php($i = 0)
+        @endif
+        @php($i++)
+    @endforeach
+    @if($listarUltimos->count() < 6) </div> @endif
+
+    {{--<div class="latest-prdouct__slider__item">
         <a href="#" class="latest-product__item">
             <div class="latest-product__item__pic">
                 <img src="{{ asset('storage/categorias/t_kzZPmD0AQnOagpyYhWpDvIhKz9e4321wZejwyVuX.jpg') }}" alt="">
@@ -57,5 +86,5 @@
                 <span>$30.00</span>
             </div>
         </a>
-    </div>
+    </div>--}}
 </div>

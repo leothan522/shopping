@@ -7,6 +7,8 @@
     @include('web.section_header')
     @include('web.home.section_hero')
 
+    {{--@include('web.section_breadcrumb')--}}
+
     @if($listarCategorias->isNotEmpty())
         @include('web.home.section_categories')
     @endif

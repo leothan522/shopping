@@ -6,8 +6,8 @@
         </a>
     </div>
 </div>
-<div class="col-lg-6" id="lista_zonas">
-    <div class="shoping__continue">
+<div class="col-lg-6" >
+    <div class="shoping__continue" id="lista_zonas">
         <div class="shoping__discount">
             <h5>ZONA PARAE EL ENVIO</h5>
                 <form action="#">
