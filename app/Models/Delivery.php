@@ -12,7 +12,11 @@ class Delivery extends Model
     protected $fillable = [
         'users_id',
         'zonas_id',
-        'estatus'
+        'estatus',
+        'precio_dolar',
+        'precio_delivery',
+        'bs',
+        'nombre'
     ];
 
     public function zona()

@@ -60,8 +60,8 @@ Route::middleware(['android'])->prefix('/android')->group(function (){
 });
 
 Route::get('/web', [WebController::class, 'index'])->name('web.index');
-Route::get('/{id}/detalles', [WebController::class, 'guestDetalles'])->name('guest.detalles');
-Route::get('/{id}/categorias', [WebController::class, 'guestCategorias'])->name('guest.categorias');
+Route::get('guest/{id}/detalles', [WebController::class, 'guestDetalles'])->name('guest.detalles');
+Route::get('guest/{id}/categorias', [WebController::class, 'guestCategorias'])->name('guest.categorias');
 
 Route::middleware(['auth'])->prefix('/web')->group(function (){
 

@@ -16,10 +16,14 @@ class CreateDeliverysTable extends Migration
         Schema::create('deliverys', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('users_id')->unsigned();
-            $table->bigInteger('zonas_id')->unsigned();
+            $table->bigInteger('zonas_id')->unsigned()->nullable();
             $table->integer('estatus')->default(0);
+            $table->decimal('precio_dolar')->nullable();
+            $table->decimal('precio_delivery')->nullable();
+            $table->decimal('bs')->nullable();
+            $table->string('nombre')->nullable()->nullable();
             $table->foreign('users_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->foreign('zonas_id')->references('id')->on('zonas')->cascadeOnDelete();
+            $table->foreign('zonas_id')->references('id')->on('zonas')->nullOnDelete();
             $table->timestamps();
         });
     }

@@ -13,7 +13,12 @@ class Carrito extends Model
         'users_id',
         'stock_id',
         'cantidad',
-        'estatus'
+        'estatus',
+        'precio_dolar',
+        'precio_stock',
+        'total',
+        'iva',
+        'subtotal'
     ];
 
     public function stock()
