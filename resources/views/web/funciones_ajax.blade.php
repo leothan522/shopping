@@ -26,6 +26,18 @@
         }
     });
 
+    const Alerta = Swal.mixin({
+        toast: false,
+        //position: 'top-end',
+        showConfirmButton: true,
+        //timer: 3000,
+        //timerProgressBar: true,
+        /*didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }*/
+    });
+
     function preSubmit(){
         Cargando.fire();
     }
@@ -77,22 +89,37 @@
                 opcion:opcion,
             },
             success: function (data) {
-                Toast.fire({
-                    icon: data.type,
-                    title: data.message,
-                });
-                let div = document.getElementById('header_carrito');
-                div.innerHTML = data.cantidad;
-                let header = document.getElementById('header_item');
-                header.innerHTML = "$" + data.items;
-                if (data.opcion === "agregar"){
-                    let cart = document.getElementById('cart_actual');
-                    cart.innerHTML = data.cart;
-                    document.getElementById(data.input).value = 1;
+
+                if(data.type === "warning"){
+
+                    Alerta.fire({
+                        icon: data.type,
+                        title: data.message,
+                        //text: data.message,
+                    });
+
+                }else{
+
+                    Toast.fire({
+                        icon: data.type,
+                        title: data.message,
+                    });
+                    let div = document.getElementById('header_carrito');
+                    div.innerHTML = data.cantidad;
+                    let header = document.getElementById('header_item');
+                    header.innerHTML = "$" + data.items;
+                    if (data.opcion === "agregar"){
+                        let cart = document.getElementById('cart_actual');
+                        cart.innerHTML = data.cart;
+                        document.getElementById(data.input).value = 1;
+                    }
+                    if (data.type === "success"){
+                        document.getElementById(data.id).classList.add('fondo-favoritos')
+                    }
+
                 }
-                if (data.type === "success"){
-                    document.getElementById(data.id).classList.add('fondo-favoritos')
-                }
+
+
             }
         });
     });
@@ -163,37 +190,53 @@
                 total: total.dataset.cantidad,
             },
             success: function (data) {
-                Toast.fire({
-                    icon: data.type,
-                    title: data.message,
-                });
-                if (data.type === "success"){
-                    //document.getElementById(data.id).classList.add('fondo-favoritos')
-                    let subtotal = document.getElementById('carrito_subtotal');
-                    let iva = document.getElementById('carrito_iva');
-                    let total = document.getElementById('carrito_total');
-                    let delivery = document.getElementById('carrito_delivery');
-                    let header_items = document.getElementById('header_item');
-                    let carrito_item = document.getElementById(data.carrito_item);
-                    subtotal.dataset.cantidad = data.subtotal;
-                    subtotal.innerHTML = data.label_subtotal;
-                    iva.dataset.cantidad = data.iva;
-                    iva.innerHTML = data.label_iva;
-                    total.dataset.cantidad = data.total;
-                    total.innerHTML = data.label_total;
-                    delivery.dataset.cantidad = data.delivery;
-                    delivery.innerHTML = data.label_delivery;
-                    carrito_item.innerHTML = data.label_carrito_item;
-                    header_items.innerText = data.label_total;
-                    if (data.borrar === "si"){
-                        //let tr = document.getElementById(data.tr)
-                        $("#"+data.tr).remove();
+
+                if(data.type === "warning"){
+
+                    Alerta.fire({
+                        icon: data.type,
+                        title: data.message,
+                        //text: data.message,
+                    });
+                    var proQty = $('#' + data.id);
+                    proQty.val(data.cantidad);
+
+                }else{
+
+                    Toast.fire({
+                        icon: data.type,
+                        title: data.message,
+                    });
+                    if (data.type === "success"){
+                        //document.getElementById(data.id).classList.add('fondo-favoritos')
+                        let subtotal = document.getElementById('carrito_subtotal');
+                        let iva = document.getElementById('carrito_iva');
+                        let total = document.getElementById('carrito_total');
+                        let delivery = document.getElementById('carrito_delivery');
+                        let header_items = document.getElementById('header_item');
+                        let carrito_item = document.getElementById(data.carrito_item);
+                        subtotal.dataset.cantidad = data.subtotal;
+                        subtotal.innerHTML = data.label_subtotal;
+                        iva.dataset.cantidad = data.iva;
+                        iva.innerHTML = data.label_iva;
+                        total.dataset.cantidad = data.total;
+                        total.innerHTML = data.label_total;
+                        delivery.dataset.cantidad = data.delivery;
+                        delivery.innerHTML = data.label_delivery;
+                        carrito_item.innerHTML = data.label_carrito_item;
+                        header_items.innerText = data.label_total;
+                        if (data.borrar === "si"){
+                            //let tr = document.getElementById(data.tr)
+                            $("#"+data.tr).remove();
+                        }
+                        if(!data.total){
+                            document.getElementById('li_delivery').classList.add('d-none');
+                            document.getElementById('lista_zonas').classList.add('d-none');
+                            document.getElementById('boton_incluir_del').classList.add('d-none');
+                        }
+
                     }
-                    if(!data.total){
-                        document.getElementById('li_delivery').classList.add('d-none');
-                        document.getElementById('lista_zonas').classList.add('d-none');
-                        document.getElementById('boton_incluir_del').classList.add('d-none');
-                    }
+
                 }
             }
         });

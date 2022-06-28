@@ -69,7 +69,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-tag"></i></span>
                     </div>
-                        {!! Form::select('categoria', $listarCategorias, null, ['class' => 'custom-select select2bs4', 'wire:model.defer' => 'categoria' , 'placeholder' => 'Seleccione']); !!}
+                        {!! Form::select('categoria', $listarCategorias, null, ['class' => 'custom-select select2bs4', 'wire:model' => 'categoria' , 'placeholder' => 'Seleccione']); !!}
                 </div>
                 @error('categoria')
                 <span class="col-sm-12 text-sm text-bold text-danger">

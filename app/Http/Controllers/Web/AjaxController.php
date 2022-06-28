@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Carrito;
 use App\Models\Delivery;
 use App\Models\Parametro;
+use App\Models\Stock;
 use App\Models\Zona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -111,49 +112,67 @@ class AjaxController extends Controller
             $id_stock = $request->id_stock;
             $cantidad = $request->cantidad;
 
-            $carrito = Carrito::where('users_id', $id_usuario)
-                ->where('stock_id', $id_stock)
-                ->where('estatus', 0)
-                ->first();
+            $stock = Stock::find($id_stock);
+            $disponible = $stock->stock_disponible;
+            $comprometido = $stock->stock_comprometido;
+            if ($disponible >= $cantidad){
 
-            if ($carrito){
+                //restamos del stock_disponible
+                $stock->stock_disponible = $disponible - $cantidad;
+                $stock->stock_comprometido = $comprometido + $cantidad;
+                $stock->update();
 
-                $nueva_cantidad = $carrito->cantidad + $cantidad;
-                $nombre = $carrito->stock->producto->nombre;
-                $carrito->cantidad = $nueva_cantidad;
-                $carrito->update();
-                $totalizar = $this->totalizar(Auth::id());
+                $carrito = Carrito::where('users_id', $id_usuario)
+                    ->where('stock_id', $id_stock)
+                    ->where('estatus', 0)
+                    ->first();
 
-                $json = [
-                    'type' => 'info',
-                    'message' => "Tienes ".formatoMillares($nueva_cantidad, 0)." ". $nombre,
-                    'cantidad' => formatoMillares($totalizar['cantidad'], 0),
-                    'items' => formatoMillares($totalizar['total'], 2),
-                    'id' => "carrito_$id_stock",
-                    'cart' => formatoMillares($totalizar['cantidad'], 0),
-                    'opcion' => $opcion,
-                    'input' => 'cantAgregar'
-                ];
+                if ($carrito){
+
+                    $nueva_cantidad = $carrito->cantidad + $cantidad;
+                    $nombre = $carrito->stock->producto->nombre;
+                    $carrito->cantidad = $nueva_cantidad;
+                    $carrito->update();
+
+                    $type = 'info';
+                    $mensage = "Tienes ".formatoMillares($nueva_cantidad, 0)." ". $nombre;
+
+                }else{
+
+                    $carrito = new Carrito();
+                    $carrito->users_id = $id_usuario;
+                    $carrito->stock_id = $id_stock;
+                    $carrito->cantidad = $cantidad;
+                    $carrito->save();
+
+                    $type = 'success';
+                    $mensage = 'Agregado al Carrito.';
+
+                }
+
+                $nueva_cantidad = $carrito->cantidad;
+
             }else{
 
-                $carrito = new Carrito();
-                $carrito->users_id = $id_usuario;
-                $carrito->stock_id = $id_stock;
-                $carrito->cantidad = $cantidad;
-                $carrito->save();
-                $totalizar = $this->totalizar(Auth::id());
+                $type = 'warning';
+                $mensage = "Stock Agotado";
+                $nueva_cantidad = $cantidad;
 
-                $json = [
-                    'type' => 'success',
-                    'message' => 'Agregado al Carrito.',
-                    'cantidad' => formatoMillares($totalizar['cantidad'], 0),
-                    'items' => formatoMillares($totalizar['total'], 2),
-                    'id' => "carrito_$id_stock",
-                    'cart' => formatoMillares($carrito->cantidad, 0),
-                    'opcion' => $opcion,
-                    'input' => 'cantAgregar',
-                ];
             }
+
+            $totalizar = $this->totalizar(Auth::id());
+
+            $json = [
+                'type' => $type,
+                'message' => $mensage,
+                'cantidad' => formatoMillares($totalizar['cantidad'], 0),
+                'items' => formatoMillares($totalizar['total'], 2),
+                'id' => "carrito_$id_stock",
+                'cart' => formatoMillares($nueva_cantidad, 0),
+                'opcion' => $opcion,
+                'input' => 'cantAgregar',
+            ];
+
         }
 
         if($opcion == "remover"){
@@ -162,7 +181,17 @@ class AjaxController extends Controller
             $tr = $request->tr;
 
             $carrito = Carrito::find($id_carrito);
+            $id_stock = $carrito->stock_id;
+            $cantidad = $carrito->cantidad;
             $carrito->delete();
+
+            $stock = Stock::find($id_stock);
+            $disponible = $stock->stock_disponible;
+            $comprometido = $stock->stock_comprometido;
+            $stock->stock_disponible = $disponible + $cantidad;
+            $stock->stock_comprometido = $comprometido - $cantidad;
+            $stock->update();
+
             $totalizar = $this->totalizar(Auth::id());
 
             $json = [
@@ -191,11 +220,19 @@ class AjaxController extends Controller
             $iva = $request->iva;
             $total = $request->total;
 
+            $type = 'success';
+            $mensage = 'Carrito Actualizado.';
+
             $carrito = Carrito::find($carrito_id);
             $carrito_producto = $carrito->stock->id;
             $carrito_cantidad = $carrito->cantidad;
             $carrito_pvp = $carrito->stock->pvp;
             $carrito_precio = calcularPrecio($carrito_producto, $carrito_pvp);
+
+            $stock = Stock::find($carrito_producto);
+            $disponible = $stock->stock_disponible;
+            $comprometido = $stock->stock_comprometido;
+
             if ($boton == "btn-sumar"){
                 $cantidad = $carrito_cantidad + 1;
                 $nuevo_item = $carrito_precio * $cantidad;
@@ -208,12 +245,31 @@ class AjaxController extends Controller
                 $cantidad = $valor;
                 $nuevo_item = $carrito_precio * $cantidad;
             }
-            $carrito->cantidad = $cantidad;
 
             if ($cantidad <= 0){
                 $carrito->delete();
+                $stock->stock_disponible = $disponible + $carrito_cantidad;
+                $stock->stock_comprometido = $comprometido - $carrito_cantidad;
+                $stock->update();
                 $borrar = "si";
             }else{
+                if ($cantidad > $carrito_cantidad){
+                    $diferencia = $cantidad - $carrito_cantidad;
+                    if ($disponible < $diferencia){
+                        $type = "warning";
+                        $mensage = "Stock Agotado.";
+                    }else{
+                        $stock->stock_disponible = $disponible - $diferencia;
+                        $stock->stock_comprometido = $comprometido + $diferencia;
+                        $carrito->cantidad = $cantidad;
+                    }
+                }else{
+                    $diferencia = $carrito_cantidad - $cantidad;
+                    $stock->stock_disponible = $disponible + $diferencia;
+                    $stock->stock_comprometido = $comprometido - $diferencia;
+                    $carrito->cantidad = $cantidad;
+                }
+                $stock->update();
                 $carrito->update();
                 $borrar = "no";
             }
@@ -221,8 +277,8 @@ class AjaxController extends Controller
             $totalizar = $this->totalizar(Auth::id());
 
             $json = [
-                'type' => 'success',
-                'message' => 'Carrito Actualizado.',
+                'type' => $type,
+                'message' => $mensage,
                 'valor' => $cantidad,
                 'carrito_item' => $carrito_item,
                 'label_carrito_item' => formatoMillares($nuevo_item, 2),
@@ -235,7 +291,9 @@ class AjaxController extends Controller
                 'label_iva' => "$ ".formatoMillares($totalizar['iva'], 2),
                 'label_total' => "$ ".formatoMillares($totalizar['total'], 2),
                 'borrar' => $borrar,
-                'tr' => "tr_$carrito_id"
+                'tr' => "tr_$carrito_id",
+                'id' => 'valor_id_'.$carrito_id,
+                'cantidad' => formatoMillares($carrito_cantidad, 0)
             ];
         }
 
@@ -299,9 +357,6 @@ class AjaxController extends Controller
                 'label_total' => "$ ".formatoMillares($totalizar['total'], 2),
             ];
         }
-
-
-
 
         return response()->json($json);
     }

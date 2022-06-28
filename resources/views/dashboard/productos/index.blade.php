@@ -97,4 +97,6 @@
             @this.set('categoria', this.value);
         })
     })
+
+
 </script>

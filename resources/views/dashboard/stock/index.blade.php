@@ -99,7 +99,8 @@
     document.addEventListener('livewire:load', function () {
         //Initialize Select2 Elements
         $('.select2bs4').select2({
-            theme: 'bootstrap4'
+            theme: 'bootstrap4',
+            dropdownParent: $("#modal-lg-stock")
         });
         $('.select2bs4').on('change', function () {
         @this.set('producto', this.value);
