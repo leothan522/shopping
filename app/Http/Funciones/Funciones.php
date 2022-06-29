@@ -411,3 +411,25 @@ function calcularPrecio($id, $pvp, $iva = false, $label = false)
     return $resultado;
 }
 
+function verIconoEstatusPedico($estatus)
+{
+    $status = [
+        '0' => '<i class="fas fa-exclamation-triangle text-warning"></i>',
+        '1' => '<i class="fas fa-money-check-alt text-info"></i>',
+        '2' => '<i class="fas fa-shipping-fast"></i>',
+        '3' => '<i class="fas fa-check-circle text-success"></i>'
+    ];
+    return $status[$estatus];
+}
+
+function verIconoMetodosPago($metodo)
+{
+    $status = [
+        'efectivo' => '<i class="fas fa-money-bill-wave"></i>',
+        'debito' => '<i class="far fa-credit-card"></i>',
+        'transferencia' => '<i class="fas fa-money-check"></i>',
+        'movil' => '<i class="fas fa-mobile-alt"></i>'
+    ];
+    return $status[$metodo];
+}
+

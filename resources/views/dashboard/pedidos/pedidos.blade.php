@@ -22,7 +22,7 @@
 @endsection
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
+    @livewire('pedidos-component')
 @endsection
 
 @section('footer')
