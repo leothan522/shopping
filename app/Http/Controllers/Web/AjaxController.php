@@ -734,6 +734,7 @@ class AjaxController extends Controller
             'alert_direccion_1' => $alert_direccion_1,
             'alert_metodo' => $alert_metodo,
             'alert_comprobante' => $alert_comprobante,
+            'id' => $id_pedido
         ];
         return response()->json($json);
     }

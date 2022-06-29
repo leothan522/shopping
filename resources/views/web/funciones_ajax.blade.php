@@ -592,7 +592,7 @@
 
                 }else{
 
-                    window.location.href = "{{ route('web.home') }}";
+                    window.location.href = "{{ route('web.pedidos') }}" + "/" + data.id;
 
                     /*Toast.fire({
                     icon: data.type,

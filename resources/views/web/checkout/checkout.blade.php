@@ -109,7 +109,7 @@
                             </ul>
                             <div class="checkout__order__subtotal">Subtotal <span>${{ formatoMillares($pedido->subtotal, 2) }}</span></div>
                             <div class="checkout__order__total">I.V.A.(16%) <span class="text-dark">${{ formatoMillares($pedido->iva, 2) }}</span></div>
-                            @if($pedido->deliveri)
+                            @if($pedido->delivery)
                             <div class="checkout__order__total">Delivery <span class="text-dark">${{ formatoMillares($pedido->delivery, 2) }}</span></div>
                             @endif
                             <div class="checkout__order__total">Total <span>${{ formatoMillares($pedido->total, 2) }}</span></div>

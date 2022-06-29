@@ -25,7 +25,7 @@
                                     <i class="fa fa-user"></i> {{ auth()->user()->name }}
                                 @endif
                             </li>
-                            @if(auth()->user()->role > 1)
+                            {{--@if(auth()->user()->role > 1)
                                 @if($ruta != "android")
                                     <li>
                                         <a href="{{ route('dashboard') }}" class="btn-link text-dark">
@@ -33,7 +33,16 @@
                                         </a>
                                     </li>
                                 @endif
-                            @endif
+                            @endif--}}
+                            <li>
+                                @if($ruta != "android")
+                                    <a href="{{ route('web.pedidos') }}" class="btn-link text-dark">
+                                        <i class="fa fa-shopping-bag"></i> Tus Pedidos
+                                    </a>
+                                @else
+                                    <i class="fa fa-user"></i> {{ auth()->user()->name }}
+                                @endif
+                            </li>
                         </ul>
                         @endif
                     </div>

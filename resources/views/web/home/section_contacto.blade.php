@@ -8,8 +8,8 @@
                         <i class="fa fa-phone"></i>
                     </div>
                     <div class="hero__search__phone__text">
-                        <h5>+65 11.188.888</h5>
-                        <span>support 24/7 time</span>
+                        <h5>+65 424.999.99.99</h5>
+                        <span>soporte 24/7 tiempo</span>
                     </div>
                 </div>
             </div>

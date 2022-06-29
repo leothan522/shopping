@@ -572,7 +572,7 @@ class WebController extends Controller
         $pedido = Pedido::findOrFail($id);
 
         if ($pedido->estatus > 0){
-            return redirect()->route('web.home');
+            return redirect()->route('web.pedidos', $pedido->id);
         }
 
         $listarCarrito = Carrito::where('pedidos_id', $pedido->id)->get();
@@ -596,6 +596,44 @@ class WebController extends Controller
             ->with('pedido', $pedido)
             ->with('listarCarrito', $listarCarrito)
             ->with('listarMetodos', $listarMetodos)
+            ;
+
+    }
+
+    public function verPedidos($id = null)
+    {
+        $favoritos = $this->headerFavoritos();
+        $carrito = $this->headerCarrito();
+
+        if (is_null($id)){
+            $pedido = null;
+            $listarCarrito = null;
+        }else{
+            $pedido = Pedido::findOrFail($id);
+            if ($pedido->estatus < 1){
+                return redirect()->route('web.checkout', $pedido->id);
+            }
+            $listarCarrito = Carrito::where('pedidos_id', $pedido->id)->get();
+            $listarMetodos = Parametro::where('nombre', 'metodo_pago')->where('tabla_id', 1)->get();
+        }
+
+        $listarPedidos = Pedido::where('users_id', Auth::id())
+            ->orderBy('numero', 'DESC')
+            ->get();
+
+        //dd($listarPedidos);
+
+
+        return view('web.pedidos.index')
+            ->with('ruta', $carrito['ruta'])
+            ->with('headerFavoritos', $favoritos)
+            ->with('headerItems', $carrito['items'])
+            ->with('headerTotal', $carrito['total'])
+            ->with('modulo', 'Checkout')
+            ->with('titulo', null)
+            ->with('pedido', $pedido)
+            ->with('listarCarrito', $listarCarrito)
+            ->with('listarPedidos', $listarPedidos)
             ;
 
     }
