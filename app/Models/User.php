@@ -100,5 +100,10 @@ class User extends Authenticatable
         return $this->hasMany(Carrito::class, 'users_id', 'id');
     }
 
+    public function clientes()
+    {
+        return $this->hasMany(Cliente::class, 'clientes_id', 'id');
+    }
+
 
 }

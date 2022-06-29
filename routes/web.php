@@ -67,12 +67,16 @@ Route::middleware(['auth'])->prefix('/web')->group(function (){
 
     Route::post('/ajax/favoritos', [AjaxController::class, 'favoritos'])->name('ajax.favoritos');
     Route::post('/ajax/carrito', [AjaxController::class, 'carrito'])->name('ajax.carrito');
+    Route::post('/ajax/cliente', [AjaxController::class, 'cliente'])->name('ajax.cliente');
+    Route::post('/ajax/metodo', [AjaxController::class, 'metodo'])->name('ajax.metodo');
+    Route::post('/ajax/pedido', [AjaxController::class, 'procesarPedido'])->name('ajax.pedido');
 
     Route::get('/home', [WebController::class, 'home'])->name('web.home');
     Route::get('/carrito', [WebController::class, 'verCarrito'])->name('web.carrito');
     Route::get('/{id}/detalles', [WebController::class, 'verDetalles'])->name('web.detalles');
     Route::get('/{id}/categorias', [WebController::class, 'verCategorias'])->name('web.categorias');
     Route::get('/favoritos', [WebController::class, 'verFavoritos'])->name('web.favoritos');
+    Route::get('/checkout/{id?}', [WebController::class, 'verCheckout'])->name('web.checkout');
 
     Route::get('/perfil', function (){
         return view('profile.show_default');

@@ -18,7 +18,8 @@ class Carrito extends Model
         'precio_stock',
         'total',
         'iva',
-        'subtotal'
+        'subtotal',
+        'pedidos_id'
     ];
 
     public function stock()
@@ -29,6 +30,11 @@ class Carrito extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'users_id', 'id');
+    }
+
+    public function pedido()
+    {
+        return $this->belongsTo(Pedido::class, 'pedidos_id', 'id');
     }
 
 }

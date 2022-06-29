@@ -163,7 +163,12 @@
                             </span>
                         </li>
                     </ul>
-                    <a href="#" class="primary-btn btn_procesar">PROCESAR CARRITO</a>
+                    <a href="#" class="primary-btn btn_procesar_carrito"
+                       @if($listarCarrito->isNotEmpty())
+                        data-estatus="lleno"
+                        @else
+                       data-estatus="vacio"
+                        @endif id="btn_procesar_carrito">PROCESAR CARRITO</a>
                 </div>
             </div>
         </div>

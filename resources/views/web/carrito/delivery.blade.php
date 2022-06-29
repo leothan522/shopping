@@ -11,10 +11,11 @@
 <div class="col-lg-6" >
     <div class="shoping__continue" id="lista_zonas">
         @if($listarCarrito->isNotEmpty())
+            <input type="hidden" id="estatus_zona" value="activo">
             <div class="shoping__discount">
             <h5>ZONA PARAE EL ENVIO</h5>
                 <form action="#">
-                    <select class="select-zonas" id="select_zo">
+                    <select class="select-zonas" id="select_zo" data-estatus="activo">
                     @if(!is_null($delivery_zona))
                             <option value="{{ $delivery_zona }}">{{ $delivery_nombre }}</option>
                             @else
@@ -27,6 +28,8 @@
                     </select>
                 </form>
         </div>
+            @else
+            <input type="hidden" id="estatus_zona" value="inactivo">
         @endif
     </div>
 </div>

@@ -18,15 +18,15 @@ class CreatePedidosTable extends Migration
             $table->string('numero')->unique()->nullable();
             $table->date('fecha');
             $table->decimal('precio_dolar', 12, 2);
-            $table->decimal('subtotal', 12, 2);
-            $table->decimal('iva', 12, 2);
-            $table->decimal('delivery', 12, 2);
-            $table->decimal('total', 12, 2);
-            $table->decimal('bs', 12, 2);
+            $table->decimal('subtotal', 12, 2)->nullable();
+            $table->decimal('iva', 12, 2)->nullable();
+            $table->decimal('delivery', 12, 2)->nullable();
+            $table->decimal('total', 12, 2)->nullable();
+            $table->decimal('bs', 12, 2)->nullable();
             $table->bigInteger('users_id')->unsigned();
-            $table->bigInteger('deliverys_id')->unsigned()->nullable();
+            $table->integer('estatus')->default(0);
             $table->foreign('users_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->foreign('deliverys_id')->references('id')->on('deliverys')->nullOnDelete();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

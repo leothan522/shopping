@@ -3,7 +3,7 @@
 @section('title', 'Home')
 
 @section('content')
-    @include('web.checkout.che')
+    @include('web.checkout.checkout')
 
 @endsection
 

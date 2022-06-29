@@ -150,6 +150,7 @@
                     let total = document.getElementById('carrito_total');
                     let delivery = document.getElementById('carrito_delivery');
                     let header_items = document.getElementById('header_item')                                                                                                                                                                                                                                                                                                                                                                                                           ;
+                    let boton = document.getElementById('btn_procesar_carrito')                                                                                                                                                                                                                                                                                                                                                                                                           ;
                     subtotal.dataset.cantidad = data.subtotal;
                     subtotal.innerHTML = data.label_subtotal;
                     iva.dataset.cantidad = data.iva;
@@ -161,9 +162,11 @@
                     header_items.innerText = data.label_total;
                     $("#"+data.tr).remove();
                     if(!data.total){
+                        boton.dataset.estatus = "vacio";
                         document.getElementById('li_delivery').classList.add('d-none');
                         document.getElementById('lista_zonas').classList.add('d-none');
                         document.getElementById('boton_incluir_del').classList.add('d-none');
+
                     }
                 }
             }
@@ -215,6 +218,7 @@
                         let delivery = document.getElementById('carrito_delivery');
                         let header_items = document.getElementById('header_item');
                         let carrito_item = document.getElementById(data.carrito_item);
+                        let boton = document.getElementById('btn_procesar_carrito')
                         subtotal.dataset.cantidad = data.subtotal;
                         subtotal.innerHTML = data.label_subtotal;
                         iva.dataset.cantidad = data.iva;
@@ -230,6 +234,7 @@
                             $("#"+data.tr).remove();
                         }
                         if(!data.total){
+                            boton.dataset.estatus = "vacio";
                             document.getElementById('li_delivery').classList.add('d-none');
                             document.getElementById('lista_zonas').classList.add('d-none');
                             document.getElementById('boton_incluir_del').classList.add('d-none');
@@ -292,17 +297,20 @@
                 });
                 let boton = document.getElementById('btn_delivery');
                 let div = document.getElementById('lista_zonas');
+                let estatus_zona = document.getElementById('estatus_zona');
                 if (data.accion === "incluir"){
                     //document.getElementById(data.id).classList.add('fondo-favoritos')
                     div.classList.add('d-none');
                     boton.innerText = "INCLUIR DELIVERY";
                     boton.dataset.accion = "incluir";
+                    estatus_zona.value = "inactivo";
                     //$("#"+data.tr).remove();
                 }else{
                     div.classList.remove('d-none');
                     boton.innerText = "NO INCLUIR DELIVERY";
                     boton.dataset.accion = "remover";
                     //$("#select_zonas").val("hola");
+                    estatus_zona.value = "activo";
                 }
                 let subtotal = document.getElementById('carrito_subtotal');
                 let iva = document.getElementById('carrito_iva');
@@ -384,9 +392,250 @@
         });
     });
 
-    $(".btn_procesar").click(function(e) {
+    $(".btn_procesar_carrito").click(function(e) {
         e.preventDefault();
-        Cargando.fire();
+        //Cargando.fire();
+        let estatus = this.dataset.estatus;
+        if(estatus == "vacio"){
+            //Cargando.fire();
+            Alerta.fire({
+                icon: "warning",
+                title: "Tu carrito esta vacio.",
+                //text: data.message,
+            });
+        }else{
+            let estatus_zona = document.getElementById('estatus_zona').value;
+            let zona_id = document.getElementById('select_zo').value;
+            //alert(estatus_zona + " | " + zona_id);
+            if (estatus_zona == "activo" && zona_id == "vacia"){
+                //alert('elije zona para envio')
+                Alerta.fire({
+                    icon: "warning",
+                    title: "Elije la zona para el envio.",
+                    //text: data.message,
+                });
+
+            }else{
+                //alert('procesar')
+                Cargando.fire();
+                let opcion = 'btn-procesar';
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('ajax.carrito') }}",
+                    data: {
+                        opcion:opcion,
+                    },
+                    success: function (data) {
+
+                        if(data.type === "warning"){
+
+                            Alerta.fire({
+                                icon: data.type,
+                                title: data.message,
+                                //text: data.message,
+                            });
+
+                        }else{
+                            window.location.href = "{{ route('web.checkout') }}" + "/" + data.id;
+                        }
+                    }
+                });
+            }
+        }
     });
 
+    $("#checkout_cedula").change(function(e) {
+        e.preventDefault();
+        Cargando.fire();
+        let cedula = this.value;
+        //alert(cedula);
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('ajax.cliente') }}",
+            data: {
+                cedula:cedula,
+            },
+            success: function (data) {
+                Toast.fire({
+                    icon: data.type,
+                    title: data.message,
+                });
+                let cedula = document.getElementById('checkout_cedula');
+                let nombre = document.getElementById('checkout_nombre');
+                let telefono = document.getElementById('checkout_telefono');
+                let direccion_1 = document.getElementById('checkout_direccion_1');
+                let direccion_2 = document.getElementById('checkout_direccion_2');
+                cedula.dataset.opcion = data.opcion;
+                nombre.value = data.nombre;
+                telefono.value = data.telefono;
+                direccion_1.value = data.direccion_1;
+                direccion_2.value = data.direccion_2;
+                /*let subtotal = document.getElementById('carrito_subtotal');
+                subtotal.dataset.cantidad = data.subtotal;
+                subtotal.innerHTML = data.label_subtotal;*/
+            }
+        });
+    });
+
+    $("#checkout_metodo").change(function(e) {
+        e.preventDefault();
+        Cargando.fire();
+        let id_parametro = this.value;
+        let bs = document.getElementById('monto_bolivares').dataset.cantidad;
+        //alert(cedula);
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('ajax.metodo') }}",
+            data: {
+                id_parametro:id_parametro,
+                bs:bs
+            },
+            success: function (data) {
+
+                let div = document.getElementById('div_comprobante');
+                let comprobante = document.getElementById('checkout_comprobante');
+                let cuentas = document.getElementById('checkout_label_cuentas');
+                cuentas.innerHTML = data.label;
+
+                if(data.type === "warning"){
+
+                    Alerta.fire({
+                        icon: data.type,
+                        title: data.message,
+                        //text: data.message,
+                    });
+
+                    div.classList.add('d-none');
+                    comprobante.dataset.requerido = "no";
+
+                }else{
+
+                    Toast.fire({
+                        icon: data.type,
+                        title: data.message,
+                    });
+                    if (data.div === 'quitar'){
+                        div.classList.add('d-none');
+                        comprobante.dataset.requerido = "no";
+                    }else{
+                        div.classList.remove('d-none');
+                        comprobante.dataset.requerido = "si";
+                    }
+                }
+            }
+        });
+    });
+
+    $("#btn_procesar_pedido").click(function(e) {
+        e.preventDefault();
+        Cargando.fire();
+        let cedula = document.getElementById('checkout_cedula').value;
+        let opcion = document.getElementById('checkout_cedula').dataset.opcion;
+        let nombre = document.getElementById('checkout_nombre').value;
+        let telefono = document.getElementById('checkout_telefono').value;
+        let direccion_1 = document.getElementById('checkout_direccion_1').value;
+        let direccion_2 = document.getElementById('checkout_direccion_2').value;
+        let metodo = document.getElementById('checkout_metodo').value;
+        let comprobante = document.getElementById('checkout_comprobante').value;
+        let requerido = document.getElementById('checkout_comprobante').dataset.requerido;
+        let id_pedido = this.dataset.idPedido;
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('ajax.pedido') }}",
+            data: {
+                cedula:cedula,
+                opcion:opcion,
+                nombre:nombre,
+                telefono:telefono,
+                direccion_1:direccion_1,
+                direccion_2:direccion_2,
+                metodo:metodo,
+                comprobante:comprobante,
+                requerido:requerido,
+                id_pedido:id_pedido
+            },
+            success: function (data) {
+
+                if(data.type === "warning"){
+
+                    Alerta.fire({
+                        icon: data.type,
+                        title: data.message,
+                        //text: data.message,
+                    });
+
+                    let cedula = document.getElementById('alert_cedula');
+                    let nombre = document.getElementById('alert_nombre');
+                    let telefono = document.getElementById('alert_telefono');
+                    let direccion_1 = document.getElementById('alert_direccion_1');
+                    let metodo = document.getElementById('alert_metodo');
+                    let comprobante = document.getElementById('alert_comprobante');
+
+                    if (data.alert_cedula){
+                        cedula.classList.remove('d-none');
+                    }
+                    if (data.alert_nombre){
+                        nombre.classList.remove('d-none');
+                    }
+                    if (data.alert_telefono){
+                        telefono.classList.remove('d-none');
+                    }
+                    if (data.alert_direccion_1){
+                        direccion_1.classList.remove('d-none');
+                    }
+                    if (data.alert_metodo){
+                        metodo.classList.remove('d-none');
+                    }
+                    if (data.alert_comprobante){
+                        comprobante.classList.remove('d-none');
+                    }
+
+                }else{
+
+                    window.location.href = "{{ route('web.home') }}";
+
+                    /*Toast.fire({
+                    icon: data.type,
+                    title: data.message,
+                    });*/
+
+                }
+
+
+
+                /*let div = document.getElementById('div_comprobante');
+                let comprobante = document.getElementById('checkout_comprobante');
+                let cuentas = document.getElementById('checkout_label_cuentas');
+                cuentas.innerHTML = data.label;
+
+                if(data.type === "warning"){
+
+                    Alerta.fire({
+                        icon: data.type,
+                        title: data.message,
+                        //text: data.message,
+                    });
+
+                    div.classList.add('d-none');
+                    comprobante.dataset.requerido = "no";
+
+                }else{
+
+                    Toast.fire({
+                        icon: data.type,
+                        title: data.message,
+                    });
+                    if (data.div === 'quitar'){
+                        div.classList.add('d-none');
+                        comprobante.dataset.requerido = "no";
+                    }else{
+                        div.classList.remove('d-none');
+                        comprobante.dataset.requerido = "si";
+                    }
+                }*/
+            }
+        });
+
+
+    });
 </script>

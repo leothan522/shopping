@@ -8,6 +8,7 @@ use App\Models\Categoria;
 use App\Models\Delivery;
 use App\Models\Empresa;
 use App\Models\Parametro;
+use App\Models\Pedido;
 use App\Models\Producto;
 use App\Models\Stock;
 use App\Models\Zona;
@@ -561,6 +562,42 @@ class WebController extends Controller
             ->with('modulo', 'Favoritos')
             ->with('titulo', null)
             ->with('listarFavoritos', $verFavoritos);
+    }
+
+    public function verCheckout($id = null)
+    {
+        $favoritos = $this->headerFavoritos();
+        $carrito = $this->headerCarrito();
+
+        $pedido = Pedido::findOrFail($id);
+
+        if ($pedido->estatus > 0){
+            return redirect()->route('web.home');
+        }
+
+        $listarCarrito = Carrito::where('pedidos_id', $pedido->id)->get();
+        $listarMetodos = Parametro::where('nombre', 'metodo_pago')->where('tabla_id', 1)->get();
+        $listarMetodos->each(function ($parametro){
+            $nombre = str_replace("_", " ", $parametro->valor);
+            if ($parametro->valor == 'movil'){
+                $nombre = "pago movil";
+            }
+            $parametro->metodo = ucwords($nombre);
+        });
+
+
+        return view('web.checkout.index')
+            ->with('ruta', $carrito['ruta'])
+            ->with('headerFavoritos', $favoritos)
+            ->with('headerItems', $carrito['items'])
+            ->with('headerTotal', $carrito['total'])
+            ->with('modulo', 'Checkout')
+            ->with('titulo', null)
+            ->with('pedido', $pedido)
+            ->with('listarCarrito', $listarCarrito)
+            ->with('listarMetodos', $listarMetodos)
+            ;
+
     }
 
 }
