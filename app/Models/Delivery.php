@@ -17,7 +17,8 @@ class Delivery extends Model
         'precio_delivery',
         'bs',
         'nombre',
-        'pedidos_id'
+        'pedidos_id',
+        'mensajeros_id'
     ];
 
     public function zona()
@@ -28,6 +29,11 @@ class Delivery extends Model
     public function pedido()
     {
         return $this->belongsTo(Pedido::class, 'pedidos_id', 'id');
+    }
+
+    public function mensajero()
+    {
+        return $this->belongsTo(Mensajero::class, 'mensajeros_id', 'id');
     }
 
 }

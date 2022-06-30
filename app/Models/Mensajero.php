@@ -21,4 +21,9 @@ class Mensajero extends Model
             ->orWhere('nombre', 'LIKE', "%$keyword%");
     }
 
+    public function delivery()
+    {
+        return $this->hasMany(Delivery::class, 'mensajeros_id', 'id');
+    }
+
 }

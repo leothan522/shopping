@@ -33,8 +33,15 @@
                     </td>
                     <td class="text-center">{{ formatoMillares($pedido->items, 0)  }}</td>
                     <td class="text-right">${{ formatoMillares($pedido->total)  }}</td>
-                    <td class="text-left"><small class="">{{ $pedido->metodo }}</small></td>
-                    <td class="text-center">{{ fecha($pedido->fecha) }}</td>
+                    <td class="text-left">
+                        <small>
+                            {{ $pedido->metodo }}
+                            @if($pedido->comprobante_pago)
+                                <span class="col-md-12 text-bold text-primary">{{ $pedido->comprobante_pago }}</span>
+                            @endif
+                        </small>
+                    </td>
+                    <td class="text-center"><small>{{ fecha($pedido->fecha) }}</small></td>
                     <td class="text-center">{!! verIconoEstatusPedico($pedido->estatus) !!}</td>
                     <td>
                         <div class="btn-group">
@@ -43,11 +50,17 @@
                                 <i class="fas fa-eye"></i>
                             </button>
 
-                            <button type="button" {{--wire:click="show({{ $stock->id }})"--}}
-                            data-toggle="modal" {{--data-target="#modal-lg-show"--}} class="btn btn-info btn-sm">
-                                <i class="fas fa-print"></i>
-                            </button>
-
+                            @if(leerJson(Auth::user()->permisos, 'pedidos.imprimir') || Auth::user()->role == 1 || Auth::user()->role == 100)
+                                <button type="button" {{--wire:click="show({{ $stock->id }})"--}}
+                                data-toggle="modal" {{--data-target="#modal-lg-show"--}} class="btn btn-info btn-sm">
+                                    <i class="fas fa-print"></i>
+                                </button>
+                                @else
+                                <button type="button" {{--wire:click="show({{ $stock->id }})"--}}
+                                data-toggle="modal" {{--data-target="#modal-lg-show"--}} class="btn btn-info btn-sm disabled">
+                                    <i class="fas fa-print"></i>
+                                </button>
+                            @endif
                             {{--<button type="button" class="btn btn-info btn-sm disabled">
                                 <i class="fas fa-trash-alt"></i>
                             </button>--}}

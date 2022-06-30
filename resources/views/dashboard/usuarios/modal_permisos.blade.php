@@ -35,6 +35,9 @@
                     <div class="col-md-4">
                         @include('dashboard.usuarios.permisos.stock')
                     </div>
+                    <div class="col-md-4">
+                        @include('dashboard.usuarios.permisos.pedidos')
+                    </div>
                 </div>
 
 

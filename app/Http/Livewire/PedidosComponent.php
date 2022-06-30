@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Carrito;
 use App\Models\Delivery;
+use App\Models\Mensajero;
 use App\Models\Parametro;
 use App\Models\Pedido;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -19,7 +20,7 @@ class PedidosComponent extends Component
 
     public $pedido_id, $numero, $fecha, $precio_dolar, $subtotal, $iva, $delivery, $total, $bs, $users_id, $estatus,
         $cedula, $nombre, $telefono, $direccion_1, $direccion_2, $metodo_pago, $pago_validado,$comprobante_pago, $label_metodo,
-        $listarCarrito = [];
+        $listarCarrito = [], $zona_envio, $listarMensajeros = [], $mensajero, $delivery_id, $mensajero_nombre, $mensajero_telefono;
 
     public function render()
     {
@@ -69,10 +70,13 @@ class PedidosComponent extends Component
         $this->pedido_id = null;
         $this->label_metodo = null;
         $this->listarCarrito = null;
+        $this->zona_envio = null;
+        $this->mensajero = null;
     }
 
     public function verPedido($id)
     {
+        $this->limpiar();
         $pedido = Pedido::find($id);
         $this->numero = $pedido->numero;
         $this->fecha = $pedido->fecha;
@@ -93,6 +97,25 @@ class PedidosComponent extends Component
         $this->pago_validado = $pedido->pago_validado;
         $this->comprobante_pago = $pedido->comprobante_pago;
         $this->pedido_id = $pedido->id;
+        if ($this->delivery > 0){
+            $this->delivery_id = $pedido->deliverys->id;
+            $this->zona_envio = $pedido->deliverys->nombre;
+            $this->mensajero = $pedido->deliverys->mensajeros_id;
+            if ($this->mensajero){
+                $this->mensajero_nombre = $pedido->deliverys->mensajero->nombre;
+                $this->mensajero_telefono = $pedido->deliverys->mensajero->telefono;
+            }else{
+                $this->mensajero_nombre = null;
+                $this->mensajero_telefono = null;
+            }
+        }else{
+            $this->zona_envio = null;
+            $this->mensajero = null;
+            $this->delivery_id = null;
+            $this->mensajero_nombre = null;
+            $this->mensajero_telefono = null;
+        }
+
 
         $parametro = Parametro::find($this->metodo_pago);
         $valor = $parametro->valor;
@@ -108,8 +131,93 @@ class PedidosComponent extends Component
 
         $carrito = Carrito::where('pedidos_id', $this->pedido_id)->get();
         $this->listarCarrito = $carrito;
-        //dd($this->listarCarrito);
+        $mensajeros = Mensajero::orderBy('nombre', 'ASC')->get();
+        if (!$mensajeros->isEmpty()){
+            $this->listarMensajeros = $mensajeros;
+        }else{
+            $this->listarMensajeros = null;
+        }
     }
+
+    public function validarPago($id, $estatus)
+    {
+        $pedido = Pedido::find($id);
+
+        if ($estatus == 1){
+            $pedido->estatus = 2;
+        }
+        if ($estatus == 2){
+            $pedido->estatus = 4;
+        }
+        if ($estatus == 0){
+            $pedido->estatus = 1;
+        }
+
+        $pedido->pago_validado = $estatus;
+        $pedido->update();
+
+        $this->verPedido($pedido->id);
+
+        $this->alert(
+            'success',
+            'Datos Guardados.'
+        );
+    }
+
+    public function procesarDespacho($id, $estatus)
+    {
+        if ($this->delivery_id && $this->listarMensajeros && is_null($this->mensajero)){
+            $rules =[
+                'mensajero' => 'required'
+            ];
+            $this->validate($rules);
+        }
+
+        $pedido = Pedido::find($id);
+
+        $pedido->estatus = $estatus;
+        $pedido->update();
+
+        if ($estatus == 2){
+            if ($this->delivery_id){
+                $delivery = Delivery::find($this->delivery_id);
+                $delivery->mensajeros_id = null;
+                $delivery->update();
+            }
+        }
+
+        $this->verPedido($pedido->id);
+
+        $this->alert(
+            'success',
+            'Datos Guardados.'
+        );
+    }
+
+    public function updatedMensajero()
+    {
+        $delivery = Delivery::find($this->delivery_id);
+        if ($this->mensajero){
+            $delivery->mensajeros_id = $this->mensajero;
+            $this->mensajero_telefono = $delivery->mensajero->telefono;
+            $type = 'success';
+            $mensaje = 'Mensajero Establecido.';
+        }else{
+            $delivery->mensajeros_id = null;
+            $this->mensajero_telefono = null;
+            $type = 'info';
+            $mensaje = 'Mensajero Eliminado.';
+        }
+        $delivery->update();
+
+        $this->alert(
+            $type,
+            $mensaje
+        );
+
+    }
+
+
 
 
 }

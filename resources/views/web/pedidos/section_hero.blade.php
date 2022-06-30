@@ -10,7 +10,7 @@
                     </div>
                     <ul>
                         @foreach($listarPedidos as $order)
-                            @if($pedido && $pedido->id == $order->id) @continue @endif
+                           {{-- @if($pedido && $pedido->id == $order->id) @continue @endif--}}
                             <li class="col-md-11">
                                 <a href="{{ route('web.pedidos', $order->id) }}" onclick="preSubmit()">
                                     Pedido {{ $order->numero }}

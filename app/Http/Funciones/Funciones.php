@@ -417,7 +417,8 @@ function verIconoEstatusPedico($estatus)
         '0' => '<i class="fas fa-exclamation-triangle text-warning"></i>',
         '1' => '<i class="fas fa-money-check-alt text-info"></i>',
         '2' => '<i class="fas fa-shipping-fast"></i>',
-        '3' => '<i class="fas fa-check-circle text-success"></i>'
+        '3' => '<i class="fas fa-check-circle text-success"></i>',
+        '4' => '<i class="fas fa-exclamation-triangle text-danger"></i>'
     ];
     return $status[$estatus];
 }

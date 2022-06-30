@@ -38,7 +38,7 @@ class Pedido extends Model
         return $this->hasMany(Carrito::class, 'pedidos_id', 'id');
     }
 
-    public function delivery()
+    public function deliverys()
     {
         return $this->hasOne(Delivery::class, 'pedidos_id', 'id');
     }

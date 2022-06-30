@@ -127,11 +127,18 @@ class AjaxController extends Controller
 
                 $pedido = Pedido::where('users_id', Auth::id())
                     ->where('estatus', 0)
+                    ->orWhere('estatus', 4)
                     ->first();
                 if ($pedido){
 
-                    $type = "warning";
-                    $mensage = "Tienes un Pedido Pendiente.";
+                    if ($pedido->estatus == 0){
+                        $type = "warning";
+                        $mensage = "Tienes un Pedido Pendiente.";
+                    }else{
+                        $type = "warning";
+                        $mensage = "Tienes un Pago por Verificar.";
+                    }
+
                     $nueva_cantidad = $cantidad;
 
                 }else{

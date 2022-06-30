@@ -56,7 +56,7 @@
                                 <i class="fas fa-download"></i> Entrada
                             </button>
                         @endif--}}
-                        <button type="button" {{--wire:click="actualizar({{ $empresa_id }})"--}}
+                        <button type="button" wire:click="limpiar"
                                 class="btn btn-default btn-sm float-right" style="margin-right: 5px;">
                             <i class="fas fa-sync"></i> Actualizar
                         </button>

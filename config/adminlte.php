@@ -248,19 +248,19 @@ return [
         [
             'text'      => 'Ventas',
             'icon'      => 'fab fa-fw fa-sellcast',
-            'can'       => 'prueba',
+            'can'       => 'ventas',
             'submenu' => [
                 [
                     'text' => 'Pedidos',
                     'icon' => 'fas fa-fw fa-shopping-bag',
                     'route'  => 'pedidos.index',
-                    'can'  => 'prueba',
+                    'can'  => 'pedidos',
                 ],
                 [
                     'text' => 'Clientes',
                     'icon' => 'far fa-fw fa-address-book',
                     'route'  => 'clientes.index',
-                    'can'  => 'prueba',
+                    'can'  => 'clientes',
                 ],
                 [
                     'text' => 'Metodos de Pago',
