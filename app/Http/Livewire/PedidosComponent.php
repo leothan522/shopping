@@ -20,7 +20,8 @@ class PedidosComponent extends Component
 
     public $pedido_id, $numero, $fecha, $precio_dolar, $subtotal, $iva, $delivery, $total, $bs, $users_id, $estatus,
         $cedula, $nombre, $telefono, $direccion_1, $direccion_2, $metodo_pago, $pago_validado,$comprobante_pago, $label_metodo,
-        $listarCarrito = [], $zona_envio, $listarMensajeros = [], $mensajero, $delivery_id, $mensajero_nombre, $mensajero_telefono;
+        $listarCarrito = [], $zona_envio, $listarMensajeros = [], $mensajero, $delivery_id, $mensajero_nombre, $mensajero_telefono,
+        $requerido;
 
     public function render()
     {
@@ -137,6 +138,14 @@ class PedidosComponent extends Component
         }else{
             $this->listarMensajeros = null;
         }
+
+        $delivery = Delivery::where('pedidos_id', $this->pedido_id)->first();
+        if ($delivery){
+            $this->requerido = true;
+        }else{
+            $this->requerido = false;
+        }
+
     }
 
     public function validarPago($id, $estatus)
@@ -166,7 +175,7 @@ class PedidosComponent extends Component
 
     public function procesarDespacho($id, $estatus)
     {
-        if ($this->delivery_id && $this->listarMensajeros && is_null($this->mensajero)){
+        if ($this->delivery_id && $this->listarMensajeros && $this->requerido){
             $rules =[
                 'mensajero' => 'required'
             ];

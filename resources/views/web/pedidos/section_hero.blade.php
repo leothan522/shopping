@@ -34,6 +34,11 @@
                                         <i class="fa fa-check"></i>
                                         </span>
                                     @endif
+                                    @if($order->estatus == 4)
+                                        <span class="float-right text-danger">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                        </span>
+                                    @endif
                                 </a>
                             </li>
                         @endforeach

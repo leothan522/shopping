@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Carrito;
 use App\Models\Categoria;
+use App\Models\Cliente;
 use App\Models\Delivery;
 use App\Models\Empresa;
 use App\Models\Parametro;
@@ -571,7 +572,7 @@ class WebController extends Controller
 
         $pedido = Pedido::findOrFail($id);
 
-        if ($pedido->estatus > 0){
+        if ($pedido->estatus > 0 && $pedido->estatus != 4){
             return redirect()->route('web.pedidos', $pedido->id);
         }
 
@@ -584,6 +585,20 @@ class WebController extends Controller
             }
             $parametro->metodo = ucwords($nombre);
         });
+
+        if ($pedido->metodo_pago){
+            $parametro = Parametro::find($pedido->metodo_pago);
+            $nombre = str_replace("_", " ", $parametro->valor);
+            if ($parametro->valor == 'movil'){
+                $nombre = "pago movil";
+            }
+            $pedido->revisar = $nombre;
+        }
+
+        if ($pedido->cedula){
+            $cliente = Cliente::where('cedula', $pedido->cedula)->first();
+            $pedido->cliente_id = $cliente->id;
+        }
 
 
         return view('web.checkout.index')
@@ -610,7 +625,7 @@ class WebController extends Controller
             $listarCarrito = null;
         }else{
             $pedido = Pedido::findOrFail($id);
-            if ($pedido->estatus < 1){
+            if ($pedido->estatus == 0 || $pedido->estatus == 4){
                 return redirect()->route('web.checkout', $pedido->id);
             }
             $listarCarrito = Carrito::where('pedidos_id', $pedido->id)->get();

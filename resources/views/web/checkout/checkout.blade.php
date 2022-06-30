@@ -128,7 +128,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Cedula</span>
                                     </div>
-                                    <input type="text" class="form-control" value="" data-opcion="vacio" id="checkout_cedula" placeholder="Ingrese cedula">
+                                    <input type="text" class="form-control" value="{{ $pedido->cedula }}" @if($pedido->cedula) data-opcion="{{ $pedido->cliente_id }}" @else data-opcion="vacio" @endif id="checkout_cedula" placeholder="Ingrese cedula">
                                     <span class="col-sm-12 text-sm text-bold text-danger d-none" id="alert_cedula">
                                         <i class="fa fa-exclamation-triangle"></i>
                                         El campo cedula es obligatorio.
@@ -141,7 +141,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Nombre</span>
                                     </div>
-                                    <input type="text" class="form-control" id="checkout_nombre" placeholder="Ingrese nombre">
+                                    <input type="text" class="form-control" value="{{ $pedido->nombre }}" id="checkout_nombre" placeholder="Ingrese nombre">
                                     <span class="col-sm-12 text-sm text-bold text-danger d-none" id="alert_nombre">
                                         <i class="fa fa-exclamation-triangle"></i>
                                         El campo nombre es obligatorio.
@@ -154,7 +154,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Telefono</span>
                                     </div>
-                                    <input type="text" class="form-control" id="checkout_telefono" placeholder="Ingrese telefono">
+                                    <input type="text" class="form-control" value="{{ $pedido->telefono }}" id="checkout_telefono" placeholder="Ingrese telefono">
                                     <span class="col-sm-12 text-sm text-bold text-danger d-none" id="alert_telefono">
                                         <i class="fa fa-exclamation-triangle"></i>
                                         El campo telefono es obligatorio.
@@ -164,21 +164,25 @@
                             <div class="form-group">
                                 <label>Dirección de envio</label>
                                 <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Número de la casa y nombre de la calle" id="checkout_direccion_1">
+                                    <input type="text" class="form-control" value="{{ $pedido->direccion_1 }}" placeholder="Número de la casa y nombre de la calle" id="checkout_direccion_1">
                                     <span class="col-sm-12 text-sm text-bold text-danger d-none" id="alert_direccion_1">
                                         <i class="fa fa-exclamation-triangle"></i>
                                         El campo direccion es obligatorio.
                                     </span>
                                 </div>
                                 <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Apartamento, habitación, etc. (opcional)" id="checkout_direccion_2">
+                                    <input type="text" class="form-control" value="{{ $pedido->direccion_2 }}" placeholder="Apartamento, habitación, etc. (opcional)" id="checkout_direccion_2">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Metodo de Pago</label>
                                 <div class="input-group mb-3">
                                     <select id="checkout_metodo">
-                                        <option value="">Seleccione Metodo</option>
+                                        @if(!$pedido->metodo_pago)
+                                            <option value="">Seleccione Metodo</option>
+                                            @else
+                                            <option value="{{ $pedido->metodo_pago }}">{{ $pedido->revisar }}</option>
+                                        @endif
                                     @foreach($listarMetodos as $parametro)
                                             <option value="{{ $parametro->id }}">{{ $parametro->metodo }}</option>
                                     @endforeach
@@ -200,10 +204,18 @@
                                 </p>--}}
 
                             </div>
-                            <div class="form-group d-none" id="div_comprobante">
+                            <div class="form-group @if(!$pedido->metodo_pago) d-none @endif" id="div_comprobante">
                                 <label>Comprobante</label>
+                                @if($pedido->metodo_pago)
+                                <div class="input-group">
+                                    <span class="col-sm-12 text-sm text-bold text-danger">
+                                            <i class="fa fa-exclamation-triangle"></i>
+                                            Su comprobante NO aparece en nuestro Libro Banco. Verifique!
+                                    </span>
+                                </div>
+                                @endif
                                 <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Número de referencia" id="checkout_comprobante" data-requerido="no">
+                                    <input type="text" class="form-control" value="{{ $pedido->comprobante_pago }}" placeholder="Número de referencia" id="checkout_comprobante" data-requerido="no">
                                     <span class="col-sm-12 text-sm text-bold text-danger d-none" id="alert_comprobante">
                                         <i class="fa fa-exclamation-triangle"></i>
                                         El campo comprobante es obligatorio.

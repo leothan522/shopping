@@ -685,8 +685,56 @@ class AjaxController extends Controller
         if ($procesar){
 
             if ($pedido->estatus > 0){
-                $type = 'warning';
-                $message = "Este pedido ya fue procesado anteriormente.";
+
+                if ($pedido->estatus == 4){
+
+                    if ($pedido->comprobante_pago == $comprobante){
+                        $type = 'warning';
+                        $message = "Esta mandando el mismo comprobante. Verifique!";
+                    }else{
+                        $type = 'warning';
+                        $message = "nuevo comprobante";
+
+                        if ($opcion == "create"){
+                            $cliente = new Cliente();
+                            $cliente->cedula = strtoupper($cedula);
+                            $cliente->nombre = strtoupper($nombre);
+                            $cliente->telefono = strtoupper($telefono);
+                            $cliente->direccion_1 = strtoupper($direccion_1);
+                            $cliente->direccion_2 = strtoupper($direccion_2);
+                            $cliente->users_id = Auth::id();
+                            $cliente->save();
+                        }else{
+                            $cliente = Cliente::find($opcion);
+                            $cliente->cedula = strtoupper($cedula);
+                            $cliente->nombre = strtoupper($nombre);
+                            $cliente->telefono = strtoupper($telefono);
+                            $cliente->direccion_1 = strtoupper($direccion_1);
+                            $cliente->direccion_2 = strtoupper($direccion_2);
+                            $cliente->users_id = Auth::id();
+                            $cliente->update();
+                        }
+
+
+                        $pedido->cedula = strtoupper($cedula);
+                        $pedido->nombre = strtoupper($nombre);
+                        $pedido->telefono = strtoupper($telefono);
+                        $pedido->direccion_1 = strtoupper($direccion_1);
+                        $pedido->direccion_2 = strtoupper($direccion_2);
+                        $pedido->metodo_pago = $metodo;
+                        $pedido->comprobante_pago = strtoupper($comprobante);
+                        $pedido->estatus = 1;
+                        $pedido->update();
+                        $type = "success";
+                        $message = "Procesar";
+                    }
+
+                }else{
+                    $type = 'warning';
+                    $message = "Este pedido ya fue procesado anteriormente.";
+                }
+
+
             }else{
 
                 if ($opcion == "create"){
