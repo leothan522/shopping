@@ -13,7 +13,7 @@
                 <i class="fas fa-store-alt"></i> Home
             </a>
         </li>
-        @if(Auth::user()->role == 1 || Auth::user()->role == 100)
+        @if(Auth::user()->role == 100)
         <li class="dropdown-divider"></li>
         <li class="nav-item">
             <span class="text-small text-muted float-right">Android</span>

@@ -6,7 +6,9 @@
                 <div class="sidebar">
                     <div class="sidebar__item">
                         <div class="latest-product__text">
-                            @include('web.categorias.section_latest')
+                            @if($listarUltimos->count() >= 4)
+                                @include('web.categorias.section_latest')
+                            @endif
                         </div>
                     </div>
                 </div>

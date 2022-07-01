@@ -3,9 +3,10 @@
 @section('title', 'Home')
 
 @section('content')
-    @include('web.section_header')
-    {{--@include('web.home.section_hero')--}}
-    @include('web.home.section_featured')
+    @include('web.section_header'){{--
+    @include('web.home.section_hero')--}}
+    @include('web.section_breadcrumb')
+    @include('web.home.resultados')
     @include('web.home.section_contacto')
 @endsection
 

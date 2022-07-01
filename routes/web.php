@@ -78,6 +78,7 @@ Route::middleware(['auth'])->prefix('/web')->group(function (){
     Route::get('/favoritos', [WebController::class, 'verFavoritos'])->name('web.favoritos');
     Route::get('/checkout/{id?}', [WebController::class, 'verCheckout'])->name('web.checkout');
     Route::get('/verpedidos/{id?}', [WebController::class, 'verPedidos'])->name('web.pedidos');
+    Route::get('/busqueda', [WebController::class, 'verBusqueda'])->name('web.busqueda');
 
     Route::get('/perfil', function (){
         return view('profile.show_default');

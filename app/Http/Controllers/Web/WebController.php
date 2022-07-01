@@ -653,4 +653,23 @@ class WebController extends Controller
 
     }
 
+    public function verBusqueda(Request $request)
+    {
+        $favoritos = $this->headerFavoritos();
+        $carrito = $this->headerCarrito();
+
+
+
+
+        return view('web.home.busqueda')
+            ->with('ruta', $carrito['ruta'])
+            ->with('headerFavoritos', $favoritos)
+            ->with('headerItems', $carrito['items'])
+            ->with('headerTotal', $carrito['total'])
+            ->with('modulo', 'Busqueda')
+            ->with('titulo', $request->buscar)
+            ;
+
+    }
+
 }

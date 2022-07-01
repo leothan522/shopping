@@ -9,9 +9,9 @@
                         @if($ruta == 'android')
                             {!! Form::open(['route' => ['android.home', auth()->id()], 'method' => 'get', 'onSubmit' => 'preSubmit()']) !!}
                         @else
-                            {!! Form::open(['route' => ['web.home'], 'method' => 'get', 'onSubmit' => 'preSubmit()']) !!}
+                            {!! Form::open(['route' => ['web.busqueda'], 'method' => 'get', 'onSubmit' => 'preSubmit()']) !!}
                         @endif
-                            <input type="text" placeholder="¿Que necesitas?" required>
+                            <input type="text" placeholder="¿Que necesitas?" name="buscar" required>
                             <button type="submit" class="site-btn">BUSCAR</button>
                         {!! Form::close() !!}
 

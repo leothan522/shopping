@@ -5,7 +5,7 @@
 @section('content')
 
     @include('web.section_header')
-    {{--@include('web.home.section_hero')--}}
+    @include('web.home.section_hero')
 
     {{--@include('web.section_breadcrumb')--}}
 
@@ -23,7 +23,7 @@
         @include('web.home.section_banner')
     @endif
 
-    @if($listarUltimos->isNotEmpty())
+    @if($listarUltimos->isNotEmpty() && $listarUltimos->count() >= 4)
         @include('web.home.section_latest')
     @endif
 
