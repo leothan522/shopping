@@ -29,12 +29,12 @@
                     <div class="col-12 mb-3">
 
 
-                        {{--@if($busqueda)
-                            <a href="{{ route('stock.index') }}" class="btn btn-default btn-sm">
+                        @if($busqueda)
+                            <a href="{{ route('pedidos.index') }}" class="btn btn-default btn-sm">
                                 <i class="fas fa-list"></i> Ver Todos
                             </a>
                             <span class="btn">Resultados de la Busqueda { <b class="text-danger">{{ $busqueda }} </b>}</span>
-                        @endif--}}
+                        @endif
 
                         {{-- right--}}
                         {{--@if(leerJson(Auth::user()->permisos, 'stock.ajustes') || Auth::user()->role == 1 || Auth::user()->role == 100)

@@ -43,4 +43,13 @@ class Pedido extends Model
         return $this->hasOne(Delivery::class, 'pedidos_id', 'id');
     }
 
+    public function scopeBuscar($query, $keyword)
+    {
+        return $query->where('numero', 'LIKE', "%$keyword%")
+            ->orWhere('cedula', 'LIKE', "%$keyword%")
+            ->orWhere('nombre', 'LIKE', "%$keyword%")
+            ->orWhere('telefono', 'LIKE', "%$keyword%")
+            ;
+    }
+
 }

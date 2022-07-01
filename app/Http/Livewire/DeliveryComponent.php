@@ -229,11 +229,32 @@ class DeliveryComponent extends Component
     {
         // Example code inside confirmed callback
         $parametro = Mensajero::find($this->mensajero_id);
-        $parametro->delete();
-        $this->alert(
-            'success',
-            'Mensajero Eliminado.'
-        );
+
+        $mensajeros = Delivery::where('mensajeros_id', $parametro->id)->first();
+
+        if ($mensajeros){
+
+            $this->alert('warning', '¡No se puede Borrar!', [
+                'position' => 'center',
+                'timer' => '',
+                'toast' => false,
+                'text' => 'El registro que intenta borrar ya se encuentra vinculado con otros procesos.',
+                'showConfirmButton' => true,
+                'onConfirmed' => '',
+                'confirmButtonText' => 'OK',
+            ]);
+
+        }else{
+
+            $parametro->delete();
+            $this->alert(
+                'success',
+                'Mensajero Eliminado.'
+            );
+
+        }
+
+
     }
 
 

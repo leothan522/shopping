@@ -75,7 +75,7 @@ class RolesComponent extends Component
     public function confirmed()
     {
         // Example code inside confirmed callback
-        $user = User::where('role', $this->rol_id)->first();
+        $user = User::where('roles_id', $this->rol_id)->first();
         if ($user){
 
             $this->alert('warning', '¡No se puede Borrar!', [
@@ -108,7 +108,7 @@ class RolesComponent extends Component
             $this->nombre = $rol->nombre;
             $this->roles_permisos = $rol->valor;
 
-            $user = User::where('role', $rol->id)->first();
+            $user = User::where('roles_id', $rol->id)->first();
             if ($user){
                 $this->ocultar_boton = true;
             }else{
@@ -149,7 +149,7 @@ class RolesComponent extends Component
 
     public function actualRol()
     {
-        $usuarios = User::where('role', $this->rol_id)->get();
+        $usuarios = User::where('roles_id', $this->rol_id)->get();
         foreach ($usuarios as $user){
             $usuario = User::find($user->id);
             $usuario->permisos = $this->roles_permisos;

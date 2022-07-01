@@ -41,7 +41,7 @@
                                             <b>Email</b> <a class="float-right">{{ $user_email }}</a>
                                         </li>
                                         <li class="list-group-item">
-                                            <b>Rol</b> <a class="float-right">@if($user_role){{ role($user_role) }}@else {{ role(0) }}@endif</a>
+                                            <b>Rol</b> <a class="float-right">@if($user_role){{ role($user_role, $user_role) }} @else {{ role(0, 0) }}@endif</a>
                                         </li>
                                         <li class="list-group-item">
                                             <b>Estatus</b> <a class="float-right text-danger">@if($user_estatus) {!! estatusUsuario($user_estatus) !!} @else {!! estatusUsuario(0)  !!} @endif</a>

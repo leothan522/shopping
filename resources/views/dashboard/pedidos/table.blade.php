@@ -18,6 +18,7 @@
             </tr>
             </thead>
             <tbody>
+            @if(!$listarPedidos->isEmpty())
             @foreach($listarPedidos as $pedido)
                 <tr>
                     <td class="text-center text-bold">{{ $pedido->numero }}</td>
@@ -68,22 +69,23 @@
                     </td>
                 </tr>
             @endforeach
-                {{--<tr class="text-center">--}}
-                   {{-- @if($busqueda)
-                        <td colspan="9">
-                            <a href="{{ route('stock.index') }}">
+            @else
+                <tr class="text-center">
+                    @if($busqueda)
+                        <td colspan="11">
+                            <a href="{{ route('pedidos.index') }}">
                             <span>
                                 Sin resultados para la busqueda <strong class="text-bold"> { <span class="text-danger">{{ $busqueda }}</span> }</strong>
                             </span>
                             </a>
                         </td>
                         @else
-                        <td colspan="9">
-                            <span>Debes agregar un nuevo Stock</span>
+                        <td colspan="11">
+                            <span>Aun no se tienen pedidos registrados.</span>
                         </td>
-                    @endif--}}
-                {{--</tr>--}}
-            {{--@endif--}}
+                    @endif
+                </tr>
+            @endif
             </tbody>
         </table>
     </div>

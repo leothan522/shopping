@@ -7,6 +7,7 @@ use App\Models\Delivery;
 use App\Models\Mensajero;
 use App\Models\Parametro;
 use App\Models\Pedido;
+use Illuminate\Http\Request;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -21,11 +22,18 @@ class PedidosComponent extends Component
     public $pedido_id, $numero, $fecha, $precio_dolar, $subtotal, $iva, $delivery, $total, $bs, $users_id, $estatus,
         $cedula, $nombre, $telefono, $direccion_1, $direccion_2, $metodo_pago, $pago_validado,$comprobante_pago, $label_metodo,
         $listarCarrito = [], $zona_envio, $listarMensajeros = [], $mensajero, $delivery_id, $mensajero_nombre, $mensajero_telefono,
-        $requerido;
+        $requerido, $busqueda;
+
+    public function mount(Request $request)
+    {
+        if (!is_null($request->buscar)){
+            $this->busqueda = $request->buscar;
+        }
+    }
 
     public function render()
     {
-        $listarPedidos = Pedido::where('estatus', '>', 0)
+        $listarPedidos = Pedido::buscar($this->busqueda)->where('estatus', '>', 0)
             ->orderBy('id', 'DESC')
             ->paginate(50);
         $listarPedidos->each(function ($pedido){

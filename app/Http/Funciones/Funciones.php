@@ -233,9 +233,9 @@ Y al final devolveremos true o false dependiendo si el valor introducido se encu
 }
 
 
-function role($i = null){
+function role($i = null, $role = null){
 
-    $roles = \App\Models\Parametro::where('tabla_id', '-1')->where('id', $i)->first();
+    $roles = \App\Models\Parametro::where('tabla_id', '-1')->where('id', $role)->first();
     if ($roles){
         return ucwords($roles->nombre);
     }
@@ -245,6 +245,7 @@ function role($i = null){
         '1'     => 'Administrador',
         '100'   => 'Root'
     ];
+
     if (is_null($i)){
         unset($status["100"]);
         return $status;

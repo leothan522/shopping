@@ -256,12 +256,12 @@ return [
                     'route'  => 'pedidos.index',
                     'can'  => 'pedidos',
                 ],
-                [
+                /*[
                     'text' => 'Clientes',
                     'icon' => 'far fa-fw fa-address-book',
                     'route'  => 'clientes.index',
                     'can'  => 'clientes',
-                ],
+                ],*/
                 [
                     'text' => 'Metodos de Pago',
                     'icon' => 'fas fa-fw fa-money-check-alt',

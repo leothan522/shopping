@@ -44,10 +44,11 @@ Route::middleware(['auth', 'isadmin', 'estatus', 'permisos'])->prefix('/dashboar
     Route::get('almacen/{buscar?}', [AlmacenController::class, 'index'])->name('almacen.index');
     Route::get('metodos', [MetodosController::class, 'index'])->name('metodos.index');
     Route::get('stock/{buscar?}', [StockController::class, 'index'])->name('stock.index');
+    Route::get('pedidos/{buscar?}', [PedidosController::class, 'index'])->name('pedidos.index');
 
     //pendientes
 
-    Route::get('pedidos', [PedidosController::class, 'index'])->name('pedidos.index');
+
     Route::get('clientes', [ClientesController::class, 'index'])->name('clientes.index');
 
 

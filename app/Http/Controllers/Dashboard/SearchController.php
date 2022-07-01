@@ -63,6 +63,11 @@ class SearchController extends Controller
             return redirect()->route('stock.index', $keyword);
         }
 
+        if (strpos($route, '/dashboard/pedidos') !== false){
+            //verSweetAlert2("Resultados encontrados", 'toast');
+            return redirect()->route('pedidos.index', $keyword);
+        }
+
         //en caso de no encontrar ninguna ruta
         verSweetAlert2("Opcion no encontrada", 'toast');
         return back();
