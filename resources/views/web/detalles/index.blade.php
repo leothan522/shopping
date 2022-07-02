@@ -7,10 +7,13 @@
     @include('web.section_header')
     @include('web.section_breadcrumb')
     @include('web.detalles.details')
-    @include('web.detalles.related')
-    <a href="#">
+    @if($listarRelacionados->isNotEmpty())
+        @include('web.detalles.related')
+    @endif
+    <a href="@if($ruta == "android") # @else {{ route('web.tienda', $stock->empresas_id) }} @endif">
         @include('web.home.section_banner')
     </a>
+    @include('web.section_contacto')
 
 
 @endsection

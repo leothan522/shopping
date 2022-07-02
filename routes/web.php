@@ -40,16 +40,7 @@ Route::get('/cerrar', function () {
 })->name('cerrar');
 
 
-
 Route::middleware(['android'])->prefix('/android')->group(function (){
-
-    Route::get('/ogani', function () {
-        return view('web.carrito.index');
-    });
-
-    Route::post('/ogani/busqueda', function () {
-        return view('web.home.busqueda');
-    })->name('busqueda.prueba');
 
     Route::get('/{id}/home', [AppController::class, 'home'])->name('android.home');
     Route::get('/{id}/detalles', [AppController::class, 'verDetalles'])->name('android.detalles');
@@ -62,6 +53,8 @@ Route::middleware(['android'])->prefix('/android')->group(function (){
 Route::get('/web', [WebController::class, 'index'])->name('web.index');
 Route::get('guest/{id}/detalles', [WebController::class, 'guestDetalles'])->name('guest.detalles');
 Route::get('guest/{id}/categorias', [WebController::class, 'guestCategorias'])->name('guest.categorias');
+Route::get('/busqueda', [WebController::class, 'verBusqueda'])->name('web.busqueda');
+Route::get('{id}/tienda', [WebController::class, 'verTienda'])->name('web.tienda');
 
 Route::middleware(['auth'])->prefix('/web')->group(function (){
 
@@ -78,7 +71,6 @@ Route::middleware(['auth'])->prefix('/web')->group(function (){
     Route::get('/favoritos', [WebController::class, 'verFavoritos'])->name('web.favoritos');
     Route::get('/checkout/{id?}', [WebController::class, 'verCheckout'])->name('web.checkout');
     Route::get('/verpedidos/{id?}', [WebController::class, 'verPedidos'])->name('web.pedidos');
-    Route::get('/busqueda', [WebController::class, 'verBusqueda'])->name('web.busqueda');
 
     Route::get('/perfil', function (){
         return view('profile.show_default');

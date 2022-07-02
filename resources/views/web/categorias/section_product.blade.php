@@ -21,7 +21,7 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-4 col-md-4">
                             <div class="filter__found">
-                                <h6><span>{{ $cantidad }}</span> Productos</h6>
+                                <h6><span>{{ $cantidad }}</span> Productos Disponibles</h6>
                             </div>
                         </div>
                     </div>

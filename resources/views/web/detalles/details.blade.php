@@ -74,6 +74,7 @@
                     @endif
                     <ul>
                         <li><b>Categoria:</b> <span> {{ $stock->producto->categoria->nombre }}</span></li>
+                        <li><b>Tienda:</b> <span> {{ $stock->empresa->nombre }}</span></li>
                         @if(!empty($stock->marca))
                             <li><b>Marca:</b> <span>{{ $stock->marca }}</span></li>
                         @endif

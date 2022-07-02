@@ -27,7 +27,7 @@
         @include('web.home.section_latest')
     @endif
 
-    @include('web.home.section_contacto')
+    @include('web.section_contacto')
 @endsection
 
 @section('css')

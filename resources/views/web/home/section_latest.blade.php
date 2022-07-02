@@ -36,8 +36,8 @@
                             @endif
                             @php($i++)
                         @endforeach
-                        @if($listarUltimos->count() <= 3) </div> @endif
-                        @if($listarUltimos->count() <= 6) </div> @endif
+                        {{--@if($listarUltimos->count() <= 3) </div> @endif--}}
+                        @if($listarUltimos->count() < 6) </div> @endif
                         {{--<div class="latest-prdouct__slider__item">
                             <a href="#" class="latest-product__item">
                                 <div class="latest-product__item__pic">

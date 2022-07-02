@@ -236,7 +236,9 @@
             @if(!in_array($stock->empresa->id, $vistos))
                 <div class="col-lg-6 col-md-6 col-sm-6 mb-3">
                     <div class="banner__pic img-thumbnail">
-                        <img src="{{ asset(verImg($stock->empresa->banner)) }}" alt="">
+                        <a href="@if($ruta == "android") # @else {{ route('web.tienda', $stock->empresas_id) }} @endif">
+                            <img src="{{ asset(verImg($stock->empresa->banner)) }}" alt="">
+                        </a>
                     </div>
                 </div>
                 @php(array_push($vistos, $stock->empresa->id))

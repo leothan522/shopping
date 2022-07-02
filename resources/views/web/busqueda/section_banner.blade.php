@@ -3,17 +3,12 @@
     <div class="container">
         <div class="row justify-content-center">
 
-            @foreach($listarBanner as $empresa)
 
-                    <div class="col-lg-6 col-md-6 col-sm-6 mb-3">
-                        <div class="banner__pic img-thumbnail">
-                            <a href="@if($ruta == "android") # @else {{ route('web.tienda', $empresa->id) }} @endif">
-                            <img src="{{ asset(verImg($empresa->banner)) }}" alt="">
-                            </a>
-                        </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 mb-3">
+                    <div class="banner__pic img-thumbnail">
+                        <img src="{{ asset(verImg($empresa->banner)) }}" alt="">
                     </div>
-
-            @endforeach
+                </div>
 
             {{--<div class="col-lg-6 col-md-6 col-sm-6 mb-3">
                 <div class="banner__pic">

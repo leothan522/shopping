@@ -4,7 +4,7 @@
 
 @section('content')
     @include('web.checkout.checkout')
-
+    @include('web.section_contacto')
 @endsection
 
 @section('css')

@@ -6,6 +6,7 @@
     @include('web.section_header')
     @include('web.section_breadcrumb')
     @include('web.categorias.section_product')
+    @include('web.section_contacto')
 @endsection
 
 @section('css')

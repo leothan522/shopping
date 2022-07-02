@@ -121,9 +121,10 @@ class AjaxController extends Controller
             $cantidad = $request->cantidad;
 
             $stock = Stock::find($id_stock);
+            $estatus = $stock->estatus;
             $disponible = $stock->stock_disponible;
             $comprometido = $stock->stock_comprometido;
-            if ($disponible >= $cantidad){
+            if ($disponible >= $cantidad && $estatus == 1){
 
                 $pedido = Pedido::where('users_id', Auth::id())
                     ->where('estatus', 0)
@@ -260,6 +261,7 @@ class AjaxController extends Controller
             $carrito_precio = calcularPrecio($carrito_producto, $carrito_pvp);
 
             $stock = Stock::find($carrito_producto);
+            $estatus = $stock->estatus;
             $disponible = $stock->stock_disponible;
             $comprometido = $stock->stock_comprometido;
 
@@ -285,7 +287,7 @@ class AjaxController extends Controller
             }else{
                 if ($cantidad > $carrito_cantidad){
                     $diferencia = $cantidad - $carrito_cantidad;
-                    if ($disponible < $diferencia){
+                    if ($disponible < $diferencia || $estatus == 0){
                         $type = "warning";
                         $mensage = "Stock Agotado.";
                     }else{

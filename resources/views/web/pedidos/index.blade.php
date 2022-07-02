@@ -6,7 +6,7 @@
 
     @include('web.section_header')
     @include('web.pedidos.section_hero')
-    @include('web.home.section_contacto')
+    @include('web.section_contacto')
 
 @endsection
 

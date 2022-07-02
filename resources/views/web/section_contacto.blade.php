@@ -8,7 +8,7 @@
                         <i class="fa fa-phone"></i>
                     </div>
                     <div class="hero__search__phone__text">
-                        <h5>+65 424.999.99.99</h5>
+                        <h5>{{ telefonoSoporte() }}</h5>
                         <span>soporte 24/7 tiempo</span>
                     </div>
                 </div>

@@ -3,11 +3,17 @@
 @section('title', 'Home')
 
 @section('content')
-    @include('web.section_header'){{--
-    @include('web.home.section_hero')--}}
+    @include('web.section_header')
     @include('web.section_breadcrumb')
-    @include('web.home.resultados')
-    @include('web.home.section_contacto')
+    @if($modulo == "Busqueda")
+        <br>
+        @include('web.home.section_hero')
+        @include('web.busqueda.resultados')
+        @else
+        @include('web.busqueda.empresas')
+        @include('web.busqueda.section_banner')
+    @endif
+    @include('web.section_contacto')
 @endsection
 
 @section('css')

@@ -435,3 +435,13 @@ function verIconoMetodosPago($metodo)
     return $status[$metodo];
 }
 
+function telefonoSoporte()
+{
+    $parametro = Parametro::where('nombre', 'telefono_soporte')->first();
+    if ($parametro){
+        $telefono = strtoupper($parametro->valor);
+    }else{
+        $telefono = "0212.999.99.99";
+    }
+    return $telefono;
+}

@@ -4,6 +4,7 @@
 
 @section('content')
     @include('web.carrito.carrito')
+    @include('web.section_contacto')
 @endsection
 
 @section('css')
