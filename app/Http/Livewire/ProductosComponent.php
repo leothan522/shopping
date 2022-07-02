@@ -60,9 +60,9 @@ class ProductosComponent extends Component
         $this->modelo = null;
         $this->referencia = null;
         $this->unidad = null;
-        $this->decimales = null;
-        $this->impuesto = null;
-        $this->individual = null;
+        $this->decimales = 0;
+        $this->impuesto = 1;
+        $this->individual = 0;
         $this->estatus = null;
     }
 
@@ -148,8 +148,8 @@ class ProductosComponent extends Component
 
     public function edit($id)
     {
-        $producto = Producto::find($id);
         $this->limpiar();
+        $producto = Producto::find($id);
         $this->view = 'edit';
         $this->producto_id = $producto->id;
         $this->nombre = $producto->nombre;

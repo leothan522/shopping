@@ -145,7 +145,7 @@
                             </span>
                         </li>
                         <li>
-                            I.V.A {{ calcularIVA(null, null, null, true) }}%
+                            I.V.A. ({{ calcularIVA(null, null, null, true) }}%)
                             <span id="carrito_iva" data-cantidad="{{ $iva }}">
                                 $ {{ formatoMillares($iva, 2) }}
                             </span>

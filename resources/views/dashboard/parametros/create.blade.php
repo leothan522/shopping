@@ -71,4 +71,6 @@
         </div>
     </div>
 
+    @include('dashboard.parametros.campos')
+
 </div>

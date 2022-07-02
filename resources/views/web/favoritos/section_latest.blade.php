@@ -22,6 +22,10 @@
                         </a>
                     </div>
                 @endforeach
+                @else
+                <div class="col-lg-12 col-md-5 text-center">
+                    Aun no tienes productos marcados como favorito.
+                </div>
             @endif
         </div>
     </div>

@@ -33,7 +33,7 @@ class StockComponent extends Component
             $listarProductos, $listarAlmacen;
     public $stock_id, $producto, $almacen_id, $moneda, $existe, $pvp, $estatus;
     public $nombre_show, $categoria_show, $sku_show, $decimales_show, $impuesto_show, $individual_show, $imagen_show,
-            $almacen_show, $stock_acual_show, $stock_disponible_show, $stock_comprometido_show, $estatus_show;
+            $almacen_show, $stock_acual_show, $stock_disponible_show, $stock_comprometido_show, $stock_vendido_show, $estatus_show;
     public $ajuste, $lista, $cantidad, $listarProd = [], $listarAjustes = [], $decimales_ajuste, $icono = 'create',
             $ajuste_id, $max, $step, $min;
 
@@ -197,6 +197,7 @@ class StockComponent extends Component
         $this->stock_acual_show = $stock->stock_disponible + $stock->stock_comprometido;
         $this->stock_disponible_show = $stock->stock_disponible;
         $this->stock_comprometido_show = $stock->stock_comprometido;
+        $this->stock_vendido_show = $stock->stock_vendido;
         $this->estatus_show = $stock->estatus;
     }
 

@@ -84,9 +84,10 @@
                                 </label>--}}
 
                                 <hr>
-
                                 <label class="col-md-12"><span class="text-muted">Stock Disponible:</span> {{ formatoMillares($stock_disponible_show, $dec_show) }}</label>
                                 <label class="col-md-12"><span class="text-muted">Stock Comprometido:</span> {{ formatoMillares($stock_comprometido_show, $dec_show) }}</label>
+                                <label class="col-md-12"><span class="text-muted">Stock Vendido:</span> {{ formatoMillares($stock_vendido_show, $dec_show) }}</label>
+                                <hr>
                                 <label class="col-md-12"><span class="text-muted">Stock Actual:</span> {{ formatoMillares($stock_acual_show, $dec_show) }}</label>
 
                             </div>

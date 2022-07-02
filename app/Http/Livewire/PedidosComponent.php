@@ -7,6 +7,7 @@ use App\Models\Delivery;
 use App\Models\Mensajero;
 use App\Models\Parametro;
 use App\Models\Pedido;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
@@ -191,6 +192,7 @@ class PedidosComponent extends Component
         }
 
         $pedido = Pedido::find($id);
+        $carritos = Carrito::where('pedidos_id', $pedido->id)->get();
 
         $pedido->estatus = $estatus;
         $pedido->update();
@@ -201,6 +203,29 @@ class PedidosComponent extends Component
                 $delivery->mensajeros_id = null;
                 $delivery->update();
             }
+            $carritos->each(function ($carrito){
+                $cantidad = $carrito->cantidad;
+
+                $stock = Stock::find($carrito->stock_id);
+                $comprometido = $stock->stock_comprometido;
+                $vendido = $stock->stock_vendido;
+
+                $stock->stock_comprometido = $comprometido + $cantidad;
+                $stock->stock_vendido = $vendido - $cantidad;
+                $stock->update();
+            });
+        }else{
+            $carritos->each(function ($carrito){
+                $cantidad = $carrito->cantidad;
+
+                $stock = Stock::find($carrito->stock_id);
+                $comprometido = $stock->stock_comprometido;
+                $vendido = $stock->stock_vendido;
+
+                $stock->stock_comprometido = $comprometido - $cantidad;
+                $stock->stock_vendido = $vendido + $cantidad;
+                $stock->update();
+            });
         }
 
         $this->verPedido($pedido->id);

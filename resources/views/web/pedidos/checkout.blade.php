@@ -55,7 +55,7 @@
                                 <li>Organic Bananas <small>(4.9)</small> <span>$53.99</span></li>--}}
                             </ul>
                             <div class="checkout__order__subtotal">Subtotal <span>${{ formatoMillares($pedido->subtotal, 2) }}</span></div>
-                            <div class="checkout__order__total">I.V.A.(16%) <span class="text-dark">${{ formatoMillares($pedido->iva, 2) }}</span></div>
+                            <div class="checkout__order__total">I.V.A.({{ calcularIVA(null, null, null, true) }}%) <span class="text-dark">${{ formatoMillares($pedido->iva, 2) }}</span></div>
                             @if($pedido->delivery)
                             <div class="checkout__order__total">Delivery <span class="text-dark">${{ formatoMillares($pedido->delivery, 2) }}</span></div>
                             @endif
