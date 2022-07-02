@@ -122,75 +122,84 @@ class AjaxController extends Controller
 
             $stock = Stock::find($id_stock);
             $estatus = $stock->estatus;
+            $empresas_id  = $stock->empresas_id;
             $disponible = $stock->stock_disponible;
             $comprometido = $stock->stock_comprometido;
-            if ($disponible >= $cantidad && $estatus == 1){
 
-                $pedido = Pedido::where('users_id', Auth::id())
-                    ->where('estatus', 0)
-                    ->orWhere('estatus', 4)
-                    ->first();
-                if ($pedido){
+            if (estatusTienda($empresas_id)) {
 
-                    if ($pedido->estatus == 0){
-                        $type = "warning";
-                        $mensage = "Tienes un Pedido Pendiente.";
-                    }else{
-                        $type = "warning";
-                        $mensage = "Tienes un Pago por Verificar.";
-                    }
+                if ($disponible >= $cantidad && $estatus == 1) {
 
-                    $nueva_cantidad = $cantidad;
-
-                }else{
-
-                    //restamos del stock_disponible
-                    $stock->stock_disponible = $disponible - $cantidad;
-                    $stock->stock_comprometido = $comprometido + $cantidad;
-                    $stock->update();
-
-                    $carrito = Carrito::where('users_id', $id_usuario)
-                        ->where('stock_id', $id_stock)
+                    $pedido = Pedido::where('users_id', Auth::id())
                         ->where('estatus', 0)
+                        ->orWhere('estatus', 4)
                         ->first();
+                    if ($pedido) {
 
-                    if ($carrito){
+                        if ($pedido->estatus == 0) {
+                            $type = "warning";
+                            $mensage = "Tienes un Pedido Pendiente.";
+                        } else {
+                            $type = "warning";
+                            $mensage = "Tienes un Pago por Verificar.";
+                        }
 
-                        $nueva_cantidad = $carrito->cantidad + $cantidad;
-                        $nombre = $carrito->stock->producto->nombre;
-                        $carrito->cantidad = $nueva_cantidad;
-                        $carrito->update();
+                        $nueva_cantidad = $cantidad;
 
-                        $type = 'info';
-                        $mensage = "Tienes ".formatoMillares($nueva_cantidad, 0)." ". $nombre;
+                    } else {
 
-                    }else{
+                        //restamos del stock_disponible
+                        $stock->stock_disponible = $disponible - $cantidad;
+                        $stock->stock_comprometido = $comprometido + $cantidad;
+                        $stock->update();
 
-                        $carrito = new Carrito();
-                        $carrito->users_id = $id_usuario;
-                        $carrito->stock_id = $id_stock;
-                        $carrito->cantidad = $cantidad;
-                        $carrito->save();
+                        $carrito = Carrito::where('users_id', $id_usuario)
+                            ->where('stock_id', $id_stock)
+                            ->where('estatus', 0)
+                            ->first();
 
-                        $type = 'success';
-                        $mensage = 'Agregado al Carrito.';
+                        if ($carrito) {
+
+                            $nueva_cantidad = $carrito->cantidad + $cantidad;
+                            $nombre = $carrito->stock->producto->nombre;
+                            $carrito->cantidad = $nueva_cantidad;
+                            $carrito->update();
+
+                            $type = 'info';
+                            $mensage = "Tienes " . formatoMillares($nueva_cantidad, 0) . " " . $nombre;
+
+                        } else {
+
+                            $carrito = new Carrito();
+                            $carrito->users_id = $id_usuario;
+                            $carrito->stock_id = $id_stock;
+                            $carrito->cantidad = $cantidad;
+                            $carrito->save();
+
+                            $type = 'success';
+                            $mensage = 'Agregado al Carrito.';
+
+                        }
+
+                        $nueva_cantidad = $carrito->cantidad;
 
                     }
 
-                    $nueva_cantidad = $carrito->cantidad;
+
+                } else {
+
+                    $type = 'warning';
+                    $mensage = "Stock Agotado";
+                    $nueva_cantidad = $cantidad;
 
                 }
 
-
-
             }else{
 
-                $type = 'warning';
-                $mensage = "Stock Agotado";
+                $type = "warning";
+                $mensage = "La tienda ".$stock->empresa->nombre." \n esta cerrada.";
                 $nueva_cantidad = $cantidad;
-
             }
-
             $totalizar = $this->totalizar(Auth::id());
 
             $json = [
