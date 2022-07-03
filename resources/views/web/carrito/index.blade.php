@@ -1,6 +1,6 @@
 @extends('layouts.ogani.master')
 
-@section('title', 'Home')
+@section('title', 'Caracas Shopping | Carrito')
 
 @section('content')
     @include('web.carrito.carrito')

@@ -1,6 +1,6 @@
 @extends('layouts.ogani.master')
 
-@section('title', 'Home')
+@section('title', 'Caracas Shopping | Busqueda')
 
 @section('content')
     @include('web.section_header')

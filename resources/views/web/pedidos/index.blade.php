@@ -1,6 +1,6 @@
 @extends('layouts.ogani.master')
 
-@section('title', 'Android | Home')
+@section('title', 'Caracas Shopping | Pedidos')
 
 @section('content')
 
