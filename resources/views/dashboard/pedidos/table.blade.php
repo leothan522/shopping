@@ -51,7 +51,7 @@
                                 <i class="fas fa-eye"></i>
                             </button>
 
-                            @if(leerJson(Auth::user()->permisos, 'pedidos.imprimir') || Auth::user()->role == 1 || Auth::user()->role == 100)
+                            @if(leerJson(Auth::user()->permisos, 'pedidos.pdf') || Auth::user()->role == 1 || Auth::user()->role == 100)
                                 {{--<button type="button" --}}{{--wire:click="show({{ $stock->id }})"--}}{{--
                                 data-toggle="modal" --}}{{--data-target="#modal-lg-show"--}}{{-- class="btn btn-info btn-sm">
                                     <i class="fas fa-print"></i>

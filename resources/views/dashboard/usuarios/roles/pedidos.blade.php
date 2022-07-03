@@ -42,8 +42,8 @@
             <li class="list-group-item">
                 Imprimir Pedidos
                 <div class="custom-control custom-switch custom-switch-on-success float-right">
-                    <input type="checkbox" wire:click="update_roles({{ $rol_id }}, 'pedidos.imprimir')"
-                           @if(leerJson($roles_permisos, 'pedidos.imprimir')) checked @endif
+                    <input type="checkbox" wire:click="update_roles({{ $rol_id }}, 'pedidos.pdf')"
+                           @if(leerJson($roles_permisos, 'pedidos.pdf')) checked @endif
                            class="custom-control-input" id="customSwitchRolesPedioseAs3">
                     <label class="custom-control-label" for="customSwitchRolesPedioseAs3"></label>
                 </div>
