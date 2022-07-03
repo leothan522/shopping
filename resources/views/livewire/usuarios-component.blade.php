@@ -46,19 +46,19 @@
                                    class="btn btn-tool text-success swalDefaultInfo" {{--target="_blank"--}}>
                                     <i class="fas fa-file-excel"></i> <i class="fas fa-download"></i>
                                 </a>
-                                <a href="{{ route('usuarios.pdf') }}"
+                                {{--<a href="{{ route('usuarios.pdf') }}"
                                    class="btn btn-tool text-danger swalDefaultInfo" target="_blank">
                                     <i class="fas fa-file-pdf"></i> <i class="fas fa-arrow-alt-circle-right"></i>
-                                </a>
+                                </a>--}}
                             @else
                                 <a href="{{ route('usuarios.excel') }}"
                                    class="btn btn-tool text-success swalDefaultInfo disabled" {{--target="_blank"--}}>
                                     <i class="fas fa-file-excel"></i> <i class="fas fa-download"></i>
                                 </a>
-                                <a href="{{ route('usuarios.pdf') }}"
+                                {{--<a href="{{ route('usuarios.pdf') }}"
                                    class="btn btn-tool text-danger swalDefaultInfo disabled" target="_blank">
                                     <i class="fas fa-file-pdf"></i> <i class="fas fa-arrow-alt-circle-right"></i>
-                                </a>
+                                </a>--}}
                             @endif
                         @endif
 

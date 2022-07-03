@@ -52,10 +52,13 @@
                             </button>
 
                             @if(leerJson(Auth::user()->permisos, 'pedidos.imprimir') || Auth::user()->role == 1 || Auth::user()->role == 100)
-                                <button type="button" {{--wire:click="show({{ $stock->id }})"--}}
-                                data-toggle="modal" {{--data-target="#modal-lg-show"--}} class="btn btn-info btn-sm">
+                                {{--<button type="button" --}}{{--wire:click="show({{ $stock->id }})"--}}{{--
+                                data-toggle="modal" --}}{{--data-target="#modal-lg-show"--}}{{-- class="btn btn-info btn-sm">
                                     <i class="fas fa-print"></i>
-                                </button>
+                                </button>--}}
+                                <a href="{{ route('pedidos.pdf', $pedido->id) }}" class="btn btn-info btn-sm" target="_blank">
+                                    <i class="fas fa-print"></i>
+                                </a>
                                 @else
                                 <button type="button" {{--wire:click="show({{ $stock->id }})"--}}
                                 data-toggle="modal" {{--data-target="#modal-lg-show"--}} class="btn btn-info btn-sm disabled">

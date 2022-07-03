@@ -88,7 +88,9 @@ class User extends Authenticatable
     public function scopeBuscar($query, $keyword)
     {
         return $query->where('name', 'LIKE', "%$keyword%")
-            ->orWhere('email', 'LIKE', "%$keyword%");
+            ->orWhere('email', 'LIKE', "%$keyword%")
+            ->orWhere('id', 'LIKE', "%$keyword%")
+            ;
     }
 
     public function empresa()
@@ -104,6 +106,11 @@ class User extends Authenticatable
     public function clientes()
     {
         return $this->hasMany(Cliente::class, 'clientes_id', 'id');
+    }
+
+    public function pedidos()
+    {
+        return $this->hasMany(Pedido::class, 'users_id', 'id');
     }
 
 

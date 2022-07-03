@@ -45,6 +45,7 @@ Route::middleware(['auth', 'isadmin', 'estatus', 'permisos'])->prefix('/dashboar
     Route::get('metodos', [MetodosController::class, 'index'])->name('metodos.index');
     Route::get('stock/{buscar?}', [StockController::class, 'index'])->name('stock.index');
     Route::get('pedidos/{buscar?}', [PedidosController::class, 'index'])->name('pedidos.index');
+    Route::get('pdf/pedidos/{id}', [PedidosController::class, 'createPDF'])->name('pedidos.pdf');
 
     //pendientes
 

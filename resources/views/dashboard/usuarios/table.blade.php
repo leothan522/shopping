@@ -21,7 +21,10 @@
                     <td>{{ ucwords($user->name) }}</td>
                     <td>{{ strtolower($user->email) }}</td>
                     <td class="text-center">{{ role($user->role, $user->roles_id) }}</td>
-                    <td class="text-center">{!! estatusUsuario($user->estatus, true) !!}</td>
+                    <td class="text-center">
+                        {!! estatusUsuario($user->estatus, true) !!}
+                        <span class="text-sm"> ID: {{ $user->id }}</span>
+                    </td>
                     <td class="text-right">{{ haceCuanto($user->created_at)  }}</td>
                     <td class="justify-content-end">
                         <div class="btn-group">

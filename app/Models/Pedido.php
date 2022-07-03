@@ -43,6 +43,11 @@ class Pedido extends Model
         return $this->hasOne(Delivery::class, 'pedidos_id', 'id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'users_id', 'id');
+    }
+
     public function scopeBuscar($query, $keyword)
     {
         return $query->where('numero', 'LIKE', "%$keyword%")
