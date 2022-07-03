@@ -68,7 +68,7 @@
             @if($empresaDefault)
             <ul class="list-group text-sm">
                 <li class="list-group-item fondo">
-                    Empresa Default
+                    Tienda Default
                     <span class="float-right text-bold">{!! empresaDefault($empresaDefault) !!}</span>
                 </li>
             </ul>

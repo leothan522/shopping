@@ -15,7 +15,7 @@
             <td style="border: 1px solid #000000; text-align: center">{{ $user->id }}</td>
             <td style="border: 1px solid #000000; text-align: center">{{ ucwords($user->name) }}</td>
             <td style="border: 1px solid #000000; text-align: center">{{ $user->email }}</td>
-            <td style="border: 1px solid #000000; text-align: center">{{ role($user->role) }}</td>
+            <td style="border: 1px solid #000000; text-align: center">{{ role($user->role, $user->roles_id) }}</td>
             <td style="border: 1px solid #000000; text-align: center">{!! estatusUsuario($user->estatus)  !!}</td>
             <td style="border: 1px solid #000000; text-align: center">{{ fecha($user->created_at) }}</td>
         </tr>

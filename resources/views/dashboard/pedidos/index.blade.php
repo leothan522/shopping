@@ -56,6 +56,13 @@
                                 <i class="fas fa-download"></i> Entrada
                             </button>
                         @endif--}}
+                            {{--<a href="{{ route('pedidos.excel') }}" class="btn btn-default btn-sm float-right text-success" >
+                                <i class="fas fa-file-excel"></i> <i class="fas fa-download"></i>
+                            </a>--}}
+                        {{--<button type="button" class="btn btn-default btn-sm float-right" style="margin-right: 5px;"
+                                data-toggle="modal" data-target="#modal-lg-reportes-excel">
+                            <i class="fas fa-file-excel"></i> <i class="fas fa-download"></i>
+                        </button>--}}
                         <button type="button" wire:click="limpiar"
                                 class="btn btn-default btn-sm float-right" style="margin-right: 5px;">
                             <i class="fas fa-sync"></i> Actualizar
@@ -66,6 +73,7 @@
 
                 @include('dashboard.pedidos.table')
                 @include('dashboard.pedidos.modal')
+                @include('dashboard.pedidos.modal_reportes')
 
                 {{--@include('dashboard.stock.table_stock')
                 @include('dashboard.stock.modal_stock')

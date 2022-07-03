@@ -6,14 +6,15 @@
                     <i class="fas fa-2x fa-sync-alt"></i>
                 </div>
             </div>
-            @if(!$count_empresas || !$count_almacenes || !$count_productos)
+            @if(!$count_empresas || !$count_almacenes || !$count_productos || !$empresa_id)
             <div class="callout callout-info">
                 <h5><i class="fas fa-info"></i> Nota:</h5>
                 Para que este Modulo este <span class="text-bold">Activo</span>,
                 es Necesario previmente crear una
                 <span class="text-bold @if($count_empresas) text-success @else text-danger @endif">Tienda</span>,
                 un <span class="text-bold @if($count_almacenes) text-success @else text-danger @endif">Almacen</span> y Tener Al menos
-                un <span class="text-bold @if($count_productos) text-success @else text-danger @endif">Producto</span> Registrado.
+                un <span class="text-bold @if($count_productos) text-success @else text-danger @endif">Producto</span> Registrado y una
+                <span class="text-bold @if($empresa_id) text-success @else text-danger @endif">Tienda Default</span>.
             </div>
 
 

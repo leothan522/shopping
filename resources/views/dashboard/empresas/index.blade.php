@@ -5,10 +5,12 @@
             <div class="card-header">
                 <h3 class="card-title">Tiendas</h3>
                 <div class="card-tools">
-                    @if(leerJson(Auth::user()->permisos, 'empresas.create') || Auth::user()->role == 1 || Auth::user()->role == 100)
-                        <button type="button" class="btn btn-tool" wire:click="create">
-                            <i class="fas fa-plus-square"></i>
-                        </button>
+                    @if(!$default)
+                        @if(leerJson(Auth::user()->permisos, 'empresas.create') || Auth::user()->role == 1 || Auth::user()->role == 100)
+                            <button type="button" class="btn btn-tool" wire:click="create">
+                                <i class="fas fa-plus-square"></i>
+                            </button>
+                        @endif
                     @endif
 
                     {{--<button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i>

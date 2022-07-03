@@ -46,6 +46,7 @@ Route::middleware(['auth', 'isadmin', 'estatus', 'permisos'])->prefix('/dashboar
     Route::get('stock/{buscar?}', [StockController::class, 'index'])->name('stock.index');
     Route::get('pedidos/{buscar?}', [PedidosController::class, 'index'])->name('pedidos.index');
     Route::get('pdf/pedidos/{id}', [PedidosController::class, 'createPDF'])->name('pedidos.pdf');
+    Route::post('excel/pedidos', [PedidosController::class, 'createExcel'])->name('pedidos.excel');
 
     //pendientes
 

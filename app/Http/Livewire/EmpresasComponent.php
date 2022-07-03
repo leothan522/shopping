@@ -37,8 +37,14 @@ class EmpresasComponent extends Component
             $this->default = 1;
         }else{
             $default = Empresa::where('default', 1)->first();
-            $this->show($default->id);
-            $this->view = "show";
+            if ($default){
+                $this->show($default->id);
+                $this->view = "show";
+                $this->default = 0;
+            }else{
+                $this->view = "form";
+                $this->default = 1;
+            }
         }
     }
     public function render()
@@ -57,7 +63,7 @@ class EmpresasComponent extends Component
         $this->telefonos = null;
         $this->email = null;
         $this->direccion = null;
-        $this->default = 0;
+        //$this->default = 0;
         $this->logo = null;
         $this->empresa_id = null;
     }
@@ -109,6 +115,10 @@ class EmpresasComponent extends Component
 
         $empresa->save();
 
+        if ($empresa->default){
+            $this->default = 0;
+        }
+
         $this->show($empresa->id);
         $this->view = 'show';
 
@@ -121,6 +131,7 @@ class EmpresasComponent extends Component
 
     public function show($id)
     {
+        $this->limpiar();
         $empresa = Empresa::find($id);
         $this->empresa_id = $empresa->id;
         $this->nombre = $empresa->nombre;
@@ -203,13 +214,15 @@ class EmpresasComponent extends Component
     public function convertirDefault($id)
     {
         $buscar = Empresa::where('default', 1)->first();
-        $buscar->default = 0;
-        $buscar->update();
-
+        if ($buscar){
+            $buscar->default = 0;
+            $buscar->update();
+        }
 
         $empresa = Empresa::find($id);
         $empresa->default = 1;
         $empresa->update();
+        $this->default = 0;
 
         $this->empresaDefault = $empresa->default;
         $this->alert(

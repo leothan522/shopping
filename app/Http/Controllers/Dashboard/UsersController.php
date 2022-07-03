@@ -18,7 +18,7 @@ class UsersController extends Controller
 
     public function export($busqueda = null)
     {
-        return Excel::download(new UsersExport($busqueda), "Usuarios_Registrados".date('d-m-Y').".xlsx");
+        return Excel::download(new UsersExport($busqueda), "Usuarios_Registrados_".date('d-m-Y').".xlsx");
     }
 
     public function createPDF()
