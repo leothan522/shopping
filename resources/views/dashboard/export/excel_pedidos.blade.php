@@ -11,32 +11,32 @@
         </td>
     </tr>
     <tr>
-        <td>Reporte:&nbsp;</td>
-        <td colspan="6">
+        <td colspan="2">Reporte:&nbsp;</td>
+        <td colspan="3">
             <strong>{{ $estatus }}</strong>
         </td>
         @if($inicio || $final)
             <td colspan="2">Filtrar Fecha:&nbsp;</td>
             <td>Inicio:&nbsp;</td>
-            <td colspan="2">
-                <strong>{{ fecha($inicio) }}</strong>
+            <td>
+                <strong>{{ \Carbon\Carbon::parse($inicio)->format('d-m-Y') }}</strong>
             </td>
             <td>Final:&nbsp;</td>
             <td colspan="2">
-                <strong>{{ fecha($final) }}</strong>
+                <strong>{{ \Carbon\Carbon::parse($final)->format('d-m-Y') }}</strong>
             </td>
         @endif
         @if($metodo)
-        <td colspan="2">
+        <td colspan="1">
             Metodo Pago:
         </td>
-        <td>{{ $metodo }}</td>
+        <td><strong>{{ $metodo }}</strong></td>
         @endif
         @if($delivery)
-        <td colspan="2">
+        <td colspan="1">
             Delivery:
         </td>
-        <td>{{ $delivery }}</td>
+        <td><strong>{{ $delivery }}</strong></td>
         @endif
     </tr>
 
@@ -49,37 +49,41 @@
         <td>&ensp;</td>
     </tr>
     <tr>
-        <th style="border: 1px solid #000000; text-align: center">ID</th>
-        <th style="border: 1px solid #000000; text-align: center">Numero</th>
-        <th style="border: 1px solid #000000; text-align: center">Cedula Cliente</th>
-        <th style="border: 1px solid #000000; text-align: center">Nombre Cliente</th>
-        <th style="border: 1px solid #000000; text-align: center">Telefono Cliente</th>
+        <th style="border: 1px solid #000000; text-align: left">ID</th>
+        <th style="border: 1px solid #000000; text-align: left">Numero</th>
+        <th style="border: 1px solid #000000; text-align: left">Cedula Cliente</th>
+        <th style="border: 1px solid #000000; text-align: left">Nombre Cliente</th>
+        <th style="border: 1px solid #000000; text-align: left">Telefono Cliente</th>
         <th style="border: 1px solid #000000; text-align: center">Delivery</th>
         <th style="border: 1px solid #000000; text-align: center">Total $</th>
+        <th style="border: 1px solid #000000; text-align: center">Taza Dolar</th>
         <th style="border: 1px solid #000000; text-align: center">Total Bs.</th>
-        <th style="border: 1px solid #000000; text-align: center">Metodo Pago</th>
-        <th style="border: 1px solid #000000; text-align: center">Comprobante</th>
+        <th style="border: 1px solid #000000; text-align: left">Metodo Pago</th>
+        <th style="border: 1px solid #000000; text-align: left">Comprobante</th>
         <th style="border: 1px solid #000000; text-align: center">Fecha</th>
-        <th style="border: 1px solid #000000; text-align: center">Estatus</th>
-        <th style="border: 1px solid #000000; text-align: center">Zona para el envio</th>
+        <th style="border: 1px solid #000000; text-align: left">Estatus</th>
+        <th style="border: 1px solid #000000; text-align: left">Zona para el envio</th>
+        <th style="border: 1px solid #000000; text-align: left">Mensajero</th>
     </tr>
     </thead>
     <tbody>
     @foreach($listarPedidos as $pedido)
         <tr>
-            <td style="border: 1px solid #000000; text-align: center">{{ $pedido->id }}</td>
-            <td style="border: 1px solid #000000; text-align: center">{{ $pedido->numero }}</td>
-            <td style="border: 1px solid #000000; text-align: center">{{ strtoupper($pedido->cedula) }}</td>
-            <td style="border: 1px solid #000000; text-align: center">{{ strtoupper($pedido->nombre) }}</td>
-            <td style="border: 1px solid #000000; text-align: center">{{ strtoupper($pedido->telefono) }}</td>
-            <td style="border: 1px solid #000000; text-align: center">{{ $pedido->delivery }}</td>
-            <td style="border: 1px solid #000000; text-align: center">{{ $pedido->total }}</td>
-            <td style="border: 1px solid #000000; text-align: center">{{ $pedido->bs }}</td>
-            <td style="border: 1px solid #000000; text-align: center">{{ $pedido->label_metodo }}</td>
-            <td style="border: 1px solid #000000; text-align: center">{{ $pedido->comprobante_pago }}</td>
-            <td style="border: 1px solid #000000; text-align: center">{{ fecha($pedido->fecha) }}</td>
-            <td style="border: 1px solid #000000; text-align: center">{{ $pedido->estatus  }}</td>
-            <td style="border: 1px solid #000000; text-align: center">zona</td>
+            <td style="border: 1px solid #000000; text-align: left">{{ $pedido->id }}</td>
+            <td style="border: 1px solid #000000; text-align: left">{{ $pedido->numero }}</td>
+            <td style="border: 1px solid #000000; text-align: left">{{ strtoupper($pedido->cedula) }}</td>
+            <td style="border: 1px solid #000000; text-align: left">{{ strtoupper($pedido->nombre) }}</td>
+            <td style="border: 1px solid #000000; text-align: left">{{ strtoupper($pedido->telefono) }}</td>
+            <td style="border: 1px solid #000000; text-align: center">{{ $pedido->label_delivery }}</td>
+            <td style="border: 1px solid #000000; text-align: right">{{ $pedido->total }}</td>
+            <td style="border: 1px solid #000000; text-align: right">{{ $pedido->precio_dolar }}</td>
+            <td style="border: 1px solid #000000; text-align: right">{{ $pedido->bs }}</td>
+            <td style="border: 1px solid #000000; text-align: left">{{ $pedido->label_metodo }}</td>
+            <td style="border: 1px solid #000000; text-align: left">{{ $pedido->comprobante_pago }}</td>
+            <td style="border: 1px solid #000000; text-align: center">{{ $pedido->label_fecha }}</td>
+            <td style="border: 1px solid #000000; text-align: left">{{ $pedido->label_estatus  }}</td>
+            <td style="border: 1px solid #000000; text-align: left">{{ $pedido->label_zona }}</td>
+            <td style="border: 1px solid #000000; text-align: left">{{ $pedido->mensajero }}</td>
         </tr>
     @endforeach
     </tbody>

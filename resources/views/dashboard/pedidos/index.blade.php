@@ -59,10 +59,14 @@
                             {{--<a href="{{ route('pedidos.excel') }}" class="btn btn-default btn-sm float-right text-success" >
                                 <i class="fas fa-file-excel"></i> <i class="fas fa-download"></i>
                             </a>--}}
-                        {{--<button type="button" class="btn btn-default btn-sm float-right" style="margin-right: 5px;"
-                                data-toggle="modal" data-target="#modal-lg-reportes-excel">
-                            <i class="fas fa-file-excel"></i> <i class="fas fa-download"></i>
-                        </button>--}}
+                            @if(!$listarPedidos->isEmpty())
+                                @if(leerJson(Auth::user()->permisos, 'pedidos.excel') || Auth::user()->role == 1 || Auth::user()->role == 100)
+                                    <button type="button" class="btn btn-default btn-sm float-right text-success" style="margin-right: 5px;"
+                                            data-toggle="modal" data-target="#modal-lg-reportes-excel">
+                                        <i class="fas fa-file-excel"></i> <i class="fas fa-download"></i>
+                                    </button>
+                                @endif
+                            @endif
                         <button type="button" wire:click="limpiar"
                                 class="btn btn-default btn-sm float-right" style="margin-right: 5px;">
                             <i class="fas fa-sync"></i> Actualizar

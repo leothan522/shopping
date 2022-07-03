@@ -48,15 +48,15 @@
                     <label class="custom-control-label" for="customSwitchRolesPedioseAs3"></label>
                 </div>
             </li>
-            {{--<li class="list-group-item">
-                [Exportar|Excel] stock
+            <li class="list-group-item">
+                Reportes Excel
                 <div class="custom-control custom-switch custom-switch-on-success float-right">
-                    <input type="checkbox" wire:click="update_roles({{ $rol_id }}, 'stock.excel')"
-                           @if(leerJson($roles_permisos, 'stock.excel')) checked @endif
-                           class="custom-control-input" id="customSwitchRolesPediose4">
-                    <label class="custom-control-label" for="customSwitchRolesPediose4"></label>
+                    <input type="checkbox" wire:click="update_roles({{ $rol_id }}, 'pedidos.excel')"
+                           @if(leerJson($roles_permisos, 'pedidos.excel')) checked @endif
+                           class="custom-control-input" id="customSwitchRolesPedioseROEx4">
+                    <label class="custom-control-label" for="customSwitchRolesPedioseROEx4"></label>
                 </div>
-            </li>--}}
+            </li>
         </ul>
 
     </div>

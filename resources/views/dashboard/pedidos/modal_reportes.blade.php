@@ -44,7 +44,7 @@
                             <!-- /.card-header -->
                             <div class="card-body">
 
-                                <form action="{{ route('pedidos.excel') }}" method="post">
+                                <form action="{{ route('pedidos.excel') }}" method="post" id="swalDefaultInfo">
                                     @csrf
 
                                     <div class="form-group">
@@ -104,7 +104,7 @@
                                                 </span>
                                                     </div>
                                                     <select name="reporte_metodo" class="custom-select">
-                                                        <option value="">Seleccione</option>
+                                                        <option value="">Todos</option>
                                                         <option value="efectivo_bs">Efectivo BS</option>
                                                         <option value="efectivo_dolares">Efectivo Dolares</option>
                                                         <option value="debito">Tarjeta de Debito</option>
@@ -134,7 +134,7 @@
                                     </div>
 
                                     <div class="form-group text-center">
-                                        <input type="submit" class="btn btn-block btn-success" value="Generar Reporte">
+                                        <input type="submit" class="btn btn-block btn-success swalDefaultInfo" value="Generar Reporte">
                                     </div>
 
                                 </form>

@@ -48,15 +48,15 @@
                     <label class="custom-control-label" for="customSwitchPedisoAs3"></label>
                 </div>
             </li>
-            {{--<li class="list-group-item">
-                [Exportar|Excel] stock
+            <li class="list-group-item">
+                Reportes Excel
                 <div class="custom-control custom-switch custom-switch-on-success float-right">
-                    <input type="checkbox" wire:click="update_permisos({{ $user_id }}, 'stock.excel')"
-                           @if(leerJson($user_permisos, 'stock.excel')) checked @endif
-                           class="custom-control-input" id="customSwitchPediso4">
-                    <label class="custom-control-label" for="customSwitchPediso4"></label>
+                    <input type="checkbox" wire:click="update_permisos({{ $user_id }}, 'pedidos.excel')"
+                           @if(leerJson($user_permisos, 'pedidos.excel')) checked @endif
+                           class="custom-control-input" id="customSwitchPedisoEx4">
+                    <label class="custom-control-label" for="customSwitchPedisoEx4"></label>
                 </div>
-            </li>--}}
+            </li>
 
         </ul>
 
