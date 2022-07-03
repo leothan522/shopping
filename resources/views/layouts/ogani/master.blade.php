@@ -3,12 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Ogani Template">
-    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="description" content="Caracas Shopping Center">
+    <meta name="keywords" content="Caracas, Shopping, Center, shop">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <title>@yield('title', 'Ogani | Template')</title>
+    <title>@yield('title', 'Caracas | Shopping')</title>
 
     <link rel="icon" href="{{ asset('favicons/favicon.ico') }}">
 
