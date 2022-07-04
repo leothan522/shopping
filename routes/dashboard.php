@@ -29,9 +29,9 @@ Route::match(
     ['get', 'post'],
     '/dashboard/navbar/search',
     [SearchController::class, 'showNavbarSearchResults']
-)->middleware(['auth', 'isadmin', 'estatus']);
+)->middleware(['auth', 'isadmin', 'estatus', 'verified']);
 
-Route::middleware(['auth', 'isadmin', 'estatus', 'permisos'])->prefix('/dashboard')->group(function (){
+Route::middleware(['auth', 'isadmin', 'estatus', 'permisos', 'verified'])->prefix('/dashboard')->group(function (){
 
     Route::get('parametros/{parametro?}', [ParametrosController::class, 'index'])->name('parametros.index');
     Route::get('usuarios/{usuario?}', [UsersController::class, 'index'])->name('usuarios.index');
@@ -63,4 +63,4 @@ Route::middleware(['auth', 'isadmin', 'estatus', 'permisos'])->prefix('/dashboar
 
 Route::get('/prueba', function () {
     return view('dashboard.blank');
-})->middleware(['auth', 'isadmin', 'estatus'])->name('prueba');
+})->middleware(['auth', 'isadmin', 'estatus', 'verified'])->name('prueba');

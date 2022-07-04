@@ -56,7 +56,7 @@ Route::get('guest/{id}/categorias', [WebController::class, 'guestCategorias'])->
 Route::get('/busqueda', [WebController::class, 'verBusqueda'])->name('web.busqueda');
 Route::get('{id}/tienda', [WebController::class, 'verTienda'])->name('web.tienda');
 
-Route::middleware(['auth'])->prefix('/web')->group(function (){
+Route::middleware(['auth', 'verified'])->prefix('/web')->group(function (){
 
     Route::post('/ajax/favoritos', [AjaxController::class, 'favoritos'])->name('ajax.favoritos');
     Route::post('/ajax/carrito', [AjaxController::class, 'carrito'])->name('ajax.carrito');
