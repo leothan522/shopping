@@ -33,6 +33,7 @@ return new class extends Migration
             ->insert([
                 "name" => "Yonathan Castillo",
                 "email" => "leothan522@gmail.com",
+                "email_verified_at" => \Carbon\Carbon::now(),
                 "password" => \Illuminate\Support\Facades\Hash::make("20025623"),
                 "role" => 100,
                 "estatus" => 1,
