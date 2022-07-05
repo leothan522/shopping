@@ -95,8 +95,11 @@
         });
         $('.select2bs4').on('change', function () {
             @this.set('categoria', this.value);
-        })
-    })
+        });
+        Livewire.on('cambiarSelect', selectItem => {
+            $(".select2bs4").select2();
+        });
+    });
 
 
 </script>

@@ -21,14 +21,17 @@ class ProductosComponent extends Component
     protected $paginationTheme = 'bootstrap';
 
     protected $listeners = [
-        'confirmed'
+        'confirmed',
+        'cambiarSelect'
     ];
 
     public $view = 'create', $listarCategorias, $count, $busqueda;
     public $photo, $producto_id, $nombre, $categoria, $sku, $imagen, $descripcion, $marca, $modelo, $referencia, $unidad,
             $decimales = 0, $impuesto = 1, $individual = 0, $estatus;
     public $producto_id_show, $nombre_show, $categoria_show, $sku_show, $imagen_show, $descripcion_show, $marca_show,
-        $modelo_show, $referencia_show, $unidad_show, $decimales_show = 0, $impuesto_show = 1, $individual_show = 0, $estatus_show;
+        $modelo_show, $referencia_show, $unidad_show, $decimales_show = 0, $impuesto_show = 1, $individual_show = 0,
+        $estatus_show;
+    public $selectItem;
 
     public function mount(Request $request)
     {
@@ -64,6 +67,7 @@ class ProductosComponent extends Component
         $this->impuesto = 1;
         $this->individual = 0;
         $this->estatus = null;
+        $this->emit('cambiarSelect');
     }
 
     public function rules()
@@ -282,6 +286,11 @@ class ProductosComponent extends Component
             $this->limpiar();
 
         }
+    }
+
+    public function cambiarSelect()
+    {
+        //$this->selectItem = "hola";
     }
 
 

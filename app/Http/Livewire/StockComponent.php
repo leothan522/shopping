@@ -25,7 +25,8 @@ class StockComponent extends Component
     protected $paginationTheme = 'bootstrap';
 
     protected $listeners = [
-        'confirmed'
+        'confirmed',
+        'cambiarSelect'
     ];
 
     public $count_empresas, $count_almacenes, $count_productos, $view = 'create', $busqueda;
@@ -70,6 +71,7 @@ class StockComponent extends Component
         $this->lista = null;
         $this->cantidad = null;
         $this->icono = 'create';
+        $this->emit('cambiarSelect');
     }
 
     public function verDefault()
@@ -245,16 +247,34 @@ class StockComponent extends Component
 
     }
 
+    public $json = [];
+
     public function verAjuste($tipo)
     {
+        $this->json = [];
         $this->limpiar();
         $this->ajuste = $tipo;
         $stock = Stock::where('empresas_id', $this->empresa_id)->orderBy('id', 'DESC')->get();
+
+        $array = [
+            'id' => "",
+            'text' => "Seleccione Stock"
+        ];
+        array_push($this->json, $array);
+
         $stock->each(function ($stock){
             $stock->nombre = $stock->producto->nombre;
+            $array = [
+                'id' => $stock->id,
+                'text' => $stock->nombre
+            ];
+
+            array_push($this->json, $array);
         });
-        //dd($stock);
-        $this->listarProd = $stock->pluck('nombre', 'id');
+        //$this->listarProd = $stock->pluck('nombre', 'id');
+
+        $data = json_encode($this->json);
+        $this->emit('cambiarSelect', $data);
 
         $this->listarAjustes = Ajuste::where('empresas_id', $this->empresa_id)
                     ->where('tipo', $this->ajuste)
@@ -336,6 +356,31 @@ class StockComponent extends Component
         $this->lista = $ajuste->stock_id;
         $this->ajuste_id = $ajuste->id;
         $this->icono = 'edit';
+
+        $this->json = [];
+
+        $array = [
+            'id' => $ajuste->stock_id,
+            'text' => $ajuste->stock->producto->nombre
+        ];
+
+        array_push($this->json, $array);
+
+        /*$stock->each(function ($stock){
+            if ($stock->id != $this->lista) {
+
+                $stock->nombre = $stock->producto->nombre;
+                $array = [
+                    'id' => $stock->id,
+                    'text' => $stock->nombre
+                ];
+                array_push($this->json, $array);
+            }
+        });*/
+
+        $data = json_encode($this->json);
+        $this->emit('cambiarSelect', $data);
+
     }
 
     public function updateAjuste($id)
@@ -402,6 +447,11 @@ class StockComponent extends Component
         $empresa = Empresa::find($id);
         $this->empresa_id = $empresa->id;
         $this->empresa_nombre = $empresa->nombre;
+    }
+
+    public function cambiarSelect()
+    {
+        //$this->selectItem = "hola";
     }
 
 

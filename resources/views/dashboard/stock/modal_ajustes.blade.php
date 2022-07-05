@@ -52,6 +52,14 @@
                                 </td>
                             </tr>
                         @endforeach
+                        @if($i < 1)
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        @endif
                         </tbody>
                     </table>
                 </div>
@@ -66,14 +74,16 @@
                                         <i class="btn disabled fas fa-plus-square"></i>
                                         @else
                                         <button type="button" class="btn" wire:click="verAjuste('{{ $ajuste }}')">
-                                            <i class="fas fa-plus-square"></i>
+                                            <i class="fas fa-plus-square text-success"></i>
                                         </button>
 
                                     @endif
 
                                 </td>
                                 <td scope="col">
-                                    {!! Form::select('stock', $listarProd, null, ['class' => 'custom-select', 'wire:model' => 'lista' , 'placeholder' => 'Seleccione Stock']); !!}
+                                    <div wire:ignore>
+                                        {!! Form::select('stock', [], null, ['id' => 'select_ajustes', 'class' => 'custom-select select_ajustes', 'wire:model' => 'lista' , 'placeholder' => 'Seleccione Stock']); !!}
+                                    </div>
                                     @error('lista')
                                     <span class="col-sm-12 text-sm text-bold text-danger">
                                     <i class="icon fas fa-exclamation-triangle"></i>
@@ -91,14 +101,15 @@
                                     @enderror
                                 </td>
                                 <td scope="col" style="width: 5%;">
-                                    <button type="submit"  class="btn
-                                        @if($icono == 'create')
-                                        btn-success
+                                    @if($icono == 'create')
+                                        <button type="submit"  class="btn btn-success">
+                                            <i class="fas fa-plus-square"></i>
+                                        </button>
                                         @else
-                                        btn-primary
-                                        @endif" >
+                                        <button type="submit"  class="btn btn-info">
                                             <i class="fas fa-save"></i>
-                                    </button>
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                         </form>

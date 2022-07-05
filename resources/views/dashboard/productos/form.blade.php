@@ -69,7 +69,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-tag"></i></span>
                     </div>
-                        {!! Form::select('categoria', $listarCategorias, null, ['class' => 'custom-select select2bs4', 'wire:model' => 'categoria' , 'placeholder' => 'Seleccione']); !!}
+                        {!! Form::select('categoria', $listarCategorias, null, ['id' => 'item_categoria_select', 'class' => 'custom-select select2bs4', 'wire:model' => 'categoria' , 'placeholder' => 'Seleccione']); !!}
                 </div>
                 @error('categoria')
                 <span class="col-sm-12 text-sm text-bold text-danger">
@@ -97,15 +97,11 @@
         <!-- /.card-header -->
         <div class="card-body" style="display: none;">
 
-
             <div class="form-group">
-                <label for="email">Sku</label>
+                <label for="name">Descripción:</label>
                 <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
-                    </div>
-                    <input type="text" class="form-control" wire:model.defer="sku" placeholder="Codigo del Producto">
-                    @error('sku')
+                    <textarea class="form-control" cols="1" rows="1" wire:model.defer="descripcion" placeholder="Descripción corta del Producto"></textarea>
+                    @error('descripcion')
                     <span class="col-sm-12 text-sm text-bold text-danger">
                         <i class="icon fas fa-exclamation-triangle"></i>
                         {{ $message }}
@@ -115,10 +111,13 @@
             </div>
 
             <div class="form-group">
-                <label for="name">Descripción:</label>
+                <label for="email">Sku</label>
                 <div class="input-group mb-3">
-                    <textarea class="form-control" cols="1" rows="1" wire:model.defer="descripcion" placeholder="Descripción corta del Producto"></textarea>
-                    @error('descripcion')
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                    </div>
+                    <input type="text" class="form-control" wire:model.defer="sku" placeholder="Codigo del Producto">
+                    @error('sku')
                     <span class="col-sm-12 text-sm text-bold text-danger">
                         <i class="icon fas fa-exclamation-triangle"></i>
                         {{ $message }}

@@ -105,6 +105,33 @@
         });
         $('.select2bs4').on('change', function () {
         @this.set('producto', this.value);
-        })
+        });
+        $('.select_ajustes').select2({
+            theme: 'bootstrap4',
+            dropdownParent: $("#modal-lg-ajustes")
+        });
+        $('#select_ajustes').on('change', function () {
+        @this.set('lista', this.value);
+        });
+
+        Livewire.on('cambiarSelect', selectItem => {
+            if (selectItem != null){
+                var output = JSON.parse(selectItem);
+            }else{
+                var output = [{
+                    id: null,
+                    text: "No se ha recibido lista de stock"
+                }];
+            }
+
+            $(".select2bs4").select2({
+                dropdownParent: $("#modal-lg-stock")
+            });
+            $('#select_ajustes').empty().select2({
+                dropdownParent: $("#modal-lg-ajustes"),
+                data: output
+            });
+
+        });
     })
 </script>
