@@ -15,7 +15,17 @@
                 <th scope="row" class="text-center">{{ $parametro->id }}</th>
                 <td>{{ $parametro->nombre }}</td>
                 <td>@if(is_null($parametro->tabla_id)) <em>null</em> @else {{ $parametro->tabla_id }} @endif</td>
-                <td>@if(is_null($parametro->valor)) null @else {{ $parametro->valor }} @endif</td>
+                <td>
+                    @if(is_null($parametro->valor))
+                        null
+                    @else
+                        @if($parametro->tabla_id == "-1")
+                            json{...}
+                        @else
+                            {{ $parametro->valor }}
+                        @endif
+                    @endif
+                </td>
                 <td class="justify-content-end">
                     <div class="btn-group">
                            <button wire:click="edit({{ $parametro->id }})"  class="btn btn-info btn-sm">
