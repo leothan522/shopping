@@ -603,6 +603,21 @@ class WebController extends Controller
             $pedido->cliente_id = $cliente->id;
         }
 
+        $dolarParametro = Parametro::where('nombre', 'precio_dolar')->first();
+        if ($dolarParametro){
+            $precio_dolar = floatval($dolarParametro->valor);
+        }else{
+            $precio_dolar = 1;
+        }
+
+        //dd($precio_dolar);
+
+        if ($precio_dolar != floatval($pedido->precio_dolar)){
+            $pedido->precio_dolar = $precio_dolar;
+            $pedido->bs = $pedido->total * $precio_dolar;
+            $pedido->update();
+        }
+
 
         return view('web.checkout.index')
             ->with('ruta', $carrito['ruta'])
