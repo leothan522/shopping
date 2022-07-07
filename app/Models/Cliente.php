@@ -23,4 +23,11 @@ class Cliente extends Model
         return $this->belongsTo(User::class, 'users_id', 'id');
     }
 
+    public function scopeBuscar($query, $keyword)
+    {
+        return $query->where('cedula', 'LIKE', "%$keyword%")
+            ->orWhere('nombre', 'LIKE', "%$keyword%")
+            ->orWhere('telefono', 'LIKE', "%$keyword%");
+    }
+
 }

@@ -21,7 +21,7 @@
                     <label class="custom-control-label" for="customSwitchRolesClien0"></label>
                 </div>
             </li>
-            <li class="list-group-item">
+            {{--<li class="list-group-item">
                 [Crear|Editar] Clientes
                 <div class="custom-control custom-switch custom-switch-on-success float-right">
                     <input type="checkbox" wire:click="update_roles({{ $rol_id }}, 'clientes.create')"
@@ -38,9 +38,9 @@
                            class="custom-control-input" id="customSwitchRolesClien3">
                     <label class="custom-control-label" for="customSwitchRolesClien3"></label>
                 </div>
-            </li>
+            </li>--}}
             <li class="list-group-item">
-                [Exportar|Excel] Clientes
+                [Exportar|Excel] Pedidos
                 <div class="custom-control custom-switch custom-switch-on-success float-right">
                     <input type="checkbox" wire:click="update_roles({{ $rol_id }}, 'clientes.excel')"
                            @if(leerJson($roles_permisos, 'clientes.excel')) checked @endif

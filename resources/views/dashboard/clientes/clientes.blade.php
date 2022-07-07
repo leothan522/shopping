@@ -22,7 +22,7 @@
 @endsection
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
+    @livewire('clientes-component')
 @endsection
 
 @section('footer')
@@ -34,7 +34,24 @@
 @endsection
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+    <script>
+        $(function() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            $('.swalDefaultInfo').submit(function() {
+                Toast.fire({
+                    icon: 'info',
+                    title: 'Generando Archivo'
+                })
+            });
+
+        });
+        console.log('Hi!');
+    </script>
 @endsection
 
 @section('right-sidebar')

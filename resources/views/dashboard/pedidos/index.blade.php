@@ -79,11 +79,6 @@
                 @include('dashboard.pedidos.modal')
                 @include('dashboard.pedidos.modal_reportes')
 
-                {{--@include('dashboard.stock.table_stock')
-                @include('dashboard.stock.modal_stock')
-                @include('dashboard.stock.show')
-                @include('dashboard.stock.modal_ajustes')--}}
-
             </div>
             <!-- /.invoice -->
 

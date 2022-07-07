@@ -47,17 +47,8 @@ Route::middleware(['auth', 'isadmin', 'estatus', 'permisos', 'verified'])->prefi
     Route::get('pedidos/{buscar?}', [PedidosController::class, 'index'])->name('pedidos.index');
     Route::get('pdf/pedidos/{id}', [PedidosController::class, 'createPDF'])->name('pedidos.pdf');
     Route::post('excel/pedidos', [PedidosController::class, 'createExcel'])->name('pedidos.excel');
-
-    //pendientes
-
-
-    Route::get('clientes', [ClientesController::class, 'index'])->name('clientes.index');
-
-
-
-
-
-
+    Route::get('clientes/{buscar?}', [ClientesController::class, 'index'])->name('clientes.index');
+    Route::post('excel/clientes', [ClientesController::class, 'createExcel'])->name('clientes.excel');
 
 });
 
