@@ -39,8 +39,8 @@
                                     <a href="{{ route('web.pedidos') }}" class="btn-link text-dark">
                                         <i class="fa fa-shopping-bag"></i> Tus Pedidos
                                     </a>
-                                @else
-                                    <i class="fa fa-user"></i> {{ auth()->user()->name }}
+                                {{--@else
+                                    <i class="fa fa-user"></i> {{ auth()->user()->name }}--}}
                                 @endif
                             </li>
                         </ul>

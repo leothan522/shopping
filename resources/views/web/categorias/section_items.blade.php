@@ -15,7 +15,7 @@
                             <li>
                                 <a href="
                             @if($ruta == 'android')
-                                {{ route('android.detalles', $stock->id) }}
+                                {{ route('android.detalles', [auth()->id(), $stock->id]) }}
                                 @else
                                 {{ route('web.detalles', $stock->id) }}
                                 @endif" onclick="preSubmit()">
@@ -237,7 +237,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 mb-3">
                     <div class="banner__pic img-thumbnail">
                         <a href="@if($ruta == "android") # @else {{ route('web.tienda', $stock->empresas_id) }} @endif">
-                            <img src="{{ asset(verImg($stock->empresa->banner)) }}" alt="">
+                            <img src="{{ asset(verImg($stock->empresa->banner, true)) }}" alt="">
                         </a>
                     </div>
                 </div>

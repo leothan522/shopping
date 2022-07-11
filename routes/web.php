@@ -40,21 +40,12 @@ Route::get('/cerrar', function () {
 })->name('cerrar');
 
 
-Route::middleware(['android'])->prefix('/android')->group(function (){
-
-    Route::get('/{id}/home', [AppController::class, 'home'])->name('android.home');
-    Route::get('/{id}/detalles', [AppController::class, 'verDetalles'])->name('android.detalles');
-    Route::get('/{id}/carrito', [AppController::class, 'verCarrito'])->name('android.carrito');
-    Route::get('/{id}/categorias', [AppController::class, 'verCategorias'])->name('android.categorias');
-    Route::get('/{id}/favoritos', [AppController::class, 'verFavoritos'])->name('android.favoritos');
-
-});
-
 Route::get('/web', [WebController::class, 'index'])->name('web.index');
 Route::get('guest/{id}/detalles', [WebController::class, 'guestDetalles'])->name('guest.detalles');
 Route::get('guest/{id}/categorias', [WebController::class, 'guestCategorias'])->name('guest.categorias');
 Route::get('/busqueda', [WebController::class, 'verBusqueda'])->name('web.busqueda');
 Route::get('{id}/tienda', [WebController::class, 'verTienda'])->name('web.tienda');
+
 
 Route::middleware(['auth', 'verified'])->prefix('/web')->group(function (){
 
@@ -76,5 +67,21 @@ Route::middleware(['auth', 'verified'])->prefix('/web')->group(function (){
         return view('profile.show_default');
     })->name('web.perfil');
 
+});
+
+Route::middleware(['android'])->prefix('/android')->group(function (){
+
+    Route::get('/{user}/home', [AppController::class, 'home'])->name('android.home');
+    Route::get('/{user}/{id}/detalles', [AppController::class, 'verDetalles'])->name('android.detalles');
+    Route::get('/{user}/carrito', [AppController::class, 'verCarrito'])->name('android.carrito');
+    Route::get('/{user}/{id}/categorias', [AppController::class, 'verCategorias'])->name('android.categorias');
+    Route::get('/{user}/favoritos', [AppController::class, 'verFavoritos'])->name('android.favoritos');
+    Route::get('/{user}/busqueda', [AppController::class, 'verBusqueda'])->name('android.busqueda');
+    Route::get('/{user}/{id}/tienda', [AppController::class, 'verTienda'])->name('android.tienda');
+    Route::get('/{user}/checkout/{id?}', [AppController::class, 'verCheckout'])->name('android.checkout');
+    Route::get('/{user}/verpedidos/{id?}', [AppController::class, 'verPedidos'])->name('android.pedidos');
+    Route::get('/{user}/listarcategorias/', [AppController::class, 'listarCategorias'])->name('android.listar_categorias');
+    Route::get('/{user}/listartiendas/', [AppController::class, 'listarTiendas'])->name('android.listar_tiendas');
 
 });
+

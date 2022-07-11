@@ -8,7 +8,7 @@
                         <div class="categories__item set-bg img-thumbnail" data-setbg="{{ asset(verImg($categoria->imagen)) }}">
                             <h5>
                                 <a onclick="preSubmit()" href="@if($ruta == "android")
-                                    {{ route('android.categorias', $categoria->id) }}
+                                    {{ route('android.categorias', [auth()->id(), $categoria->id]) }}
                                     @else
                                     @if(auth()->check())
                                         {{ route('web.categorias', $categoria->id) }}

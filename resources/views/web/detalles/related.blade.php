@@ -24,7 +24,7 @@
                             <li>
                                 <a href="
                                 @if($ruta == 'android')
-                                {{ route('android.detalles', $stock->id) }}
+                                {{ route('android.detalles', [auth()->id(), $stock->id]) }}
                                 @else
                                 {{ route('web.detalles', $stock->id) }}
                                 @endif" onclick="preSubmit()">

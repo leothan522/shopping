@@ -169,6 +169,7 @@
                         @else
                        data-estatus="vacio"
                         @endif id="btn_procesar_carrito">PROCESAR CARRITO</a>
+                    <input type="hidden" id="ruta_app" value="{{ $ruta }}">
                 </div>
             </div>
         </div>

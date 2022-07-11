@@ -10,7 +10,7 @@
         </li>
         <li class="nav-item">
             <a href="{{ route('web.home') }}" class="nav-link" target="_blank">
-                <i class="fas fa-store-alt"></i> Home
+                <i class="fas fa-store-alt"></i> Inicio
             </a>
         </li>
         @if(Auth::user()->role == 100)
@@ -20,7 +20,37 @@
         </li>
         <li class="nav-item">
             <a href="{{ route('android.home', auth()->id()) }}" class="nav-link" target="_blank">
-                <i class="fas fa-store-alt"></i> Home
+                <i class="fas fa-store-alt"></i> Inicio
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('android.listar_categorias', auth()->id()) }}" class="nav-link" target="_blank">
+                <i class="fas fa-tags"></i> Categorias
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('android.listar_tiendas', auth()->id()) }}" class="nav-link" target="_blank">
+                <i class="fas fa-store"></i> Tiendas
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('android.favoritos', auth()->id()) }}" class="nav-link" target="_blank">
+                <i class="fas fa-heart"></i> Favoritos
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('android.carrito', auth()->id()) }}" class="nav-link" target="_blank">
+                <i class="fas fa-shopping-cart"></i> Carrito
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('android.pedidos', auth()->id()) }}" class="nav-link" target="_blank">
+                <i class="fas fa-shopping-bag"></i> Pedidos
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('web.perfil') }}" class="nav-link" target="_blank">
+                <i class="fas fa-user"></i> Perfil
             </a>
         </li>
         @endif

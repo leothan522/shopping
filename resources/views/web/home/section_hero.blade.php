@@ -7,7 +7,7 @@
                     <div class="hero__search__form">
 
                         @if($ruta == 'android')
-                            {!! Form::open(['route' => ['android.home', auth()->id()], 'method' => 'get', 'onSubmit' => 'preSubmit()']) !!}
+                            {!! Form::open(['route' => ['android.busqueda', auth()->id()], 'method' => 'get', 'onSubmit' => 'preSubmit()']) !!}
                         @else
                             {!! Form::open(['route' => ['web.busqueda'], 'method' => 'get', 'onSubmit' => 'preSubmit()']) !!}
                         @endif

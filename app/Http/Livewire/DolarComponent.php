@@ -10,7 +10,7 @@ class DolarComponent extends Component
 {
     use LivewireAlert;
 
-    public $dollar = null, $edit = false, $parametro_id = null;
+    public $dollar = 1, $edit = false, $parametro_id = null;
 
     public function render()
     {

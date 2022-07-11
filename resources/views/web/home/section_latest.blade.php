@@ -13,7 +13,7 @@
                             @endif
                                 <a href="
                                 @if($ruta == 'android')
-                                {{ route('android.detalles', $stock->id) }}
+                                {{ route('android.detalles', [auth()->id(), $stock->id]) }}
                                 @else
                                     @if(auth()->check())
                                         {{ route('web.detalles', $stock->id) }}
@@ -110,7 +110,7 @@
                                     @endif
                                     <a href="
                                     @if($ruta == 'android')
-                                    {{ route('android.detalles', $stock->id) }}
+                                    {{ route('android.detalles', [auth()->id(), $stock->id]) }}
                                     @else
                                         @if(auth()->check())
                                         {{ route('web.detalles', $stock->id) }}
@@ -205,7 +205,7 @@
                                     @endif
                                     <a href="
                                     @if($ruta == 'android')
-                                    {{ route('android.detalles', $stock->id) }}
+                                    {{ route('android.detalles', [auth()->id(), $stock->id]) }}
                                     @else
                                         @if(auth()->check())
                                         {{ route('web.detalles', $stock->id) }}

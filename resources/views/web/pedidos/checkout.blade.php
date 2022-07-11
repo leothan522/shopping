@@ -123,7 +123,7 @@
                             @endif
                             {{--<button type="button" class="site-btn" data-id-pedido="{{ $pedido->id }}">I</button>--}}
                             <div class="col-md-12 text-center">
-                                <a href="{{ route('web.home') }}" class="site-btn btn btn-primary">¡Seguir Comprando!</a>
+                                <a href="@if($ruta == "android") {{ route('android.home', auth()->id()) }} @else {{ route('web.home') }} @endif" class="site-btn btn btn-primary">¡Seguir Comprando!</a>
                             </div>
 
                         </div>

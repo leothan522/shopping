@@ -14,7 +14,13 @@
                             @foreach($listarPedidos as $order)
                                 {{-- @if($pedido && $pedido->id == $order->id) @continue @endif--}}
                                 <li class="col-md-11">
-                                    <a href="{{ route('web.pedidos', $order->id) }}" onclick="preSubmit()">
+                                    <a href="
+                                            @if($ruta == "android")
+                                            {{ route('android.pedidos', [auth()->id(), $order->id]) }}
+                                            @else
+                                            {{ route('web.pedidos', $order->id) }}
+                                            @endif
+                                            " onclick="preSubmit()">
                                         Pedido {{ $order->numero }}
                                         @if($order->estatus == 0)
                                             <span class="float-right text-warning">

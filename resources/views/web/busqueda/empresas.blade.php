@@ -6,7 +6,7 @@
 
                     <div class="col-lg-3 col-md-5">
                         <a href="@if($ruta == 'android')
-                                {{ route('android.detalles', $favorito['id']) }}
+                                {{ route('android.detalles', [auth()->id(), $stock->id]) }}
                             @else
                                 @if(auth()->check())
                                     {{ route('web.detalles', $stock->id) }}

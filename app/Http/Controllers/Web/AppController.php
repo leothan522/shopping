@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Carrito;
 use App\Models\Categoria;
+use App\Models\Cliente;
 use App\Models\Delivery;
 use App\Models\Empresa;
 use App\Models\Parametro;
+use App\Models\Pedido;
 use App\Models\Producto;
 use App\Models\Stock;
 use App\Models\User;
@@ -35,18 +37,28 @@ class AppController extends Controller
         $carritos = Carrito::where('users_id', Auth::id())->where('estatus', 0)->get();
         $suma= null;
         foreach ($carritos as $cart){
-            $precio = calcularIVA($cart->stock_id, $cart->stock->pvp);
+            $precio = calcularPrecio($cart->stock_id, $cart->stock->pvp);
             $suma = $suma + ($precio * $cart->cantidad);
         }
-        $carrito['total'] = $suma;
+
+        $delivery = Delivery::where('users_id', Auth::id())
+            ->where('estatus', 0)
+            ->first();
+        if ($delivery){
+            $zona = $delivery->zona->precio;
+        }else{
+            $zona = 0;
+        }
+
+        $carrito['total'] = $suma + $zona;
         $carrito['items'] = $carritos->sum('cantidad');
         $carrito['ruta'] = 'android';
         return $carrito;
     }
 
-    public function home($id)
+    public function home($user)
     {
-        $this->autenticar($id);
+        $this->autenticar($user);
         $favoritos = $this->headerFavoritos();
         $carrito = $this->headerCarrito();
 
@@ -110,12 +122,15 @@ class AppController extends Controller
             ->with('listarBanner', $banner)
             ->with('listarUltimos', $ultimos)
             ->with('listarPrimeros', $primeros)
-            ->with('listarRevisar', $revisar);
+            ->with('listarRevisar', $revisar)
+            ->with('modulo', 'HOME')
+            ->with('titulo', null);
 
     }
 
-    public function verDetalles($id)
+    public function verDetalles($user, $id)
     {
+        $this->autenticar($user);
         $favoritos = $this->headerFavoritos();
         $carrito = $this->headerCarrito();
 
@@ -188,9 +203,9 @@ class AppController extends Controller
             ->with('titulo', $stock->producto->nombre);
     }
 
-    public function verCarrito($id)
+    public function verCarrito($user)
     {
-        $this->autenticar($id);
+        $this->autenticar($user);
         $favoritos = $this->headerFavoritos();
         $carrito = $this->headerCarrito();
 
@@ -198,13 +213,14 @@ class AppController extends Controller
             ->where('estatus', 0)
             ->get();
         $listarCarrito->each(function ($carrito){
+
             $id_producto = $carrito->stock->productos_id;
             $cantidad = $carrito->cantidad;
             $pvp = $carrito->stock->pvp;
-            $precio = calcularIVA($id_producto, $pvp);
-            $iva = calcularIVA($id_producto, $pvp, true);
+            $precio = calcularPrecio($carrito->stock_id, $pvp);
+            $iva = calcularPrecio($carrito->stock_id, $pvp, true);
             $carrito->iva = $iva * $cantidad;
-            $carrito->subtotal = $pvp * $cantidad;
+            $carrito->subtotal = $cantidad * ($precio - $iva);
             $carrito->total = $precio * $cantidad;
             $carrito->item = $carrito->total;
             $carrito->precio = $precio;
@@ -253,8 +269,9 @@ class AppController extends Controller
             ;
     }
 
-    public function verCategorias($id)
+    public function verCategorias($user, $id)
     {
+        $this->autenticar($user);
         $favoritos = $this->headerFavoritos();
         $carrito = $this->headerCarrito();
 
@@ -315,20 +332,22 @@ class AppController extends Controller
 
     public $arrayFavoritos = array();
 
-    public function verFavoritos($id)
+    public function verFavoritos($user)
     {
-        $this->autenticar($id);
+        $this->autenticar($user);
         $favoritos = $this->headerFavoritos();
         $carrito = $this->headerCarrito();
+        //$verFavoritos = null;
 
         $listarFavoritos = Parametro::where('nombre', 'favoritos')
             ->where('tabla_id', Auth::id())
             ->get();
+        //dd($listarFavoritos->count());
         if ($listarFavoritos->count()){
             $listarFavoritos->each(function ($parametro){
                 $ultimos = Stock::orderBy('id', 'DESC')
-                    ->where('estatus', 1)
-                    ->where('stock_disponible', '>', 0)
+                    //->where('estatus', 1)
+                    //->where('stock_disponible', '>', 0)
                     ->where('id', $parametro->valor)
                     ->get();
                 $ultimos->each(function ($stock){
@@ -342,9 +361,10 @@ class AppController extends Controller
                     'id'            => $stock->id,
                     'miniatura'     => $stock->producto->miniatura,
                     'nombre'        => $stock->producto->nombre,
-                    'producto_id'   => $stock->productos_id,
+                    'producto_id'   => $stock->id,
                     'pvp'           => $stock->pvp,
-                    'moneda'        => $stock->empresa->moneda,
+                    'moneda'        => '$',//$stock->empresa->moneda,
+                    'estatus'       => $stock->estatus
                 ));
             }
         }else{
@@ -361,6 +381,210 @@ class AppController extends Controller
             ->with('titulo', null)
             ->with('listarFavoritos', $verFavoritos);
     }
+
+    public function verCheckout($user, $id = null)
+    {
+        $this->autenticar($user);
+        $favoritos = $this->headerFavoritos();
+        $carrito = $this->headerCarrito();
+
+        $pedido = Pedido::findOrFail($id);
+
+        if ($pedido->estatus > 0 && $pedido->estatus != 4){
+            return redirect()->route('android.pedidos', [Auth::id(), $pedido->id]);
+        }
+
+        $listarCarrito = Carrito::where('pedidos_id', $pedido->id)->get();
+        $listarMetodos = Parametro::where('nombre', 'metodo_pago')->where('tabla_id', 1)->get();
+        $listarMetodos->each(function ($parametro){
+            $nombre = str_replace("_", " ", $parametro->valor);
+            if ($parametro->valor == 'movil'){
+                $nombre = "pago movil";
+            }
+            $parametro->metodo = ucwords($nombre);
+        });
+
+        if ($pedido->metodo_pago){
+            $parametro = Parametro::find($pedido->metodo_pago);
+            $nombre = str_replace("_", " ", $parametro->valor);
+            if ($parametro->valor == 'movil'){
+                $nombre = "pago movil";
+            }
+            $pedido->revisar = $nombre;
+        }
+
+        if ($pedido->cedula){
+            $cliente = Cliente::where('cedula', $pedido->cedula)->first();
+            $pedido->cliente_id = $cliente->id;
+        }
+
+        $dolarParametro = Parametro::where('nombre', 'precio_dolar')->first();
+        if ($dolarParametro){
+            $precio_dolar = floatval($dolarParametro->valor);
+        }else{
+            $precio_dolar = 1;
+        }
+
+        //dd($precio_dolar);
+
+        if ($precio_dolar != floatval($pedido->precio_dolar)){
+            $pedido->precio_dolar = $precio_dolar;
+            $pedido->bs = $pedido->total * $precio_dolar;
+            $pedido->update();
+        }
+
+
+        return view('web.checkout.index')
+            ->with('ruta', $carrito['ruta'])
+            ->with('headerFavoritos', $favoritos)
+            ->with('headerItems', $carrito['items'])
+            ->with('headerTotal', $carrito['total'])
+            ->with('modulo', 'Checkout')
+            ->with('titulo', null)
+            ->with('pedido', $pedido)
+            ->with('listarCarrito', $listarCarrito)
+            ->with('listarMetodos', $listarMetodos)
+            ;
+
+    }
+
+    public function verPedidos($user, $id = null)
+    {
+        $this->autenticar($user);
+        $favoritos = $this->headerFavoritos();
+        $carrito = $this->headerCarrito();
+
+        if (is_null($id)){
+            $buscar = Pedido::where('users_id', Auth::id())->orderBy('id', 'DESC')->first();
+            if ($buscar){
+                $pedido = $buscar;
+                $listarCarrito = Carrito::where('pedidos_id', $pedido->id)->get();
+            }else{
+                $pedido = null;
+                $listarCarrito = null;
+            }
+        }else{
+            $pedido = Pedido::findOrFail($id);
+            if ($pedido->estatus == 0 || $pedido->estatus == 4){
+                return redirect()->route('android.checkout', [Auth::id(), $pedido->id]);
+            }
+            $listarCarrito = Carrito::where('pedidos_id', $pedido->id)->get();
+            $listarMetodos = Parametro::where('nombre', 'metodo_pago')->where('tabla_id', 1)->get();
+        }
+
+        $listarPedidos = Pedido::where('users_id', Auth::id())
+            ->orderBy('numero', 'DESC')
+            ->get();
+
+        //dd($listarPedidos);
+
+
+        return view('web.pedidos.index')
+            ->with('ruta', $carrito['ruta'])
+            ->with('headerFavoritos', $favoritos)
+            ->with('headerItems', $carrito['items'])
+            ->with('headerTotal', $carrito['total'])
+            ->with('modulo', 'Checkout')
+            ->with('titulo', null)
+            ->with('pedido', $pedido)
+            ->with('listarCarrito', $listarCarrito)
+            ->with('listarPedidos', $listarPedidos)
+            ;
+
+    }
+
+    public function verBusqueda($user, Request $request)
+    {
+        $this->autenticar($user);
+        $favoritos = $this->headerFavoritos();
+        $carrito = $this->headerCarrito();
+
+        $productos = Producto::where('nombre', 'LIKE', "%$request->buscar%")->get();
+        $productos->each(function ($producto){
+            $stock = Stock::where('productos_id', $producto->id)
+                /*->where('stock_disponible', '>', 0)
+                ->where('estatus', 1)*/
+                ->get();
+            $producto->stock = $stock;
+        });
+
+
+        return view('web.busqueda.index')
+            ->with('ruta', $carrito['ruta'])
+            ->with('headerFavoritos', $favoritos)
+            ->with('headerItems', $carrito['items'])
+            ->with('headerTotal', $carrito['total'])
+            ->with('modulo', 'Busqueda')
+            ->with('titulo', $request->buscar)
+            ->with('listarProductos', $productos)
+            ;
+
+    }
+
+    public function verTienda($user, $id)
+    {
+        $this->autenticar($user);
+        $favoritos = $this->headerFavoritos();
+        $carrito = $this->headerCarrito();
+
+        $empresa = Empresa::findOrFail($id);
+
+        $stock = Stock::where('empresas_id', $id)
+            ->where('stock_disponible', '>', 0)
+            ->where('estatus', 1)
+            ->get();
+
+
+        return view('web.busqueda.index')
+            ->with('ruta', $carrito['ruta'])
+            ->with('headerFavoritos', $favoritos)
+            ->with('headerItems', $carrito['items'])
+            ->with('headerTotal', $carrito['total'])
+            ->with('modulo', 'Tienda')
+            ->with('titulo', $empresa->nombre)
+            ->with('listarProductos', $stock)
+            ->with('empresa', $empresa)
+            ;
+
+    }
+
+    public function listarCategorias($user)
+    {
+        $this->autenticar($user);
+        $favoritos = $this->headerFavoritos();
+        $carrito = $this->headerCarrito();
+
+        $listarCategorias = Categoria::orderBy('nombre', 'ASC')->get();
+
+        return view('web.categorias.listar_categorias')
+            ->with('ruta', $carrito['ruta'])
+            ->with('headerFavoritos', $favoritos)
+            ->with('headerItems', $carrito['items'])
+            ->with('headerTotal', $carrito['total'])
+            ->with('modulo', 'Categorias')
+            ->with('titulo', null)
+            ->with('listarCategorias', $listarCategorias);
+    }
+
+    public function listarTiendas($user)
+    {
+        $this->autenticar($user);
+        $favoritos = $this->headerFavoritos();
+        $carrito = $this->headerCarrito();
+
+        $listarTiendas = Empresa::orderBy('nombre', 'ASC')->get();
+
+        return view('web.empresas.index')
+            ->with('ruta', $carrito['ruta'])
+            ->with('headerFavoritos', $favoritos)
+            ->with('headerItems', $carrito['items'])
+            ->with('headerTotal', $carrito['total'])
+            ->with('modulo', 'Tiendas')
+            ->with('titulo', null)
+            ->with('listarTiendas', $listarTiendas);
+    }
+
+
 
 
 

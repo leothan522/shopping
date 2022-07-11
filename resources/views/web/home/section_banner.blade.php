@@ -7,8 +7,8 @@
 
                     <div class="col-lg-6 col-md-6 col-sm-6 mb-3">
                         <div class="banner__pic img-thumbnail">
-                            <a href="@if($ruta == "android") # @else {{ route('web.tienda', $empresa->id) }} @endif">
-                            <img src="{{ asset(verImg($empresa->banner)) }}" alt="">
+                            <a href="@if($ruta == "android") {{ route('android.tienda', [auth()->id(), $empresa->id]) }} @else {{ route('web.tienda', $empresa->id) }} @endif">
+                            <img src="{{ asset(verImg($empresa->banner, true)) }}" alt="">
                             </a>
                         </div>
                     </div>

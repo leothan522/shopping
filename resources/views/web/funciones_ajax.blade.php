@@ -436,7 +436,12 @@
                             });
 
                         }else{
-                            window.location.href = "{{ route('web.checkout') }}" + "/" + data.id;
+                            let ruta = document.getElementById('ruta_app').value;
+                            if (ruta === "android"){
+                                window.location.href = "{{ route('android.checkout', auth()->id()) }}" + "/" + data.id;
+                            }else{
+                                window.location.href = "{{ route('web.checkout') }}" + "/" + data.id;
+                            }
                         }
                     }
                 });
@@ -592,7 +597,14 @@
 
                 }else{
 
-                    window.location.href = "{{ route('web.pedidos') }}" + "/" + data.id;
+                    let ruta = document.getElementById('ruta_app').value;
+                    if (ruta === "android"){
+                        window.location.href = "{{ route('android.pedidos', auth()->id()) }}" + "/" + data.id;
+                    }else{
+                        window.location.href = "{{ route('web.pedidos') }}" + "/" + data.id;
+                    }
+
+                    //window.location.href = "{{ route('web.pedidos') }}" + "/" + data.id;
 
                     /*Toast.fire({
                     icon: data.type,

@@ -290,9 +290,13 @@ function empresaDefault($default)
     }
 }
 
-function verImg($path)
+function verImg($path, $banner = false)
 {
-    $img = 'img/img_placeholder.png';
+    if ($banner){
+        $img = 'img/b_img_placeholder.png';
+    }else{
+        $img = 'img/img_placeholder.png';
+    }
     if (!is_null($path)){
         if (file_exists(public_path($path))){
             $img = $path;

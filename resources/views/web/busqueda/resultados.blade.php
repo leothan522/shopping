@@ -8,7 +8,7 @@
 
                         <div class="col-lg-4 col-md-5">
                             <a href="@if($ruta == 'android')
-                            {{ route('android.detalles', $favorito['id']) }}
+                            {{ route('android.detalles', [auth()->id(), $stock->id]) }}
                             @else
                             {{ route('web.tienda', $stock->empresas_id) }}
                             @endif" onclick="preSubmit()" class="latest-product__item">

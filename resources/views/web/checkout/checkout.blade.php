@@ -223,6 +223,7 @@
                                 </div>
                             </div>
                             <button type="button" class="site-btn" id="btn_procesar_pedido" data-id-pedido="{{ $pedido->id }}">PROCESAR PEDIDO</button>
+                            <input type="hidden" id="ruta_app" value="{{ $ruta }}">
                         </div>
                     </div>
                 </div>
