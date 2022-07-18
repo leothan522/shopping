@@ -1,6 +1,6 @@
 @extends('layouts.ogani.master')
 
-@section('title', 'Caracas Shopping | Home')
+@section('title', 'Caracas Shopping | Inicio')
 
 @section('content')
 

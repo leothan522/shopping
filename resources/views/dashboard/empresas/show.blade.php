@@ -18,7 +18,7 @@
                         </li>
                         <li class="list-group-item">
                             <b>Telefonos</b> <a
-                                class="float-right text-danger">{{ $telefonos }}</a>
+                                class="float-right">{{ $telefonos }}</a>
                         </li>
                         <li class="list-group-item">
                             <b>Email</b> <a

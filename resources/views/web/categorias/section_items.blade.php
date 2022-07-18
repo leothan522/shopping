@@ -230,10 +230,10 @@
 <div class="banner">
     <div class="container">
         <div class="row justify-content-center">
+    @php($vistos = array())
     @foreach($listarProductos as $producto)
-        @php($vistos = array())
         @foreach($producto->stock as $stock)
-            @if(!in_array($stock->empresa->id, $vistos))
+            @if(!in_array($stock->empresas_id, $vistos))
                 <div class="col-lg-6 col-md-6 col-sm-6 mb-3">
                     <div class="banner__pic img-thumbnail">
                         <a href="@if($ruta == "android") # @else {{ route('web.tienda', $stock->empresas_id) }} @endif">
@@ -241,8 +241,8 @@
                         </a>
                     </div>
                 </div>
-                @php(array_push($vistos, $stock->empresa->id))
             @endif
+                @php(array_push($vistos, $stock->empresas_id))
         @endforeach
     @endforeach
         </div>
