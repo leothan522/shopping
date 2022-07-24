@@ -584,10 +584,4 @@ class AppController extends Controller
             ->with('listarTiendas', $listarTiendas);
     }
 
-
-
-
-
-
-
 }
