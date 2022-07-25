@@ -23,6 +23,8 @@
 @endsection
 
 @section('js')
-    @include('web.funciones_ajax')
+    @if(\Illuminate\Support\Facades\Route::currentRouteName() != "guest.detalles")
+        @include('web.funciones_ajax')
+    @endif
     <script type="text/javascript">console.log('Hi!')</script>
 @endsection

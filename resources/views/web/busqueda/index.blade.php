@@ -21,6 +21,8 @@
 @endsection
 
 @section('js')
-    @include('web.funciones_ajax')
+    @if(\Illuminate\Support\Facades\Route::currentRouteName() != "web.busqueda" && \Illuminate\Support\Facades\Route::currentRouteName() != "web.tienda")
+        @include('web.funciones_ajax')
+    @endif
     <script type="text/javascript">console.log('Hi!')</script>
 @endsection
