@@ -38,5 +38,8 @@
     @if(\Illuminate\Support\Facades\Route::currentRouteName() != "web.index")
         @include('web.funciones_ajax')
     @endif
-    <script type="text/javascript">console.log('Hi!')</script>
+    @include('web.funciones_android')
+    <script type="text/javascript">
+        console.log('Hi!')
+    </script>
 @endsection
