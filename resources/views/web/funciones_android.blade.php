@@ -11,7 +11,7 @@
         $("#tel_phone").click(function(e) {
             e.preventDefault();
             let telefono = this.dataset.telefono;
-            Android.showToast(telefono);
+            Android.irLlamadas(telefono);
             ///alert(telefono);
         });
     </script>
