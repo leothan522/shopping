@@ -20,7 +20,7 @@
         </li>
         <li class="nav-item">
             <a href="{{ route('android.home', auth()->id()) }}" class="nav-link" target="_blank">
-                <i class="fas fa-store-alt"></i> Inicio
+                <i class="fas fa-store-alt"></i> Principal
             </a>
         </li>
         <li class="nav-item">

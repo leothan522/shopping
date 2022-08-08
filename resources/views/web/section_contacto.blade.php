@@ -1,11 +1,15 @@
 {{-- Contacto telefonico--}}
+<a href="tel:{{ telefonoSoporte() }}">
 <section class="hero">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-12">
+
                 <div class="hero__search__phone">
                     <div class="hero__search__phone__icon">
+
                         <i class="fa fa-phone"></i>
+
                     </div>
                     <div class="hero__search__phone__text">
                         <h5>{{ telefonoSoporte() }}</h5>
@@ -16,3 +20,4 @@
         </div>
     </div>
 </section>
+</a>

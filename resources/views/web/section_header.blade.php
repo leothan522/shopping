@@ -120,7 +120,7 @@
                             {{ route('web.carrito') }}
                             @endif
                                 ">
-                                <i class="fa fa-shopping-bag"></i> <span id="header_carrito">{{ formatoMillares($headerItems, 0) }}</span>
+                                <i class="fa fa-shopping-basket"></i> <span id="header_carrito">{{ formatoMillares($headerItems, 0) }}</span>
                             </a>
                         </li>
                     </ul>

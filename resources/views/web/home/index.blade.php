@@ -9,7 +9,7 @@
 
     {{--@include('web.section_breadcrumb')--}}
 
-    @if($listarCategorias->isNotEmpty())
+    @if($listarCategorias->isNotEmpty() && $ruta == 'android')
         @include('web.home.section_categories')
     @endif
 
