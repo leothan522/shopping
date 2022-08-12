@@ -13,5 +13,6 @@
 
 @section('js')
     @include('web.funciones_ajax')
+    @include('web.funciones_android')
     <script type="text/javascript">console.log('Hi!')</script>
 @endsection

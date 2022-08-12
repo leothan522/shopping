@@ -17,5 +17,6 @@
     @if(\Illuminate\Support\Facades\Route::currentRouteName() != "guest.categorias")
         @include('web.funciones_ajax')
     @endif
+    @include('web.funciones_android')
     <script type="text/javascript">console.log('Hi!')</script>
 @endsection

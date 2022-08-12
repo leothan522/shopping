@@ -24,5 +24,6 @@
     @if(\Illuminate\Support\Facades\Route::currentRouteName() != "web.busqueda" && \Illuminate\Support\Facades\Route::currentRouteName() != "web.tienda")
         @include('web.funciones_ajax')
     @endif
+    @include('web.funciones_android')
     <script type="text/javascript">console.log('Hi!')</script>
 @endsection
