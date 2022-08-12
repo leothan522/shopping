@@ -1,5 +1,5 @@
 {{-- Contacto telefonico--}}
-<a href="#" id="tel_phone" data-telefono="04243386600">
+<a href="#" id="tel_phone" data-telefono="{{ telefonoSoporte() }}">
 <section class="hero">
     <div class="container">
         <div class="row justify-content-center">
