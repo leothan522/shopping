@@ -24,7 +24,7 @@ class CategoriasComponent extends Component
         'confirmed'
     ];
 
-    public $view = 'create', $nombre, $photo, $tipo, $categoria_id, $imagen, $busqueda, $cont;
+    public $view = 'create', $nombre, $photo, $tipo = 0, $categoria_id, $imagen, $busqueda, $cont;
 
     public function mount(Request $request)
     {
@@ -58,7 +58,7 @@ class CategoriasComponent extends Component
         $this->view = 'create';
         $this->nombre = null;
         $this->photo = null;
-        $this->tipo = null;
+        $this->tipo = 0;
         $this->categoria_id = null;
         $this->imagen = null;
     }
