@@ -9,12 +9,12 @@
                 <div class="featured__controls">
                     <ul>
                         <li class="active" data-filter="*">All</li>
-                        @php($item = null)
+                        @php($item = array())
                         @foreach($listarDestacados as $stock)
                             @if($stock->empresa->categorias_id)
-                                @if($item != $stock->empresa->categoria->nombre)
-                                <li data-filter=".filter_{{ $stock->empresa->categorias_id }}">{{ $stock->empresa->categoria->nombre }}</li>
-                                @php($item = $stock->empresa->categoria->nombre)
+                                @if(!in_array($stock->empresa->categorias_id, $item))
+                                    <li data-filter=".filter_{{ $stock->empresa->categorias_id }}">{{ $stock->empresa->categoria->nombre }}</li>
+                                    @php(array_push($item, $stock->empresa->categorias_id))
                                 @endif
                             @endif
                         @endforeach
