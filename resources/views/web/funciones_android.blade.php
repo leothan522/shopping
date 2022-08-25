@@ -3,7 +3,7 @@
         $("#tel_phone").click(function(e) {
             e.preventDefault();
             let telefono = this.dataset.telefono;
-            alert(telefono);
+            //alert(telefono);
         });
     </script>
 @else
