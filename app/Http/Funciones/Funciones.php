@@ -456,5 +456,11 @@ function verTipoCategoria($categoria)
         '0' => 'Productos',
         '1' => 'Tiendas',
     ];
-    return $categorias[$categoria];
+
+    if(array_key_exists($categoria, $categorias)){
+        return $categorias[$categoria];
+    }else{
+        return "NO DEFINIDA";
+    }
+
 }
