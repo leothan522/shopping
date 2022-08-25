@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Ajuste;
+use App\Models\Categoria;
 use App\Models\Empresa;
 use App\Models\Parametro;
 use App\Models\Stock;
@@ -23,8 +24,8 @@ class EmpresasComponent extends Component
         'confirmed'
     ];
 
-    public $view = 'show', $photo, $rif, $nombre, $moneda, $telefonos, $email, $direccion, $default = 0, $empresaDefault;
-    public $empresa_id, $logo, $borrarLogo = false;
+    public $view = 'show', $photo, $rif, $nombre, $moneda, $categoria, $telefonos, $email, $direccion, $default = 0, $empresaDefault;
+    public $empresa_id, $logo, $borrarLogo = false, $verCategoria;
     public $lunes, $martes, $miercoles, $jueves, $viernes, $sabado, $domingo, $apertura, $cierre, $horario, $horario_id;
     public $estatusTienda;
 
@@ -49,9 +50,11 @@ class EmpresasComponent extends Component
     }
     public function render()
     {
+        $categorias = Categoria::where('tipo', 1)->orderBy('nombre', 'ASC')->pluck('nombre', 'id');
         $empresas = Empresa::all();
         return view('livewire.empresas-component')
-            ->with('empresas', $empresas);
+            ->with('empresas', $empresas)
+            ->with('categorias', $categorias);
     }
 
     public function limpiar()
@@ -60,6 +63,7 @@ class EmpresasComponent extends Component
         $this->rif = null;
         $this->nombre = null;
         $this->moneda = null;
+        $this->categoria = null;
         $this->telefonos = null;
         $this->email = null;
         $this->direccion = null;
@@ -81,6 +85,7 @@ class EmpresasComponent extends Component
             'rif'       =>  ['required', 'min:6', Rule::unique('empresas')->ignore($this->empresa_id)],
             'nombre'    =>  'required|min:4',
             'moneda'    =>  'required',
+            'categoria'    =>  'required',
             'telefonos' =>  'required',
             'email'     =>  'required|email',
             'direccion' =>  'required'
@@ -99,6 +104,7 @@ class EmpresasComponent extends Component
         $empresa->telefono = $this->telefonos;
         $empresa->email = strtolower($this->email);
         $empresa->moneda = $this->moneda;
+        $empresa->categorias_id = $this->categoria;
         $empresa->default = $this->default;
 
         if ($this->photo){
@@ -117,6 +123,12 @@ class EmpresasComponent extends Component
 
         if ($empresa->default){
             $this->default = 0;
+        }
+
+        $categoria = Categoria::where('id', $this->categoria)->first();
+        if ($categoria){
+            $categoria->num_productos++;
+            $categoria->update();
         }
 
         $this->show($empresa->id);
@@ -140,6 +152,13 @@ class EmpresasComponent extends Component
         $this->email = $empresa->email;
         $this->direccion = $empresa->direccion;
         $this->moneda = $empresa->moneda;
+        $this->categoria = $empresa->categorias_id;
+        if ($empresa->categorias_id){
+            $this->verCategoria = $empresa->categoria->nombre;
+        }else{
+            $this->verCategoria = "NO DEFINIDA";
+        }
+
         $this->empresaDefault = $empresa->default;
 
         if ($empresa->logo == null){
@@ -164,12 +183,14 @@ class EmpresasComponent extends Component
     {
         $this->validate();
         $empresa = Empresa::find($id);
+        $categoria_anterior = $empresa->categorias_id;
         $empresa->rif = strtoupper($this->rif);
         $empresa->nombre = strtoupper($this->nombre);
         $empresa->direccion = strtoupper($this->direccion);
         $empresa->telefono = $this->telefonos;
         $empresa->email = strtolower($this->email);
         $empresa->moneda = $this->moneda;
+        $empresa->categorias_id = $this->categoria;
 
         if ($this->photo){
             $img = explode('logo/t_', $this->logo);
@@ -200,6 +221,22 @@ class EmpresasComponent extends Component
         }
 
         $empresa->update();
+
+        if ($categoria_anterior != $empresa->categorias_id){
+            $categoria = Categoria::find($categoria_anterior);
+            if ($categoria){
+                $restar = $categoria->num_productos - 1;
+                $categoria->num_productos = $restar;
+                $categoria->update();
+            }
+            $categoria = Categoria::find($empresa->categorias_id);
+            if ($categoria){
+                $sumar = $categoria->num_productos + 1;
+                $categoria->num_productos = $sumar;
+                $categoria->update();
+            }
+        }
+
         $this->show($empresa->id);
         $this->view = 'show';
 

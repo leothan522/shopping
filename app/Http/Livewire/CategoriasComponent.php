@@ -24,7 +24,7 @@ class CategoriasComponent extends Component
         'confirmed'
     ];
 
-    public $view = 'create', $nombre, $photo, $categoria_id, $imagen, $busqueda, $cont;
+    public $view = 'create', $nombre, $photo, $tipo, $categoria_id, $imagen, $busqueda, $cont;
 
     public function mount(Request $request)
     {
@@ -58,6 +58,7 @@ class CategoriasComponent extends Component
         $this->view = 'create';
         $this->nombre = null;
         $this->photo = null;
+        $this->tipo = null;
         $this->categoria_id = null;
         $this->imagen = null;
     }
@@ -68,6 +69,7 @@ class CategoriasComponent extends Component
 
         $categoria = new Categoria();
         $categoria->nombre = ucfirst($this->nombre);
+        $categoria->tipo = $this->tipo;
 
         if ($this->photo){
             $ruta = $this->photo->store('public/categorias');
@@ -94,6 +96,7 @@ class CategoriasComponent extends Component
         $this->categoria_id = $categorias->id;
         $this->nombre = ucfirst($categorias->nombre);
         $this->imagen = $categorias->miniatura;
+        $this->tipo = $categorias->tipo;
         $this->view = 'edit';
     }
 
@@ -147,8 +150,9 @@ class CategoriasComponent extends Component
         $parametro = Categoria::find($this->categoria_id);
 
         $productos = Producto::where('categorias_id', $parametro->id)->first();
+        $empresas = Empresa::where('categorias_id', $parametro->id)->first();
 
-        if ($productos){
+        if ($productos && $empresas){
 
             $this->alert('warning', '¡No se puede Borrar!', [
                 'position' => 'center',

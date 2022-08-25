@@ -449,3 +449,12 @@ function telefonoSoporte()
     }
     return $telefono;
 }
+
+function verTipoCategoria($categoria)
+{
+    $categorias = [
+        '0' => 'Productos',
+        '1' => 'Tiendas',
+    ];
+    return $categorias[$categoria];
+}

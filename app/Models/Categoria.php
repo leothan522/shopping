@@ -14,7 +14,8 @@ class Categoria extends Model
         'nombre',
         'imagen',
         'miniatura',
-        'num_productos'
+        'num_productos',
+        'tipo'
     ];
 
     public function scopeBuscar($query, $keyword)
@@ -25,6 +26,11 @@ class Categoria extends Model
     public function productos()
     {
         return $this->hasMany(Producto::class, 'categorias_id', 'id');
+    }
+
+    public function empresas()
+    {
+        return $this->hasMany(Empresa::class, 'categorias_id', 'id');
     }
 
 }

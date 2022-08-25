@@ -113,6 +113,22 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="email">Categoria Base</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-tags"></i></span>
+                            </div>
+                            {!! Form::select('categoria', $categorias, null, ['wire:model.defer' => 'categoria', 'class' => 'custom-select', 'placeholder' => 'Seleccione']); !!}
+                            @error('categoria')
+                            <span class="col-sm-12 text-sm text-bold text-danger">
+                                    <i class="icon fas fa-exclamation-triangle"></i>
+                                    {{ $message }}
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label for="email">Telefonos</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">

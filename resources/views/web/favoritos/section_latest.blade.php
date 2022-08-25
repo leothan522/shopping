@@ -1,6 +1,11 @@
 <section class="product spad">
     <div class="container">
         <div class="row">
+            <div class="col-md-12">
+                <div class="section-title">
+                    <h2>Productos</h2>
+                </div>
+            </div>
             @if($listarFavoritos)
                 @foreach($listarFavoritos as $key => $favorito)
                     <div class="col-lg-3 col-md-5">

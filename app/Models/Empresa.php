@@ -19,7 +19,8 @@ class Empresa extends Model
         'direccion',
         'telefono',
         'email',
-        'default'
+        'default',
+        'categorias_id'
     ];
 
     public function user()
@@ -35,6 +36,11 @@ class Empresa extends Model
     public function ajustes()
     {
         return $this->hasMany(Ajuste::class, 'empresas_id', 'id');
+    }
+
+    public function categoria()
+    {
+        return $this->belongsTo(Categoria::class, 'categorias_id', 'id');
     }
 
 }

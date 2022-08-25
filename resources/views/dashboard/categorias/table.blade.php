@@ -3,7 +3,8 @@
     <tr>
         <th scope="col" class="text-center"><i class="fas fa-image"></i></th>
         <th scope="col">Nombre</th>
-        <th scope="col" class="text-center">Productos</th>
+        <th scope="col" class="text-center">Modulo</th>
+        <th scope="col" class="text-center">Cantidad</th>
         <th scope="col" style="width: 5%;">&nbsp;</th>
     </tr>
     </thead>
@@ -21,6 +22,9 @@
                 <span class="text-muted text-sm">
                     <i class="fa fa-globe text-primary"></i>
                     ID: {{ $categoria->id }}</span>
+            </td>
+            <td class="text-center">
+                {{ verTipoCategoria($categoria->tipo) }}
             </td>
             <td class="text-center">
                 {{ formatoMillares($categoria->num_productos, 0) }}

@@ -32,6 +32,10 @@
                             <b>Moneda Base</b> <a
                                 class="float-right">{{ strtolower($moneda) }}</a>
                         </li>
+                        <li class="list-group-item">
+                            <b>Categoria Base</b> <a
+                                class="float-right">{{ $verCategoria }}</a>
+                        </li>
                     </ul>
 
 

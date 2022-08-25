@@ -24,9 +24,9 @@
             </div>
             @error('photo')
             <span class="col-sm-12 text-sm text-bold text-danger">
-                            <i class="icon fas fa-exclamation-triangle"></i>
-                            {{ $message }}
-                        </span>
+                <i class="icon fas fa-exclamation-triangle"></i>
+                {{ $message }}
+            </span>
             @enderror
         </div>
     </div>
@@ -45,6 +45,37 @@
 
     </div>
 
+
+    @if($view == 'create')
+        <div class="form-group">
+            <label for="email">Modulo</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-cogs"></i></span>
+                </div>
+                <select class="custom-select" wire:model.defer="tipo">
+                    <option value="0">Productos</option>
+                    <option value="1">Tiendas</option>
+                </select>
+                @error('tipo')
+                <span class="col-sm-12 text-sm text-bold text-danger">
+                    <i class="icon fas fa-exclamation-triangle"></i>
+                    {{ $message }}
+                </span>
+                @enderror
+            </div>
+        </div>
+        @else
+        <div class="form-group">
+            <label for="email">Modulo</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-cogs"></i></span>
+                </div>
+                <input type="text" class="form-control" value="{{ verTipoCategoria($tipo) }}" readonly>
+            </div>
+        </div>
+    @endif
 
 
     <div class="form-group text-center">

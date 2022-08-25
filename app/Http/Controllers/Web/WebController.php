@@ -52,7 +52,7 @@ class WebController extends Controller
     public function index()
     {
 
-        $categorias = Categoria::orderBy('nombre')->get();
+        $categorias = Categoria::where('tipo', 0)->orderBy('nombre')->get();
 
         $destacados = Stock::orderBy('stock_vendido', 'DESC')
             ->where('estatus', 1)
@@ -123,7 +123,7 @@ class WebController extends Controller
         $favoritos = $this->headerFavoritos();
         $carrito = $this->headerCarrito();
 
-        $categorias = Categoria::orderBy('nombre')->get();
+        $categorias = Categoria::where('tipo', 0)->orderBy('nombre')->get();
 
         $destacados = Stock::orderBy('stock_vendido', 'DESC')
             ->where('estatus', 1)

@@ -62,7 +62,7 @@ class AppController extends Controller
         $favoritos = $this->headerFavoritos();
         $carrito = $this->headerCarrito();
 
-        $categorias = Categoria::orderBy('nombre')->get();
+        $categorias = Categoria::where('tipo', 0)->orderBy('nombre')->get();
 
         $destacados = Stock::orderBy('stock_vendido', 'DESC')
             ->where('estatus', 1)
@@ -554,7 +554,7 @@ class AppController extends Controller
         $favoritos = $this->headerFavoritos();
         $carrito = $this->headerCarrito();
 
-        $listarCategorias = Categoria::orderBy('nombre', 'ASC')->get();
+        $listarCategorias = Categoria::where('tipo', 0)->orderBy('nombre', 'ASC')->get();
 
         return view('web.categorias.listar_categorias')
             ->with('ruta', $carrito['ruta'])
