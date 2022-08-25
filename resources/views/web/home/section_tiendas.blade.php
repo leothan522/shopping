@@ -11,9 +11,11 @@
                         <li class="active" data-filter="*">All</li>
                         @php($item = null)
                         @foreach($listarDestacados as $stock)
-                            @if($item != $stock->empresa->categoria->nombre)
+                            @if($stock->empresa->categorias_id)
+                                @if($item != $stock->empresa->categoria->nombre)
                                 <li data-filter=".filter_{{ $stock->empresa->categorias_id }}">{{ $stock->empresa->categoria->nombre }}</li>
                                 @php($item = $stock->empresa->categoria->nombre)
+                                @endif
                             @endif
                         @endforeach
                         {{--<li data-filter=".oranges">Oranges</li>
