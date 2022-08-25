@@ -58,7 +58,7 @@
                             Agregar
                         </a>
                         <a href="#" class="heart-icon btn_favoritos @if($stock->favoritos) fondo-favoritos @endif"
-                       id="favoritos_{{ $stock->id }}" data-id-stock="{{ $stock->id }}">
+                       id="favoritos_{{ $stock->id }}" data-id-stock="{{ $stock->id }}" data-tipo="_productos">
                         <span class="icon_heart_alt"></span>
                     </a>
                         @else

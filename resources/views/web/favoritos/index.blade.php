@@ -5,6 +5,7 @@
 @section('content')
     @include('web.section_header')
     @include('web.section_breadcrumb')
+    @include('web.favoritos.section_tiendas')
     @include('web.favoritos.section_latest')
     @include('web.section_contacto')
 @endsection

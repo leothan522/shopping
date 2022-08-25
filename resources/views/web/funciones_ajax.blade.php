@@ -47,12 +47,14 @@
         Cargando.fire();
         //let producto = this.getAttribute('content');
         let producto = this.dataset.idStock;
-        let cantidad = this.dataset.cantidad;
+        //let cantidad = this.dataset.cantidad;
+        let tipo = this.dataset.tipo;
         $.ajax({
             type: 'POST',
             url: "{{ route('ajax.favoritos') }}",
                 data: {
-                    id_stock: producto
+                    id_stock: producto,
+                    tipo: tipo
                 },
                 success: function (data) {
                     Toast.fire({

@@ -14,14 +14,14 @@
     @endif
 
     @if($listarDestacados->isNotEmpty())
-        @include('web.home.section_featured')
+        @include('web.home.section_tiendas')
         @else
         <br class="mt-3">
     @endif
 
-    @if($listarBanner->isNotEmpty())
+    {{--@if($listarBanner->isNotEmpty())
         @include('web.home.section_banner')
-    @endif
+    @endif--}}
 
     @if($listarUltimos->isNotEmpty() && $listarUltimos->count() >= 4)
         @include('web.home.section_latest')

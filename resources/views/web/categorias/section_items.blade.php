@@ -8,7 +8,7 @@
                             <ul class="product__item__pic__hover">
                             <li>
                                 <a href="#" class="btn_favoritos @if($stock->favoritos) fondo-favoritos @endif" id="favoritos_{{ $stock->id }}"
-                                   data-id-stock="{{ $stock->id }}" >
+                                   data-id-stock="{{ $stock->id }}" data-tipo="_productos" >
                                     <i class="fa fa-heart"></i>
                                 </a>
                             </li>

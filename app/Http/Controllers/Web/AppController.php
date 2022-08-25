@@ -28,7 +28,7 @@ class AppController extends Controller
 
     public function headerFavoritos()
     {
-        return Parametro::where('nombre', 'favoritos')->where('tabla_id', Auth::id())->count();
+        return Parametro::where('nombre', 'LIKE', "%favoritos%")->where('tabla_id', Auth::id())->count();
     }
 
     public function headerCarrito()
@@ -64,13 +64,37 @@ class AppController extends Controller
 
         $categorias = Categoria::where('tipo', 0)->orderBy('nombre')->get();
 
+        /*$destacados = Stock::orderBy('stock_vendido', 'DESC')
+            ->where('estatus', 1)
+            ->where('stock_disponible', '>', 0)
+            ->limit(12)
+            ->get();
+        $destacados->each(function ($stock){
+            $favoritos = Parametro::where('nombre', 'favoritos_productos')
+                ->where('tabla_id', Auth::id())
+                ->where('valor', $stock->id)->first();
+            if ($favoritos){
+                $stock->favoritos = true;
+            }else{
+                $stock->favoritos = false;
+            }
+            $carrito = Carrito::where('stock_id', $stock->id)
+                ->where('users_id', Auth::id())
+                ->where('estatus', 0)->first();
+            if ($carrito){
+                $stock->carrito = true;
+            }else{
+                $stock->carrito = false;
+            }
+        });*/
+
         $destacados = Stock::orderBy('stock_vendido', 'DESC')
             ->where('estatus', 1)
             ->where('stock_disponible', '>', 0)
             ->limit(12)
             ->get();
         $destacados->each(function ($stock){
-            $favoritos = Parametro::where('nombre', 'favoritos')
+            $favoritos = Parametro::where('nombre', 'favoritos_tiendas')
                 ->where('tabla_id', Auth::id())
                 ->where('valor', $stock->id)->first();
             if ($favoritos){
@@ -87,7 +111,6 @@ class AppController extends Controller
                 $stock->carrito = false;
             }
         });
-
 
         $banner = Empresa::orderByRaw("RAND()")
             ->limit(2)
@@ -150,7 +173,7 @@ class AppController extends Controller
             $cantidad = 0;
         }
 
-        $favor = Parametro::where('nombre', 'favoritos')
+        $favor = Parametro::where('nombre', 'favoritos_productos')
             ->where('tabla_id', Auth::id())
             ->where('valor', $stock->id)->first();
         if ($favor){
@@ -166,7 +189,7 @@ class AppController extends Controller
             ->orderBy('stock_disponible', 'DESC')
             ->get();
         $listarRelacionados->each(function ($stock){
-            $favoritos = Parametro::where('nombre', 'favoritos')
+            $favoritos = Parametro::where('nombre', 'favoritos_productos')
                 ->where('tabla_id', Auth::id())
                 ->where('valor', $stock->id)->first();
             if ($favoritos){
@@ -285,7 +308,7 @@ class AppController extends Controller
                 ->where('productos_id', $producto->id)
                 ->get();
             $destacados->each(function ($stock){
-                $favoritos = Parametro::where('nombre', 'favoritos')
+                $favoritos = Parametro::where('nombre', 'favoritos_productos')
                     ->where('tabla_id', Auth::id())
                     ->where('valor', $stock->id)->first();
                 if ($favoritos){
@@ -331,6 +354,8 @@ class AppController extends Controller
     }
 
     public $arrayFavoritos = array();
+    public $arrayTiendas = array();
+
 
     public function verFavoritos($user)
     {
@@ -339,7 +364,7 @@ class AppController extends Controller
         $carrito = $this->headerCarrito();
         //$verFavoritos = null;
 
-        $listarFavoritos = Parametro::where('nombre', 'favoritos')
+        $listarFavoritos = Parametro::where('nombre', 'favoritos_productos')
             ->where('tabla_id', Auth::id())
             ->get();
         //dd($listarFavoritos->count());
@@ -371,6 +396,35 @@ class AppController extends Controller
             $verFavoritos = null;
         }
 
+        $listarFavoritos = Parametro::where('nombre', 'favoritos_tiendas')
+            ->where('tabla_id', Auth::id())
+            ->get();
+        //dd($listarFavoritos->count());
+        if ($listarFavoritos->count()){
+            $listarFavoritos->each(function ($parametro){
+                $ultimos = Stock::orderBy('id', 'DESC')
+                    //->where('estatus', 1)
+                    //->where('stock_disponible', '>', 0)
+                    ->where('id', $parametro->valor)
+                    ->get();
+                $ultimos->each(function ($stock){
+                    array_push($this->arrayTiendas, $stock->id);
+                });
+            });
+
+            foreach ($this->arrayTiendas as $key => $id) {
+                $stock = Stock::find($id);
+                $verTiendas[$key] = collect(array(
+                    'id'            => $stock->empresas_id,
+                    'miniatura'     => $stock->empresa->miniatura,
+                    'nombre'        => $stock->empresa->nombre,
+                ));
+            }
+        }else{
+            $verTiendas = null;
+        }
+
+
 
         return view('web.favoritos.index')
             ->with('ruta', $carrito['ruta'])
@@ -379,7 +433,8 @@ class AppController extends Controller
             ->with('headerTotal', $carrito['total'])
             ->with('modulo', 'Favoritos')
             ->with('titulo', null)
-            ->with('listarFavoritos', $verFavoritos);
+            ->with('listarFavoritos', $verFavoritos)
+            ->with('listarTiendas', $verTiendas);
     }
 
     public function verCheckout($user, $id = null)

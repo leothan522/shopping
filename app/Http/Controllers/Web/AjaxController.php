@@ -20,13 +20,14 @@ class AjaxController extends Controller
     {
         $id_stock = $request->id_stock;
         $id_usuario = Auth::id();
+        $tipo = $request->tipo;
 
-        $favoritos = Parametro::where('nombre', 'favoritos')
+        $favoritos = Parametro::where('nombre', 'favoritos'.$tipo)
                                 ->where('tabla_id', $id_usuario)
                                 ->where('valor', $id_stock)
                                 ->first();
 
-        $cantidad = Parametro::where('nombre', 'favoritos')
+        $cantidad = Parametro::where('nombre', 'LIKE', "%favoritos%")
                                 ->where('tabla_id', $id_usuario)
                                 ->count();
         if ($favoritos){
@@ -40,7 +41,7 @@ class AjaxController extends Controller
             ];
         }else{
             $favoritos = new Parametro();
-            $favoritos->nombre = "favoritos";
+            $favoritos->nombre = "favoritos".$tipo;
             $favoritos->tabla_id = $id_usuario;
             $favoritos->valor = $id_stock;
             $favoritos->save();
