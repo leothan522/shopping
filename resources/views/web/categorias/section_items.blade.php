@@ -234,10 +234,10 @@
     @foreach($listarProductos as $producto)
         @foreach($producto->stock as $stock)
             @if(!in_array($stock->empresas_id, $vistos))
-                <div class="col-lg-6 col-md-6 col-sm-6 mb-3">
+                <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
                     <div class="banner__pic img-thumbnail">
                         <a href="@if($ruta == "android") # @else {{ route('web.tienda', $stock->empresas_id) }} @endif">
-                            <img src="{{ asset(verImg($stock->empresa->banner, true)) }}" alt="">
+                            <img src="{{ asset(verImg($stock->empresa->miniatura)) }}" alt="">
                         </a>
                     </div>
                 </div>

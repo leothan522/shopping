@@ -4,9 +4,9 @@
         <div class="row justify-content-center">
 
 
-                <div class="col-lg-6 col-md-6 col-sm-6 mb-3">
+                <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
                     <div class="banner__pic img-thumbnail">
-                        <img src="{{ asset(verImg($empresa->banner)) }}" alt="">
+                        <img src="{{ asset(verImg($empresa->miniatura)) }}" alt="">
                     </div>
                 </div>
 
