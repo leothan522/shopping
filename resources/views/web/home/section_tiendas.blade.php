@@ -27,8 +27,9 @@
             </div>
         </div>
         <div class="row featured__filter">
-
+            @php($vistos = array())
             @foreach($listarDestacados as $stock)
+                @if(!in_array($stock->empresas_id, $vistos))
                 <div class="col-lg-3 col-md-4 col-sm-6 mix oranges filter_{{ $stock->empresa->categorias_id }}">
                 <div class="featured__item">
                     <div class="featured__item__pic set-bg img-thumbnail" data-setbg="{{ asset(verImg($stock->empresa->miniatura)) }}">
@@ -74,6 +75,8 @@
                     </div>
                 </div>
             </div>
+                @endif
+                @php(array_push($vistos, $stock->empresas_id))
             @endforeach
             {{--<div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
                 <div class="featured__item">

@@ -43,7 +43,7 @@ class ProductosComponent extends Component
     public function render()
     {
         $this->count = Producto::count();
-        $this->listarCategorias = Categoria::orderBy('nombre', 'ASC')->pluck('nombre', 'id');
+        $this->listarCategorias = Categoria::where('tipo', 0)->orderBy('nombre', 'ASC')->pluck('nombre', 'id');
         $productos = Producto::buscar($this->busqueda)->orderBy('id', 'DESC')->paginate(30);
         return view('livewire.productos-component')
             ->with('productos', $productos);
