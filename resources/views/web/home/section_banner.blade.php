@@ -6,11 +6,11 @@
             @foreach($listarBanner as $empresa)
 
                     <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
-                        <div class="banner__pic img-thumbnail">
+                        {{--<div class="banner__pic img-thumbnail">--}}
                             <a href="@if($ruta == "android") {{ route('android.tienda', [auth()->id(), $empresa->id]) }} @else {{ route('web.tienda', $empresa->id) }} @endif">
-                            <img src="{{ asset(verImg($empresa->miniatura)) }}" alt="">
+                            <img class="img-thumbnail" src="{{ asset(verImg($empresa->miniatura)) }}" alt="">
                             </a>
-                        </div>
+                        {{--</div>--}}
                     </div>
 
             @endforeach
