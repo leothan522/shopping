@@ -196,7 +196,7 @@
             </div>
             <div class="col-lg-4 col-md-6">
                 <div class="latest-product__text">
-                    <h4>Revisar Productos</h4>
+                    <h4>Productos Random</h4>
                     <div class="latest-product__slider owl-carousel">
                         @php($i = 1)
                         @foreach($listarRevisar as $stock)

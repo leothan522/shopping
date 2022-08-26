@@ -2,6 +2,11 @@
 <section class="categories">
     <div class="container">
         <div class="row">
+            <div class="col-md-12">
+                <div class="section-title">
+                    <h2>Categorias</h2>
+                </div>
+            </div>
             <div class="categories__slider owl-carousel">
                 @foreach($listarCategorias as $categoria)
                     <div class="col-lg-3">
