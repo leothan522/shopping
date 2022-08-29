@@ -4,12 +4,20 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
-                    <h2>{{ $modulo }}</h2>
+                    @if($titulo)
+                        <h2>{{ $titulo }}</h2>
+                        <div class="breadcrumb__option">
+                            <span class="text-bold">{{ $modulo }}</span>
+                        </div>
+                        @else
+                        <h2>{{ $modulo }}</h2>
+                    @endif
+                    {{--<h2>{{ $modulo }}</h2>
                     @if($titulo)
                     <div class="breadcrumb__option">
                         <span class="text-bold">{{ $titulo }}</span>
                     </div>
-                    @endif
+                    @endif--}}
                 </div>
             </div>
         </div>

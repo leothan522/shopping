@@ -1,3 +1,26 @@
+<!-- Banner Begin -->
+<div class="banner">
+    <div class="container">
+        <div class="row justify-content-center">
+            @php($vistos = array())
+            @foreach($listarProductos as $producto)
+                @foreach($producto->stock as $stock)
+                    @if(!in_array($stock->empresas_id, $vistos))
+                        <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+                            <div class="banner__pic img-thumbnail">
+                                <a href="@if($ruta == "android") # @else {{ route('web.tienda', $stock->empresas_id) }} @endif">
+                                    <img src="{{ asset(verImg($stock->empresa->miniatura)) }}" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+                    @php(array_push($vistos, $stock->empresas_id))
+                @endforeach
+            @endforeach
+        </div>
+    </div>
+</div>
+<!-- Banner End -->
 <div class="row">
     @foreach($listarProductos as $producto)
         @foreach($producto->stock as $stock)
@@ -226,27 +249,5 @@
         </div>
     </div>--}}
 </div>
-<!-- Banner Begin -->
-<div class="banner">
-    <div class="container">
-        <div class="row justify-content-center">
-    @php($vistos = array())
-    @foreach($listarProductos as $producto)
-        @foreach($producto->stock as $stock)
-            @if(!in_array($stock->empresas_id, $vistos))
-                <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
-                    <div class="banner__pic img-thumbnail">
-                        <a href="@if($ruta == "android") # @else {{ route('web.tienda', $stock->empresas_id) }} @endif">
-                            <img src="{{ asset(verImg($stock->empresa->miniatura)) }}" alt="">
-                        </a>
-                    </div>
-                </div>
-            @endif
-                @php(array_push($vistos, $stock->empresas_id))
-        @endforeach
-    @endforeach
-        </div>
-    </div>
-</div>
-<!-- Banner End -->
+
 
